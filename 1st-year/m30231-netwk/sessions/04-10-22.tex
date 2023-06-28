@@ -1,0 +1,59 @@
+\lecture{Networks Introduction}{09:00}{04/10/22}{Amanda Peart}
+
+\section*{What is a network?}
+
+\begin{itemize}
+  \item A network is a group of devices (PCs, Laptops, Mobile phones, etc) that are all able to communicate with each other to share data, files or programs
+  \item Hardware - The physical connections between devices in the network, e.g. ethernet cables, fibre lines, wireless access points, etc
+  \item Software - What enables ut to use the hardware for communication and exchanging information
+  \item Networks should be "Interoperable" - this means that different types of devices, using different operating systems, can all connect to the same network and communicate with each other to share information, as long as they can all communicate using the same network protocols
+\end{itemize}
+
+\section*{Network Topologies}
+
+\begin{itemize}
+  \item Star Topology:
+  \begin{itemize}
+    \item All devices are directly connected to a central "hub" - usually a switch
+    \item If one node fails the rest of the network will still function
+    \item More common in networks of today
+    \item Easy to add or remove nodes as they are needed
+    \item Number of nodes is limited to the number of ports that the central switch has
+    \item If the central "hub" or switch fails, the entire network fails, and so there is a single point of failure
+    \item If the central "hub" is slow, the entire network will be slow
+  \end{itemize}
+
+  \item Bus Topology:
+  \begin{itemize}
+    \item All devices are connected directly to the main cable known as the "backbone"
+    \item Cannot cope with heavy traffic
+    \item Prone to collisions when two nodes try to communicate at the same time
+    \item Difficult to administer or troubleshoot as if the cable breaks the entire network stops functioning
+    \item Limited cable length, number of nodes is limited by the length of the cable
+    \item Performance degrades as additional devices are added
+    \item Not a popular design as it is very limiting
+    \item Should is really only be used for a small group of computers
+  \end{itemize}
+  
+  \item Token Ring Topology:
+  \begin{itemize}
+    \item All nodes on the network are connected in a "loop"
+    \item Nodes must wait until they have the "token" before they can communicate on the network, making collisions impossible
+    \item All nodes get a chance to communicate on the network
+    \item Good "quality of service"
+    \item If one of the nodes or cables goes down then the whole network may go down
+    \item Tokens may get lost or corrupted
+    \item Difficult to add or remove nodes from the ring
+  \end{itemize}
+  
+  \item Mesh Topology:
+  \begin{itemize}
+    \item All nodes are connected directly to other nodes
+    \item Redundancy as if any node goes down the traffic can be re-routed
+    \item The network can be expanded without disruption
+    \item Requires more cabling than other topologies
+    \item Complicated to implement
+    \item Large amounts of cables that will only be used on occasion
+    \item A "partial mesh" network can be constructed where each device is connected to a few others, but not all as that way there is still redundancy but less wasted cabling and less complexity
+  \end{itemize}
+\end{itemize}

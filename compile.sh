@@ -3,6 +3,10 @@
 ROOT_DIR=$PWD
 TEX_ENGINE=xelatex
 
+cd $ROOT_DIR/1st-year/m30231-netwk/
+echo "Compiling m30231-netwk"
+$TEX_ENGINE m30231.tex
+
 cd $ROOT_DIR/2nd-year/m21270-dsalg/
 echo "Compiling m21270-dsalg"
 $TEX_ENGINE m21270.tex

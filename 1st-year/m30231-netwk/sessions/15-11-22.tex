@@ -1,0 +1,124 @@
+\lecture{Standards and the OSI Model}{09:00}{15/11/22}{Amanda Peart}
+
+\begin{itemize}
+  \item Development of the OSI model started in 1977, with a draft published in 1979 and finalised in 1984 as an international standard
+  \item OSI stands for Open Systems Interconnection
+  \item The OSI model provides common terminology as well as a framework for networking
+  \item The standard is still used today, and is the standard model for inter-computer communication
+  \item It describes how data is sent from an application, through a network medium, and into another application, on a different computer or network
+  \item This data transmission is split into the 7 layers of the OSI model
+  \item Each layer has a specific function that it performs before sending the data to the next layer
+  \item The upper 3 layers provide services to the application, while the lower 4 deal with the actual transmission from one device to another
+  \item There are 7 layers on the way down, and 7 on the way up
+\end{itemize}
+
+\begin{center}
+  \begin{tabular}{ |p{0.075\linewidth}|p{0.2\linewidth}|p{0.725\linewidth}| }
+    \hline
+    Layer & Name & Purpose \\
+    \hline
+    7 & Application Layer & Provides support for email, file transfer and other protocols \\
+    6 & Presentation Layer & Ensures that the data is in the correct format, and is where any encryption will occur \\
+    5 & Session Layer & Maintains the connection and controls ports and sessions \\
+    4 & Transport Layer & Transmits data using TCP and / or UDP \\
+    3 & Network Layer & Provides IP addressing, routing and segmentation \\
+    2 & Data link Layer & Defines how the data is formatted when it is sent over the network \\
+    1 & Physical Layer & Adapts the data to be sent over the medium (Fibre transceivers, etc) \\
+    \hline
+  \end{tabular}
+\end{center}
+  
+\section*{Layers in more detail}
+
+\begin{itemize}
+  \item Layer 1 - Physical Link
+  \begin{itemize}
+    \item Deals with the physical communication over the medium
+    \item It defines the specification of communication between the physical link on the sender and receiver
+    \item Defines characteristics such as 
+    \begin{itemize}
+      \item Voltage levels
+      \item Timing of voltage changes
+      \item Physical data rates
+      \item Maximum transmission distance
+      \item Physical connectors (e.g. RJ45, TIA-232 aka RS-232)
+    \end{itemize}
+  \end{itemize}
+  \item Layer 2 - Data Link
+  \begin{itemize}
+    \item Deals with transmission across the medium
+    \item Provides the location of the intended destination on the network
+    \item Can provide reliable transmission using MAC (Media Access Control) addresses
+    \item Uses MAC addresses to differentiate between the different nodes connected to the same physical medium
+    \item This layer deals with network topology and access, error handling, ordered delivery of frames, and flow control
+    \item Standardised protocols such as Ethernet, Frame Relay and FDDI
+  \end{itemize}
+  \item Layer 3 - Network
+  \begin{itemize}
+    \item Defines the logical addressing
+    \item Sets how routing works and how routes are learned or discovered so that packets can be delivered
+    \item Also defines how packets could be split into smaller packets to be delivered more efficiently on different media
+    \item Routers operate on this layer
+  \end{itemize}
+  \item Layer 4 - Transport
+  \begin{itemize}
+    \item Regulates the flow of data to ensure end-to-end connectivity
+    \item Segments the data into packets on the sending host, and reassembles them on the receiving host
+    \item Protocols on this layer include TCP and UDP
+  \end{itemize}
+  \item Layer 5 - Session
+  \begin{itemize}
+    \item Defines how to start, control and end connections (or sessions) between applications
+    \item Uses "dialogue control" for management of bi-directional communication
+    \item Synchronises dialogue between the presentation layers and manages their data exchange
+    \item Allows for efficient data transfer
+  \end{itemize}
+  \item Layer 6 - Presentation
+  \begin{itemize}
+    \item Ensures that the data sent by the application is readable by the application layer on the receiving device
+    \item Translates between different data formats using a common format
+    \item Provides encryption and compression of data
+  \end{itemize}
+  \item Layer 7 - Application
+  \begin{itemize}
+    \item This layer is closest to the user
+    \item Provides network services to the user's applications
+    \item Does not provide services to any other OSI layer, only to applications
+    \item Checks if the receiver is available to receive data
+    \item Synchronises and agrees upon procedures or protocols for error handling and control of data integrity
+  \end{itemize}
+\end{itemize}
+
+\section*{Connection and connectionless transport}
+
+\begin{itemize}
+  \item Connection-oriented transport such as TCP is used when the data needs to arrive intact and in the right order
+  \item Connectionless transport such as UDP is used when the application is capable of data integrity control
+  \begin{itemize}
+    \item They can do this by repeating the request after a timeout
+    \item This can sometimes cause duplicate operations if the response was delayed or just not received
+    \item Common uses for UDP are Broadcasting and real-time VoIP applications
+  \end{itemize}
+\end{itemize}
+
+\section*{The importance of standards}
+
+\begin{itemize}
+  \item The use of open standards is fundamental to Open Systems
+  \item Needed to maintain interoperability between devices made by different vendors
+  \item Standards should be internationally recognised
+  \item It's important to track new standards in order to know when it is "safe" to use a new standard
+  \item However, the creation of standards can take many years, and by the time the standards are released, the device that would've used it would be obsolete
+  \item 'Fast tracking' can be used to develop the devices and standards in parallel
+  \item When using fast tracking, vendors often end up releasing products before the standards are released
+\end{itemize}
+
+\section*{Important standards organisations}
+
+\begin{itemize}
+  \item ISO - International Standardisation Organisation
+  \item ETSI - European Telecommunications Standards Institute
+  \item IETF - The TCP/IP Internet Engineering task force
+  \item IEEE - Institute of Electrical and Electronics Engineers
+  \item ANSI - American National Standards Institute
+\end{itemize}

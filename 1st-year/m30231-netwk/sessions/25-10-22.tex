@@ -1,0 +1,119 @@
+\lecture{NICs and Ethernet}{09:00}{25/10/22}{Amanda Peart}
+
+\section*{NICs (Network Interface Cards)}
+
+\begin{itemize}
+  \item There are many different types of aNICs, which are used to communicate using different mediums, e.g. WiFi, Ethernet, etc
+  \item Each NIC has a 48-bit unique identifier known as a MAC address (Media Access Control address)
+  \item The MAC address allows you to determine both which NIC communicated, but also which manufacturer made the card, and theoretically when the NIC was produced
+  \item NICs read all broadcast addresses and
+  \item All multicast messages with addresses it's been programmed to read
+  \item The hardware will simply ignore all other messages
+\end{itemize}
+
+\section*{Ethernet LAN access devices}
+
+\begin{itemize}
+  \item Client devices have a cable between them and an interconnection device, usually in a network rack
+  \item An "interconnection device" could be:
+  \begin{itemize}
+    \item A hub (Legacy)
+    \item A Switch
+    \item A Router (To access a different network, such as the internet)
+  \end{itemize}
+\end{itemize}
+  
+Access rules for ethernet hubs:
+\begin{itemize}
+  \item Listen before sending
+  \item Stop if multiple users start at the same time
+\end{itemize}
+  
+Distribution rules for ethernet hubs:
+\begin{itemize}
+  \item All traffic is sent everywhere
+  \item One packet is sent at a time
+\end{itemize}
+  
+Access and distribution rules for Ethernet LANs:
+\begin{itemize}
+  \item Send whenever you want to
+  \item No collisions
+  \item Traffic is only sent where it needs to be
+  \item Multiple packets can be flowing at the same time
+\end{itemize}
+
+\section*{Switched Ethernet}
+  
+Characteristics of a switch:
+\begin{itemize}
+  \item Automatically learns the addresses of all connected devices
+  \item Forwards only to the destination
+  \item Supports many ports per switch
+  \item Supports full duplex on dedicated ports (Can send at full speed in both directions at the same time)
+  \item Supports different data rates on different ports
+  \item Ethernet switches usually operate in store-and-forward mode
+  \begin{itemize}
+    \item Temporarily holds the packet while deciding which port the packet needs to be sent through
+  \end{itemize}
+  \item Some switches may also support cut-through operation
+\end{itemize}
+
+\subsection*{Unicast vs Multicast}
+
+\begin{itemize}
+  \item Unicast sends a packet in one direction to a single node on the network
+  \item Multicast sends a packet to multiple nodes on the network in a target group (not all nodes on the network)
+  \item Broadcast sends a packet to all nodes on the network
+\end{itemize}
+
+\subsection*{The LAN networking model}
+
+\begin{itemize}
+  \item The data link layer is split into two sub-layers
+  \begin{itemize}
+    \item LLC (Logical Link Control)
+    \item MAC (Media Access Control)
+  \end{itemize}
+  \item Common aspects of LAN standards
+  \begin{itemize}
+    \item All use the same MAC addresses
+    \item Supports broadcast and multicast addressing
+    \item All have 32-bit error checking
+  \end{itemize}
+  \item Different aspects
+  \begin{itemize}
+    \item Access methods (CSMA/CD vs Token)
+    \item Maximum frame size
+    \item Support for features such as priority
+    \item Specific data rates
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Virtual LANs (VLANs)}
+
+\begin{itemize}
+  \item Software emulates a physical LAN
+  \item The purpose of VLANs is to limit broadcast traffic to a set group
+  \item The group is set by network management
+  \item VLANs are enforced by
+  \begin{itemize}
+    \item Selecting a set of ports on a switch
+    \item Selecting a set of MAC addresses
+  \end{itemize}
+  \item VLANs are more convenient than re-wiring the entire network
+\end{itemize}
+
+\subsection*{Ethernet standards}
+
+\begin{itemize}
+  \item PoE (Power over Ethernet)
+  \begin{itemize}
+    \item Provides power through the ethernet cabling, reducing the number of cables and ports needed for low power devices such as access points
+    \item Defined in 802.3af
+  \end{itemize}
+  \item 10 Base5 (10mbps, 500m max)
+  \item 10 Base2 (10mbps, 185m max)
+  \item 10 Base-T (Unshielded twisted pair (UTP) 10mbps, 100m max)
+  \item 10 Base-F (Fibre optic ethernet 10mbps, theoretically unlimited range)
+\end{itemize}

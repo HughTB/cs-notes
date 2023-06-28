@@ -1,0 +1,30 @@
+\practical{Switches and Hubs}{12:00}{09/11/22}{Athanasios Paraskelidis}
+
+\section*{Riverbed Simulation}
+
+\begin{itemize}
+  \item You can create multiple scenarios within one riverbed project
+  \item You can then switch between them at any time
+  \item Additionally, if you go to Manage Scenarios, you can simulate any scenario in the project easily to collect data
+  \item If you then go into the DES menu, you can go to Results -> Compare Results, which allows you to easily compare the data from the two scenarios
+\end{itemize}
+
+\section*{Switches vs Hubs}
+
+\begin{itemize}
+  \item When using a Switch instead of a Hub, the average delay in the network is reduced drastically, in this simulation it decreases from ~0.14 to ~0.01
+  \begin{itemize}
+    \item A hub broadcasts all incoming traffic to all interfaces, and therefor to every node connected to it
+    \item On the other hand, a switch reads the header in each packet and relays it only to the node that needs it
+    \item The result of this is that all devices connected to a hub are part of one "collision domain", and therefore only one node can communicate at a time, meaning that all other nodes have to wait until the network is not being used
+    \item This causes the greatly increased delay when using a hub rather than a switch
+  \end{itemize}
+  \item Switches use a learning process to discover which nodes are connected to which interfaces (ports)
+  \begin{itemize}
+    \item They have a register which relates the interfaces (ports)
+    \item Each time a node sends a packet, the switch reads the header and finds the IP address of the node that sent the packet, which it can then store in the register for future use
+    \item If the register does not contain the IP address the packet is destined for, it broadcasts the packet on all interfaces
+    \item Usually this learning process is quite fast, because any time a TCP transmission is sent, the receiving node will respond with a confirmation, which the switch can also use to learn the IP address of the node that responded
+    \item Once the learning process is complete, the nodes connected to a switch are each part of their own collision domain, containing only the switch and the node, making collisions essentially impossible
+  \end{itemize}
+\end{itemize}

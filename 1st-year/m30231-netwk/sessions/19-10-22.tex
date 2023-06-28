@@ -1,0 +1,34 @@
+\practical{Protocols}{12:00}{19/10/22}{Athanasios Paraskelidis}
+
+\begin{itemize}
+  \item In a packet, the information used to help deliver the packet is known as the header, and the actual data is known as the payload
+  \item IP or Internet Protocol is responsible for addressing all devices on the internet, so that all other protocols know where the data needs to be sent
+\end{itemize}
+
+\section*{TCP}
+
+\begin{itemize}
+  \item 3 way hand shake
+  \begin{itemize}
+    \item This is established before any packets of data are sent across the network
+    \item SYN is sent by the sender to receiver to request a connection
+    \item If the connection is to be accepted, the receiver sends SYN/ACK to confirm the connection
+    \item The sender then sends ACK to the receiver, to acknowledge the connection
+    \item Data is then sent across the connection - this may be either one small message or a large message broken down into smaller packets
+    \item When the payload has been sent, the last sent packet will have the "FIN" bit set to 1, meaning that it is the final packet, and the connection can be closed
+    \item After each packet is received, the receiver sends back an ACK message to confirm that the packet was received intact. If the ACK message is not received by the sender, it will resend any packets that it did not receive an ACK message for
+    \item Once all of the packets are received intact, and a packet with the FIN bit set to 1, the connection is closed
+  \end{itemize}
+\end{itemize}
+
+\section*{UDP}
+
+\begin{itemize}
+  \item UDP (User Datagram Protocol) is another protocol commonly used on the internet
+  \item There is no guarantee that the data has been received correctly
+  \item No connection is established
+  \item There is no handshake between sender and receiver
+  \item There is no acknowledgement of received packets
+  \item No error checking, sequencing or flow control
+  \item It is faster and more efficient than TCP, but can not be used for all types of data. It is commonly used for streaming video over the internet as it does not matter if some packets are lost or received in the incorrect order, as this will result in dropped or frozen frames, but will not cause any issues such as corrupted data
+\end{itemize}

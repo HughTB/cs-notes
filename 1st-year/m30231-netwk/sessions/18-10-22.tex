@@ -1,0 +1,94 @@
+\lecture{More Protocols}{09:00}{18/10/22}{Amanda Peart}
+
+\begin{itemize}
+  \item Rules for sending and receiving data across a network
+  \item Provides addressing
+  \item Management anf verification of transmission
+  \item Often used in conjunction with other protocols, such as TCP and IP
+\end{itemize}
+
+\section*{Connection Orientated}
+
+\begin{itemize}
+  \item Similar to phoning someone on a landline
+  \item 3 phases
+  \begin{itemize}
+    \item Connection setup
+    \item Open connection
+    \item (Send data)
+    \item Close connection
+  \end{itemize}
+  \item Quality of Service
+  \begin{itemize}
+    \item High quality of service
+    \item Low fixed delay between sender and receiver
+    \item Limited packet loss
+  \end{itemize}
+\end{itemize}
+
+\section*{Connectionless}
+
+\begin{itemize}
+  \item Similar to sending a letter in the post
+  \item Each packet (letter) has an address attached before it is sent over the network (put in the post box)
+  \item Once it is sent, you just have to assume that it was received
+  \item Quality of Service
+  \begin{itemize}
+    \item Variable delay between sender and receiver
+    \item Packets can and will be lost
+    \item Issues with packets arriving in the wrong order
+  \end{itemize}
+\end{itemize}
+
+\section*{Packets}
+
+\begin{itemize}
+  \item A packet is a single unit of data that is sent across a network - The size of the packets is determined by the sender
+  \item Data is broken down into packets before it is sent across the network
+  \item Examples of data that is sent across the Internet using packets:
+  \begin{itemize}
+    \item Emails - SMTP (Simple Mail Transfer Protocol) or POP3 (Post Office Protocol 3)
+    \item Files - FTP (File Transfer Protocol)
+    \item Web pages and images - HTTP (Hyper Text Transfer Protocol)
+  \end{itemize}
+  \item Each packet also contains header information - This could be compared to the address written on the front of the envelope in the postal analogy
+  \begin{itemize}
+    \item This includes the IP address of both the sender and receiver
+    \item It also includes information on how to handle transmission errors
+    \item Header information is used by routers and switches to determine where the packet should be sent next
+  \end{itemize}
+  \item Routers are devices dedicated to reading header information and relaying packets to the next router
+  \item Packets move from router to router until they reach their final destination - Similar to sorting offices in the postal analogy
+  \item Each packet of a communication may not necessarily follow the same route to their destination
+  \item The route is determined by the router, and which path is the fastest or least congested at the time, which can change between packets
+\end{itemize}
+
+\section*{TCP/IP}
+
+\begin{itemize}
+  \item TCP/IP is a connectionless protocol, which is actually made up of 2 protocols, and is used almost everywhere on the internet
+  \item TCP = Transmission Control Protocol
+  \begin{itemize}
+    \item Breaks up the data into packets that are easier for the network to handle
+    \item Verifies that all of the packets arrive at the destination
+    \item Re-orders the packets into the correct sequence to get the data back out again
+    \item If any packets are damaged, TCP will request them to be resent
+    \item It also acknowledges that all of the packets have been received successfully
+  \end{itemize}
+  \item IP = Internet Protocol
+  \begin{itemize}
+    \item Breaks the data into packets
+    \item Adds the header information into each packet
+    \item Determines how much data should be put into each packet
+  \end{itemize}
+\end{itemize}
+  
+For example, sending an email:
+\begin{itemize}
+  \item The data that makes up the email message is split up into packets by the IP (Internet Protocol)
+  \begin{itemize}
+    \item Header data is also added to each packet
+  \end{itemize}
+  \item Using the header information in each packet, the routers and switches that make up the Internet determine the best path for each packet to take to their final destination
+  \item TCP (Transmission Control Protocol) then reassembles the packets into the correct order and ensures that all packets were received undamaged, then extracts the email message data from the packets
+\end{itemize}
