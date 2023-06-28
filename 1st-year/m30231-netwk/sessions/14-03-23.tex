@@ -1,0 +1,111 @@
+\lecture{Application Support Protocols}{09:00}{14/03/23}{Amanda Peart}
+
+\subsection*{TCP vs UDP}
+
+\begin{itemize}
+  \item User Datagram Protocol
+  \begin{itemize}
+    \item No guarantees of delivery
+    \item Acts as an interface to IP-Level for the Application layer
+    \item Just sends data directly, without checking if the receiver actually exists or that a path exists
+    \item Packets that are lost are just lost
+    \item There is no checking of dropped, corrupted or incorrectly ordered packets
+    \item As it's unreliable, there are only a few applications that it should be used for, e.g. voice or video streaming
+    \begin{itemize}
+      \item Low delay is essential in these applications
+      \item The lost data is most likely irrelevant, so does not need to be re-requested
+    \end{itemize}
+  \end{itemize}
+  \item Transmission Control Protocol
+  \begin{itemize}
+    \item Reliable data transmission
+    \item Performs integrity checking, retransmission of dropped packets, reordering of packets, etc
+    \item Connection oriented - a connection must be established before data can be sent to verify that a path exists and that the receiver is willing to receive the data
+    \item The connections are setup as a virtual channel between the sender and receiver
+    \item The 3-way handshake is made before the connection is established
+    \item TCP should be used almost anywhere else, such as file transfers, webpages, email, etc
+    \begin{itemize}
+      \item Delay is not as sensitive
+      \item Any data that may be lost needs to be recovered, otherwise the data would become corrupted and useless
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{TCP/UDP Multiplexing}
+
+\begin{itemize}
+  \item Since multiple applications on a computer may be using TCP or UDP at once, there must be a way of differentiating the incoming transmissions
+  \item This is done using **ports** which are like a virtual connection to the computer
+  \item Each device has 65535 ports
+  \item Each application uses it's own port, and some have their own specific port, such as HTTP which uses port 80, HTTPS on 443 or SSH on 21
+  \item The incoming packets enter the transport layer, where they are split up and sent into the application layer of the application using that port
+\end{itemize}
+
+\subsection*{Layer 6 - Presentation}
+
+\begin{itemize}
+  \item This layer interprets the data before the application receives it
+  \item Where the Secure Sockets Layer (SSL) resides
+  \item Not always used in protocols
+  \item Data abstraction
+  \begin{itemize}
+    \item All protocols have their own format for the data they're sending
+    \item The application does not need to see this data directly, just what is encoded in that data
+    \item This could be something such as translating between different character sets, e.g. between ASCII and UTF-8
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Secure Sockets Layer (SSL)}
+
+\begin{itemize}
+  \item A socket is a method of making connections
+  \item You can open a socket to connect to a remote host, or you can open a local socket to listen to a port on the computer
+  \item SSL
+  \begin{itemize}
+    \item Provides end-to-end encryption
+    \item Provides the same abstraction as other protocols and can usually be used as a slot-in replacement for traditional sockets
+  \end{itemize}
+  \item When is SSL used?
+  \begin{itemize}
+    \item Almost any time that secure transmission is needed
+    \item HTTPS (Banking websites, most websites at this point... 2006 powerpoint smh)
+    \item SFTP (Secure File Transfer Protocol)
+    \item SSL Email (More secure emails)
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Layer 7 - Application}
+
+\begin{itemize}
+  \item Client - Server model
+  \begin{itemize}
+    \item The server is usually a more powerful computer which responds to many clients at the same time
+    \item This is good as it reduces the number of machines needed, but it reduces the resilience of the application as there is a single point of failure
+  \end{itemize}
+  \item Peer-to-Peer
+  \begin{itemize}
+    \item Each peer acts as both a client and server
+    \item Broadcast searches for services
+    \item Each peer has a smaller internet connection, so multiple peers are used at the same time to increase speeds
+    \item Disadvantage of this is that other people are responsible for hosting the data, and could modify the data
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Domain Name System}
+
+\begin{itemize}
+  \item A register of which Domain Names point to which IP addresses
+  \begin{itemize}
+    \item e.g. \verb|google.com| is currently linked to \verb|142.250.187.206|
+  \end{itemize}
+  \item There are multiple layers in a DNS, starting at the root server for the TLD of the domain
+  \item DNS typically uses port 53
+  \item Uses UDP for queries and TCP for transfers
+  \item There are multiple types of records
+  \begin{itemize}
+    \item A record (Maps subdomain to an IPv4 address)
+    \item AAAA record (Maps a subdomain to an IPv6 address)
+    \item MX record (Maps to the IP address of a mail server)
+    \item PTR records (Reverse lookups)
+  \end{itemize}
+\end{itemize}

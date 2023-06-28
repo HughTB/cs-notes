@@ -1,0 +1,105 @@
+\lecture{Asynchronous Transfer Mode (ATM)}{09:00}{31/01/23}{Amanda Peart}
+
+\begin{itemize}
+  \item Telecommunications standard defined by ANSI and ITU-T
+  \item ATM is a data link layer
+  \item Used in WANs
+  \item Supports the transfer of data using a wide range of QoS assurance methods
+  \item Core protocol used in SONET \& SDH
+  \item A form of "cell relay"
+  \item Relatively large packets which are segmented into 48-octet chunks for transmission (with 5-octet headers)
+  \item These packets are switched across the network and than reassembled at the destination
+  \item There is an unpredictable amount of time between the arrival of packets
+  \item The cells are multiplexed with others when transmitted through the system
+  \item Designed to provide virtual circuits across highly reliable media
+  \item Optimised for the connectionless style of IP
+\end{itemize}
+
+\subsection*{Traffic Engineering / QoS}
+
+\begin{itemize}
+  \item QoS can be configured for every ATM interface
+  \item Constant Bit Rate (CBR)
+  \begin{itemize}
+    \item Can transmit at a Peak Cell Rate (PCR) for a maximum interval before it becomes problematic and throttles back to the CBR
+  \end{itemize}
+  \item Variable Bit Rate (VBR)
+  \begin{itemize}
+    \item Can transmit at a Peak Cell Rate (PCR) for a certain time until it has to drop back to the Sustainable Cell Rate (SCR)
+  \end{itemize}
+  \item Available Bit Rate (ABR)
+  \begin{itemize}
+    \item A minimum bit rate is guaranteed
+  \end{itemize}
+  \item Unspecified Bit Rate (UBR)
+  \begin{itemize}
+    \item Traffic is allocated until the maximum bitrate is reached, any further cells have to find another route or wait for bandwidth
+  \end{itemize}
+\end{itemize}
+\section*{Uses of ATM}
+
+\begin{itemize}
+  \item ATM is usually limited to the backbone of Wide Area Networks as it is not cost effective to run to edge nodes (e.g. homes or businesses)
+  \item Since it has built in support for voice and video data, it is good for high-speed backbones
+  \item It's QoS is very good, making it a good choice for high-speed backbones
+\end{itemize}
+
+\subsection*{Advantages}
+
+\begin{itemize}
+  \item Meets international and industry standards
+  \item In use in most high-speed WANs
+  \item Has built in support for voice and video, providing good QoS for these uses
+  \item Cost competitive in the core of the network
+\end{itemize}
+
+\subsection*{Disadvantages}
+
+\begin{itemize}
+  \item Complex operation and configuration
+  \item Somewhat inefficient (roughly 10\% overhead due to header data)
+  \item Not cost competitive to the edges of networks
+\end{itemize}
+
+\section*{Transparent LAN Services (TLS)}
+
+\begin{itemize}
+  \item Transparent meaning that you don't have to deal with it manually
+  \begin{itemize}
+    \item No need to worry about the WAN
+    \item No provision needed for frame relays, ATM, leased lines, etc
+  \end{itemize}
+  \item TLS bridges geographically separated LANs
+  \begin{itemize}
+    \item This makes them appear as one big LAN
+    \item Decreases the need to manage WANs
+  \end{itemize}
+  \item Often use ATM circuits
+  \item Supplies ATM access to Ethernet circuits
+  \begin{itemize}
+    \item Often known as "Metro Ethernet" or "Ethernet Transport"
+    \item Available at all Ethernet data rates
+  \end{itemize}
+\end{itemize}
+
+\section*{Overview of Wired WAN Technologies}
+
+\begin{center}
+\begin{tabular}{ |p{0.3\linewidth}|p{0.3\linewidth}|p{0.3\linewidth}| }
+  \hline
+  OSI Layer 1 & OSI Layer 2 & Medium \\
+  \hline
+  Dial-up over PSTN & PPP & Copper \\
+  ISDN & PPP or Frame Relay & Copper \\
+  DSL & PPP, Ethernet or ATM & Copper or Fibre \\
+  Cable Broadband & Cable Broadband, Ethernet & Copper and Fibre \\
+  T/E-Carrier & PPP, Frame Relay or ATM & Copper or Fibre \\
+  SONET/SDH & PPP, Frame Relay, ATM, MPLS & Fibre \\
+  \hline
+\end{tabular}
+\end{center}
+
+\begin{itemize}
+  \item PPP = Point-to-Point Protocol
+  \item MPLS = Multiprotocol Label Switching
+\end{itemize}

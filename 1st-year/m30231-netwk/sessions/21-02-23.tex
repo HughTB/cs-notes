@@ -1,0 +1,151 @@
+\lecture{Network Security Cont.d}{09:00}{21/02/23}{Amanda Peart}
+
+\subsection*{Vulnerabilities}
+
+\begin{itemize}
+  \item Remote attacks
+  \item Software developed with "back doors"
+  \item Insecure configuration
+  \item Internal attacks (Disgruntled employees)
+  \item Access control
+  \item Connecting compromised personal devices to secure networks
+\end{itemize}
+
+\subsection*{Security Management}
+
+\begin{itemize}
+  \item Control and Distribution
+  \begin{itemize}
+    \item Control who can and cannot access files
+    \item Control where files can be downloaded to (e.g. not personal devices or storage)
+  \end{itemize}
+  \item Event Logging
+  \item Monitoring
+  \item Parameter Management
+\end{itemize}
+
+\subsection*{Security Services}
+
+\begin{itemize}
+  \item Denial of Service prevention
+  \begin{itemize}
+    \item Have a device outside of the network that is capable of absorbing the traffic of a DoS attack
+  \end{itemize}
+  \item Access Control
+  \item User Authentication
+  \begin{itemize}
+    \item Multi-Factor
+    \item 2FA
+  \end{itemize}
+  \item Data Confidentiality
+  \item Accountability
+\end{itemize}
+
+\subsection*{Security Mechanisms}
+
+\begin{itemize}
+  \item Encryption and Decryption
+  \item Message Authentication
+  \item Password Policy
+  \item Digital Signatures
+  \item Access Control
+\end{itemize}
+
+\subsection*{Secure Communications over Insecure Networks}
+
+\begin{itemize}
+  \item Use encryption to ensure that even if a man-in-the-middle attack takes place, the message remains unreadable for the attacker
+  \item Asymmetric encryption is less secure than symmetric encryption, but it is usually necessary to use both for better security
+  \item One issue with this is that it's impossible to determine who sent the encrypted message(s), so another method of security must be used to certify authenticity
+  \item To do this, we can combine cryptography and digital signatures to ensure that the message is from a trusted source, and that no one else is able to read the message
+\end{itemize}
+
+\subsection*{Secure Sockets Layer / Transport Layer Security (SSL / TLS)}
+
+\begin{itemize}
+  \item These protocols are used when communicating securely using HTTPS
+  \item The encryption key may be anywhere from 40 to 128 bits
+  \begin{itemize}
+    \item 40 bit keys are obviously less secure than 128 bit keys, but both are susceptible to issues with key generations, such as poor Random Number Generation on specific platforms
+    \item 256 bit keys can be used for applications needing higher security, but this is not a standard feature
+  \end{itemize}
+  \item Trusted certificates contain the owner's public key and is cryptographically signed by a trusted certificate agency
+  \item Types of Encryption
+  \begin{itemize}
+    \item The Data Encryption Standard (DES) dates all the way back to the 70s, and uses a 56-bit key, which could be broken in a matter of hours on a modern computer
+    \item Triple DES has a much longer effective key length but is still inadequate for our current needs
+    \item The more recent Advanced Encryption Standard (AES) is much more secure, as it uses keys between 128 and 256 bits and a specifically designed algorithm
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Virtual Private Networks (VPNs)}
+
+\begin{itemize}
+  \item A private network that uses a public network (usually the Internet) to connect remote sites or users together
+  \item Rather than using dedicated or rented physical lines, it uses a virtual connection
+  \item While it is often touted that they're secure, the security is not inherent to the VPN's operation
+  \begin{itemize}
+    \item VPNs may use encryption to send all traffic, but this is not a given
+    \item The encrypted packets are sent in "Routable IP Packets"
+  \end{itemize}
+  \item An outsider may be able to intercept packets in-flight, but if they're encrypted it is practically impossible for them to read or modify the packets
+  \item VPNs give no QoS assurance, and so packets are delivered on a best-effort basis
+\end{itemize}
+
+\subsection*{Remote Authentication Dial-In User Service (RADIUS)}
+
+\begin{itemize}
+  \item Provides Authentication, Authorisation Checking and Accounting
+  \item Uses a Point-to-Point protocol
+  \item Operates on port 1812
+  \item Commonly used to facilitate roaming
+  \item Authentication and Authorisation Flow
+  \begin{itemize}
+    \item Client sends Access-Request to the Server
+    \item Server responds with one of the following, depending upon if the user is authorised
+    \begin{itemize}
+      \item Access-Accept
+      \item Access-Reject
+      \item Access-Challenge
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Uncontrolled Connections to the Internet}
+
+\begin{itemize}
+  \item It is very easy to connect to the Internet
+  \begin{itemize}
+    \item All you need is a router and approval
+  \end{itemize}
+  \item However, this is often not a good idea as it would make it very easy to steal data sent over the Internet
+  \item There are dangers present if uncontrolled connections to the Internet are allowed
+  \item There are a few ways of preventing this, but the most common one is Firewalls
+\end{itemize}
+
+\subsection*{Firewalls}
+
+\begin{itemize}
+  \item Routers which connect to the Internet typically have a firewall
+  \item Firewalls filter out requests which are unwanted
+  \item This may consist of adult content filters, or might filter what can be connected on the network, e.g. preventing VPN connections
+  \item There can also be firewalls on individual devices
+  \item These are known as Host-Based firewalls, and are useful for devices exposed to the Internet, as it allows them to block unwanted connections
+  \item Host-Based firewalls are typically more secure, but are more expensive to setup and maintain
+  \item Dedicated Firewall devices may have other functions such as
+  \begin{itemize}
+    \item Intrusion Detection (Signature verification, etc)
+    \item Network Address Translation (NAT)
+    \item URL and Content filtering
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Common Criteria Evaluation Assurance Levels (EAL)}
+
+\begin{itemize}
+  \item An internationally recognised method of comparing security of different network-enabled devices
+  \item These levels range from 1 to 7
+  \item EAL 2 is the minimum level to be accepted
+  \item EAL 4 is the highest attainable level for a retrofitted product
+  \item EALs 5-7 are extremely expensive to obtain and are typically limited to applications such as Governments, Militaries and Healthcare
+\end{itemize}

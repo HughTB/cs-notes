@@ -1,0 +1,145 @@
+\lecture{Wide Area Networks}{09:00}{06/12/22}{Amanda Peart}
+
+\begin{itemize}
+  \item Unlimited distance (Interconnections provided by ISPs (Internet Service Providers))
+  \item High speed
+  \item Relatively expensive given the complex design
+  \item Only the interface to the WAN and services hosted on it are of concern to the user (The actual design is irrelevant)
+  \item "Value added" WANs add more uses for dedicated point-to-point links
+  \item Transparent LAN Services (TLS) hide the complexities of the WAN from the network administrator
+\end{itemize}
+
+\subsection*{Packet / Frame / Cell-Switched WAN links}
+
+\begin{itemize}
+  \item Individual units of data may be called:
+  \begin{itemize}
+    \item Packets
+    \item Frames
+    \item Cells
+  \end{itemize}
+  \item The difference between the 3 is that Packets and Frames can be of variable length
+  \begin{itemize}
+    \item This allows the network to be more efficient but requires more processing in software on either end
+    \item The speed of processing in software limits the speed of communication over the link
+  \end{itemize}
+  \item Cells are of fixed length
+  \begin{itemize}
+    \item 5 bytes of header data and 48 bytes of payload data
+    \item Because they are all the same length they can be processed in hardware, which is usually much faster
+    \item This allows for much higher data rates
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Switched and Permanent Virtual Circuits}
+
+\begin{itemize}
+  \item Some alternatives to packets, frames or cells can come in one of two forms:
+  \begin{itemize}
+    \item Switched Virtual Circuits (SVC)
+    \item Permanent Virtual Circuits (PVC)
+  \end{itemize}
+  \item SVC is like a dial-up connection
+  \item PVC connections are always connected and leased out
+  \item Not all WAN technologies support both SVCs and PVCs
+  \begin{itemize}
+    \item X.25 Virtual Circuits (VCs) are usually SVCs
+    \item Frame Relay VCs are usually PVCs
+    \item ATM VCs can be either SVCs or PVCs
+    \item TLS is like a "best effort" service
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Services provided by WANs}
+
+\begin{itemize}
+  \item Provide a route across the network, between the source and destination
+  \item Divide and reassemble data as required to be sent across the network
+  \item Limit the network traffic to a level that can be effectively handled (congestion control)
+\end{itemize}
+
+\subsection*{X.25 Interface}
+
+\begin{itemize}
+  \item X.25 is a WAN interface ITU-T (International Telecommunication Union Telecommunication Standardization Sector) standard
+  \item Connected to a public packet-switching network
+  \item Covers the physical, data-link and network layers from the OSI reference model
+  \item Last used over "the WAN" in 2015 by financial and debit/credit card companies
+  \item Still used in the Aviation industry
+\end{itemize}
+
+\subsection*{Frame Relay}
+
+\begin{itemize}
+  \item Connection-oriented, public switched service
+  \item A Layer 2 protocol defined in 1984 by the ITU-T and ANSI
+  \item A much higher performance alternative to X.25
+  \begin{itemize}
+    \item Needed for high-performance applications, such as graphics and image transfers
+    \item Very useful for LAN-to-LAN communications which need high throughput
+  \end{itemize}
+  \item It provides higher throughput by using
+  \begin{itemize}
+    \item Larger frame sizes (1500+ bytes)
+    \item Higher interface data rates
+    \item Reduced processing requirements
+  \end{itemize}
+  \item A variation of High-Level Data Link Control (HDLC)
+  \begin{itemize}
+    \item Detects and discards frames with errors, and does not retransmit them
+    \item You must use another protocol on top of Frame Relay, e.g. TCP
+  \end{itemize}
+  \item Builds on the fibre-optic network
+  \item A good alternative to E and T carriers
+  \item Supports two levels of traffic
+  \begin{itemize}
+    \item Committed Information Rate (CIR)
+    \begin{itemize}
+      \item Traffic up to this rate will be accepted, anything above will be rejected
+    \end{itemize}
+    \item Excess Information Rate (EIR)
+    \begin{itemize}
+        \item Traffic between the CIR and EIR can still be sent but will be marked as "Eligible for Discard", so they can be discarded if congestion is too great
+    \end{itemize}
+  \end{itemize}
+  \item It conveys congestion information, which can be controlled by users
+  \item Advantages:
+  \begin{itemize}
+    \item International protocol
+    \item Available in many (but not all) countries
+    \item Available from all major vendors
+    \item Takes advantage of modern fibre-optic infrastructure
+    \item Good LAN-to-LAN support
+    \item T and E carrier throughput capabilities
+    \item Less expensive than fully meshed E1/T1 lines for bursty traffic
+  \end{itemize}
+  \item Disadvantages:
+  \begin{itemize}
+    \item Poor support for SVCs
+    \item Does not provide any built-in fault tolerance, other protocols such as TCP are needed for error handling
+    \item Not suitable for latency-sensitive data such as real-time audio or video conferencing
+    \item Data overhead and processing overhead for every packet sent
+    \item More expensive compared to internet service
+  \end{itemize}
+\end{itemize}
+
+\subsection*{X.25 vs Frame Relay}
+
+\begin{center}
+\begin{tabular}{ |p{0.3\textwidth}|p{0.3\textwidth}|p{0.3\textwidth}| }
+  \hline
+  & X.25 & Frame Relay \\
+  \hline
+  Development Date & Mid 70s-Early 80s & Late 80s-Mid 90s \\
+  Underlying Infrastructure & Low data rate, error prone copper circuits & High-speed, highly reliable fibre-optics \\
+  Original Design Objectives & Support terminal to host & Support LAN-to-LAN \\
+  Design Approach & 3 layers of the OSI model (Network, Data link, Physical) & 2 layers (Data link, Physical) \\
+  Typical Data Rate & 9.6-64 kbps & Fractional or full T1/E1 \\
+  Error Recovery & Error detection and transmission & Error detection with discard, no recovery other than when using TCP \\
+  Max Packet/Frame Size & 128-4096 bytes & 1500 bytes (Full ethernet frame) \\
+  Processing per Packet/Frame & Two dozen processing steps & Half-dozen processing steps \\
+  Availability & Worldwide & Only in countries with fibre infrastructure \\
+  Applications & Good for terminal-to-host but not for LAN-to-LAN, used for credit/debit card verification & Good for LAN-to-LAN, could be used for credit/debit card verification \\
+  \hline
+\end{tabular}
+\end{center}

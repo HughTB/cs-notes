@@ -1,0 +1,224 @@
+\lecture{Network Management}{09:00}{28/02/23}{Amanda Peart}
+
+\begin{itemize}
+  \item Computer networks have become mission critical for many businesses
+  \item Network downtime causes problems for communication and individual work
+\end{itemize}
+
+\subsection*{Goals for Network Management}
+
+\begin{itemize}
+  \item Responsive network management is needed, for example
+  \begin{itemize}
+    \item Help desk
+    \item Network support technicians
+    \item Network system management
+    \begin{itemize}
+      \item Monitor the network
+      \item Have the ability to diagnose and control the network
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Network Systems Management}
+
+\begin{itemize}
+  \item Monitors the network
+  \item Displays the current status of the network, often using a "traffic light" system
+  \begin{itemize}
+    \item Red = Active outage
+    \item Amber = Problems that may cause an outage
+    \item Green = No problems detected
+  \end{itemize}
+  \item Provides notifications as problems arise
+\end{itemize}
+
+\subsection*{TCP/IP Network Management}
+
+\begin{itemize}
+  \item Network management involves 3 distinct needs
+  \begin{itemize}
+    \item A protocol for creating network management data, such as event reports
+    \item A database of information, that contains data about queue length, throughput, etc over time
+    \item A computer that is able to run independently of the network so that if the network goes down, the data is not compromised
+  \end{itemize}
+  \item These needs are met by
+  \begin{itemize}
+    \item SNMP - Simple Network Management Protocols
+    \begin{itemize}
+      \item Read/Write between network management devices and network client devices
+    \end{itemize}
+    \item MIB - Management Information Bases
+    \begin{itemize}
+      \item The database of information pertaining to the network
+    \end{itemize}
+    \item SMI - Structure of Management Information
+    \begin{itemize}
+      \item Device independent notation of device information
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Simple Network Management Protocol (SNMP)}
+
+\begin{itemize}
+  \item The manager needs to be able to monitor and control the devices on the network
+  \item It needs to be able to
+  \begin{itemize}
+    \item Read the value of parameters (SNMP Get)
+    \item Read sequences of table entries (SNMP Get\_Next)
+    \item Write into parameter values (SNMP Set)
+    \item Receive unsolicited event reports (SNMP Trap)
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Remote MONitor (RMON)}
+
+\begin{itemize}
+  \item SNMP Management Information Bases (MIB) include remote monitoring capabilities
+  \item RMON can be implemented in different ways
+  \begin{itemize}
+    \item As an independent probe device attached to each LAN segment
+    \item Integrated into network devices, such as switches or routers
+  \end{itemize}
+  \item RMON is available in two forms
+  \begin{itemize}
+    \item RMON 1 monitors OSI layers 1 and 2, collecting collision and error statistics
+    \item RMON 2 monitors higher levels of the OSI model, collecting information about application traffic
+  \end{itemize}
+  \item Can be cost effective, and control network traffic
+  \item Increases the effectiveness of network management personnel, as they can remotely diagnose and fix issues
+\end{itemize}
+
+\subsection*{Network Management Areas}
+
+The OSI identifies five areas on network management:
+\begin{itemize}
+  \item Configuration
+  \item Fault management
+  \item Performance management
+  \item Accounting management
+  \item Security management
+\end{itemize}
+
+\subsection*{Configuration}
+
+\begin{itemize}
+  \item A wide range of issues can fall under configuration issues
+  \begin{itemize}
+    \item Faulty IP address assignment
+    \item Hardware or Software updates to switches, routers, etc
+    \item Software license control
+  \end{itemize}
+  \item There are several parameters that fall under configuration
+  \begin{itemize}
+    \item Configure switches and routers to filter out certain traffic
+    \item Multi-protocol routers can be configured to run selected protocols
+    \item Configuration of bit rate, parity, etc
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Fault Management}
+
+\begin{itemize}
+  \item Provides identification and isolation of detected faults
+  \item Tools and techniques include
+  \begin{itemize}
+    \item Bit-Error Rate Tests (BERT)
+    \item Time Domain Reflectometer (TDR)
+    \item Optical TDR (OTDR)
+    \item Protocol Analyser (for data links and LANs)
+    \item Loopback Tests
+    \item Ping Tests
+    \item Artificial Traffic Generation (Usually done out-of-hours to avoid creating further issues for the network)
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Fault Isolation (LANs)}
+
+\begin{itemize}
+  \item Limiting faults is possible by isolating the fault using switches and router configuration
+  \item All traffic across the LAN can be monitored
+  \item All exceptional conditions can be detected, e.g. collisions, viruses infecting computers across the network, etc
+  \item Devices called LAN analysers or LAN protocol analysers can be attached to the network
+  \begin{itemize}
+    \item These devices record selective information about packets that may be of interest
+    \item May be set up to filter based on address, protocol, or other fields of interest
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Performance Management}
+
+\begin{itemize}
+  \item Network Performance Management
+  \begin{itemize}
+    \item Concerned mainly with statistical data
+    \item Round trip delays
+    \item Throughput
+  \end{itemize}
+  \item May require prioritisation of traffic
+  \begin{itemize}
+    \item May include QoS capabilities
+  \end{itemize}
+  \item Tuning of performance (eliminating bottlenecks)
+  \begin{itemize}
+    \item Buffer size adjustment
+    \item Setting timer values
+  \end{itemize}
+  \item Establish a baseline
+  \begin{itemize}
+    \item Set a minimum level of performance that is needed for the business
+  \end{itemize}
+  \item Performance management also involves finding bottlenecks
+  \begin{itemize}
+    \item WAN links between remote switches and routers
+    \item Access to server resources, e.g. storage
+    \item Parts of the network which are near or at capacity
+  \end{itemize}
+  \item Many fault-management tools are useful for performance management
+\end{itemize}
+
+\subsection*{Accounting Management}
+
+\begin{itemize}
+  \item Can be the billing for network usage
+  \item Accounting Parameters usually include
+  \begin{itemize}
+    \item Number of connections made
+    \item Duration of each connection
+    \item Number of email packets sent and received
+    \item Number of packets generally sent and received
+    \item Systems that are accessed across the network
+    \item Internet usage
+  \end{itemize}
+  \item Accounting management may be broadened to include other network attached resources
+  \begin{itemize}
+    \item Server usage (connection times and storage used)
+    \item Traffic using expensive dedicated WAN circuits
+    \item Data storage
+  \end{itemize}
+  \item Accounting management may also be used to cap the use of network resources or storage space
+\end{itemize}
+
+\subsection*{Security Management}
+
+\begin{itemize}
+  \item Confidentiality
+  \item Integrity
+  \item Authentication
+  \item Access Control
+  \item Nonrepudiation
+  \item Vulnerabilities
+  \begin{itemize}
+    \item Wiretaps placed on cables
+    \item Third parties intercepting remote logins
+    \item Viruses and other Malware
+  \end{itemize}
+  \item Protection Mechanisms Include
+  \begin{itemize}
+    \item Encryption
+    \item Physical Access Control
+    \item Access-Control lists
+    \item Audit Data Collection
+  \end{itemize}
+\end{itemize}

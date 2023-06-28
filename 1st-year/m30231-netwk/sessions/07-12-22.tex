@@ -1,0 +1,13 @@
+\practical{Excel Noise Simulation}{12:00}{07/12/22}{Athanasios Paraskelidis}
+
+\begin{itemize}
+  \item To enter a periodic in Excel, you put \verb|=Cell+MinAmplitude/10| e.g. \verb|=A2+0.007/10| the first cell must be 0
+  \item To enter the equation, you put \verb|=A*SIN(f*PI()*t)| e.g. \verb|=10.5*SIN(100*PI()*A2)|
+  \item Then when you limit the equation to the bandwidth, you remove any terms that have a frequency higher than the bandwidth
+  \item To add in the attenuation, you multiply the entire equation by the previously calculated attenuation
+  \item To add noise, we need to use the rand function. In this case, we want noise that varies from 2.5 to -2.5
+  \begin{itemize}
+    \item To get this, we add \verb|+(RAND() * (max - min) + min)| in this case, \\
+    \verb|+(RAND() * (2.5 - -2.5) - 2.5)|
+  \end{itemize}
+\end{itemize}

@@ -1,0 +1,110 @@
+\lecture{Application Support Protocols Cont.d}{09:00}{21/03/23}{Amanda Peart}
+
+\subsection*{Hyper Text Transfer Protocol (HTTP)}
+
+\begin{itemize}
+  \item Standard protocol used on the world wide web
+  \item Requests one file at a time, typically starting with an HTML web page
+  \item The web page may point to other files that need to be loaded
+  \item Mainly consist of `GET` and `POST` requests
+  \item Typically uses port 80
+  \item Some websites are interactive, and as such the HTML changes
+  \item Some of these websites use server-side rendered HTML to keep the website faster for low performance clients
+  \item How do we send data for an interactive web page?
+  \begin{itemize}
+    \item Using a GET request
+    \begin{itemize}
+      \item GET \verb|http://{website}/{file}?information={data} HTTP/1.1|
+    \end{itemize}
+    \item Using POST
+    \begin{itemize}
+      \item POST \verb|http://{website}/{file} HTTP/1.1 {data}|
+    \end{itemize}
+    \item Why do the two different methods exist?
+    \begin{itemize}
+      \item GET exists to allow links to dynamically generated content
+      \item POST keeps data out of the URL, which is useful for information such as passwords
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+
+\subsection*{Email (SMTP, POP3, etc)}
+
+\begin{itemize}
+  \item Before we can send an email, we need to find out the IP address of the mail server
+  \item To do this, the application requests the MX record for the domain in question, e.g. `port.ac.uk` if trying to send an email to `amanda.peart@port.ac.uk`
+  \item Once we know the IP address, we use SMTP (Simple Mail Transfer Protocol) on port 25
+  \item Anti-Spam measures
+  \begin{itemize}
+    \item Standard practice is to use closed relays
+    \begin{itemize}
+      \item Only accept mail destined for that mail server
+      \item Only send mail out from the mail server when the client requesting mail to be sent has an IP within a certain range, or is authenticated with a certificate or password
+    \end{itemize}
+    \item Real-time blackhole lists (RBL)
+    \begin{itemize}
+      \item Automatically blocks reported email addresses which are then blocked
+      \item Can be annoying for people who have been inadvertently placed in the list
+    \end{itemize}
+    \item Content scanners can be employed to block spam messages, however these are often seen as a breach of privacy
+  \end{itemize}
+  \item Can we impersonate someone else?
+  \begin{itemize}
+    \item You can replace the sender and recipient addresses in the SMTP messages to be whatever you wish
+    \item However, there are multiple mechanisms that block this
+    \begin{itemize}
+      \item Anti-spam measures often block these emails anyway
+      \item Most mail servers reject messages sent from an IP address other than the one specified in the MX record for the domain
+      \item e.g. you change the sender to `boris@gov.uk`, most recipients will block the message as your IP address does not match that belonging to the MX record of `gov.uk`
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{How do we get our emails? (POP3)}
+
+\begin{itemize}
+  \item To get our messages from the mail server, we need another protocol known as POP3 or Post Office Protocol v3
+  \item Mail delivered by SMTP is stored on the mail server
+  \item Our email client then requests the mail from the server using POP3
+  \item POP3 is another simple text-based protocol
+  \begin{itemize}
+    \item Authenticate with the server using a username and password
+    \item Request the number of messages waiting on the server
+    \item If more than 0, request each email one by one
+    \item Optionally: delete the messages from the server after they've been downloaded
+  \end{itemize}
+\end{itemize}
+
+\subsection*{The real world}
+
+\begin{itemize}
+  \item How would a company set up their internal intranet with a website and internal mail server?
+  \begin{itemize}
+    \item Typically one or more internal DNS server on the network which handles an internal domain, or subdomain
+    \item HTTP server (Apache, IIS, Nginx, etc)
+    \item Mail server (Exchange, sendmail, etc)
+  \end{itemize}
+  \item In a smaller business, all of these services could be running on one machine, but it is often better to split them up to improve
+  \begin{itemize}
+    \item Redundancy
+    \item Security
+    \item Performance
+    \item Network bandwidth
+  \end{itemize}
+\end{itemize}
+
+\subsection*{HTTP over SSL (HTTPS)}
+
+\begin{itemize}
+  \item Used for the vast majority of the world wide web at this point
+  \begin{itemize}
+    \item Originally only used for high security applications such as banking
+  \end{itemize}
+  \item Server certificates are used to verify the authenticity of the server
+  \item There are a few problems with HTTPS
+  \begin{itemize}
+    \item Server certificates (used) to be expensive
+    \item It is possible to impersonate servers if they forget to renew their certificates, or use self-signed certificates
+  \end{itemize}
+\end{itemize}

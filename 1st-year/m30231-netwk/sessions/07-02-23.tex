@@ -1,0 +1,120 @@
+\lecture{Interconnection Protocols}{09:00}{07/02/23}{Amanda Peart}
+
+\section*{Voice over Internet Protocol (VoIP)}
+
+\begin{itemize}
+  \item Originally, the motivations were to reduce the number of emails that need to be sent, and with VoIP phones you only need one network
+  \item Current motivations are:
+  \begin{itemize}
+    \item Reduction of cost
+    \item Single network
+    \item More capable than typical phones
+    \item Avoid delays
+    \item Provide good QoS
+  \end{itemize}
+  \item Downsides are:
+  \begin{itemize}
+    \item The quality of the connection may not be great, depending upon the gateway between IP phones and legacy networks
+    \item Wireless devices may drop connection temporarily when moving between access points
+  \end{itemize}
+\end{itemize}
+  
+\section*{Session Initiation Protocol (SIP)}
+
+\begin{itemize}
+  \item Application layer protocol
+  \item Signalling protocol for real-time sessions
+  \item Provides infrastructure for voice, video, instant messaging
+  \item 5 Categories
+  \begin{itemize}
+    \item User Location - Realtime local discovery
+    \item User Availability - Is the user available to communicate (online, engaged, etc)
+    \item User Capability - Choice of media and encoding
+    \item Session set-up - Establishing the session
+    \item Session management - Transferring sessions, modifying parameters
+  \end{itemize}
+  \item SIP is "similar" to HTTP, as it's a request-response connection
+\end{itemize}
+
+\section*{The Internet and Network Access Points (NAPs)}
+
+\begin{itemize}
+  \item The internet consists of many ISPs which operate on different levels:
+  \begin{itemize}
+    \item Tier 1: International
+    \item Tier 2: National
+    \item Tier 3: Regional
+    \item Tier 4: Local
+  \end{itemize}
+  \item Network Access Points (NAPs) are a type of Internet Exchange Point (IXP)
+  \begin{itemize}
+    \item They connect between public ISPs to exchange traffic
+    \item Routing information is exchanged using BGP-4
+  \end{itemize}
+  \item Selective peering may be done with direct links to other ISPs
+  \item NAPs are layer 2 switches
+  \begin{itemize}
+    \item Typically use ATM switching
+    \item Support for ISO-provided routers
+  \end{itemize}
+  \item NAPs are connected by high-speed backbones
+\end{itemize}
+
+\subsection*{Router Capabilities}
+
+\begin{itemize}
+  \item Routers may be of several types:
+  \begin{itemize}
+    \item Access Routers - Edge of the internet
+    \item Enterprise Routers - Organisation networks
+    \item Core Routers - Handle heavy data flow
+  \end{itemize}
+  \item Routers may also have Layer 2 switching
+  \item May have hardware or software routing capabilities
+  \item Routers may be table top or rack-mount
+  \item Modern "Routers" may be embedded into other multi-feature devices, such as
+  \begin{itemize}
+    \item Wireless Access Points
+    \item Small (e.g. 4 or 5 port) ethernet switch
+    \item Firewall
+  \end{itemize}
+\end{itemize}
+
+\section*{Multi-Protocol Label Switching (MPLS)}
+
+\begin{itemize}
+  \item "Route at the edges, switch in the core"
+  \item Provides the best parts of Layer 3 routing, and Layer 2 switching
+  \item Intended for use in the core of the Internet or Intranets
+  \begin{itemize}
+    \item Useful for carriers, ISPs and enterprise WAN networks
+    \item MPLS router in the core of the network is known as a label-switching router (LSR)
+  \end{itemize}
+  \item Why use MPLS?
+  \begin{itemize}
+    \item Specifications allow many options
+    \item The first packet between two networks is routed, so that the Layer 2 switched connection can be setup
+    \item Subsequent packets are handled at Layer 2, swapping the label at each LSR
+  \end{itemize}
+  \item Benefits:
+  \begin{itemize}
+    \item Traffic engineering capabilities (paths can be explicitly set without routing)
+    \item MPLS-based VPNs can be setup with simpler provisioning of network infrastructure and bandwidth
+    \item Good QoS
+    \item Improved performance as compared to routing at each hop
+    \item Much greater scalability
+    \item Also has many of the benefits of connection-oriented networking
+  \end{itemize}
+\end{itemize}
+
+\section*{QoS with IP}
+
+\begin{itemize}
+  \item QoS usually refers to providing support for time-sensitive delivery, such as voice or compressed video
+  \item Efforts include
+  \begin{itemize}
+    \item Various forms of IP switching
+    \item Differentiation between services (e.g. prioritise VoIP or Video packets over emails or web browsing)
+    \item Multi-Protocol Label Switching (MPLS)
+  \end{itemize}
+\end{itemize}

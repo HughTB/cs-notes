@@ -1,0 +1,87 @@
+\lecture{Communication Circuits}{09:00}{29/11/22}{Amanda Peart}
+
+Things to consider when designing a network:
+\begin{itemize}
+  \item What is the maximum data rate needed?
+  \item What is the maximum length a single run of cable is required to be?
+  \item Could there be an issue with electrical interference?
+  \item What constraints are there with the cable runs? e.g.
+  \begin{itemize}
+    \item Listed buildings
+    \item Client requirements
+    \item etc
+  \end{itemize}
+  \item What are the major costs associated with the selected medium?
+  \item What medium is the external connection? e.g.
+  \begin{itemize}
+    \item Broadband
+    \item Fibre
+    \item Dial-up
+    \item Satellite
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Types of communication circuit}
+
+\begin{itemize}
+  \item Dial-up
+  \begin{itemize}
+    \item Dial-up is available in two forms
+    \begin{itemize}
+      \item Analogue (Mostly legacy, not everywhere)
+      \item Digital
+    \end{itemize}
+    \item Analogue links require a digital-to-analogue modem - this converts the digital signals from your computer to analogue signals
+    \item Digital links require a digital-to-digital modem - this converts the digital signals from your computer to a different digital signal to be sent over the phone line
+  \end{itemize}
+  \item Modulation
+  \begin{itemize}
+    \item Modulation converts a digital signal into an analogue signal, which can be sent across an analogue connection
+    \item Demodulation converts the analogue signal back into a digital signal, which can be used by a computer
+    \item Modem stands for \textbf{Mo}dulation \textbf{dem}odulation
+    \item Standard modem speeds are as such:
+    \begin{itemize}
+      \item V.34 at 28.8 or 33.6 kbps
+      \item V.90 at 56 kbps
+      \item V.92 allows higher-speed connections and the ability to accept an incoming call
+    \end{itemize}
+  \end{itemize}
+  \item Reasons to switch to digital
+  \begin{itemize}
+    \item Computers are inherently digital, so easier to convert to a digital communication standard
+    \item Higher data rates are available
+    \item Easier to switch
+    \item Better (lower) error rate
+    \begin{itemize}
+      \item Noise is not amplified along the line
+    \end{itemize}
+  \end{itemize}
+  \item Digital telephone communication channels are available
+  \begin{itemize}
+    \item Each channel communicates at either 56 or 64 kbps
+    \item These channels are then multiplexed (combined together) to create higher data rate connections
+  \end{itemize}
+  \item Problems with E1/T1 and T3/E3 systems
+  \begin{itemize}
+    \item T1 is used in the US and Japan but is incompatible with E1 which is used in Europe and the rest of the world
+    \item It is complicated to add or remove a channel to convert between the two
+    \item There is a need for higher bandwidth
+    \item A new standard is needed
+  \end{itemize}
+  \item SONET/SDH
+  \begin{itemize}
+    \item Synchronous Optical Network (SONET) is a North American standard
+    \begin{itemize}
+      \item Works in multiples of 51.84 Mbps
+      \item STS-3 supports triple the bandwidth (155.52 Mbps)
+      \item Multiples of 4 up to 40 Gbps
+    \end{itemize}
+    \item Synchronous Digital Hierarchy (SDH) is an international standard
+    \begin{itemize}
+      \item Works in multiples of 155 Mbps
+      \item A very resilient form of SONET and SDH is the dual ring, where there is a ring in both directions
+    \end{itemize}
+    \item If a cable is cut or goes down, the nodes at the ends reroute the data back along the ring in the other direction
+    \item This recovery happens in ~50 milliseconds
+  \end{itemize}
+\end{itemize}
