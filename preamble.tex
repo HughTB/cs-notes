@@ -13,6 +13,7 @@
 
 \setmainfont[Ligatures=TeX]{IBM Plex Sans}
 \setsansfont[Ligatures=TeX]{IBM Plex Sans}
+\setmonofont[Ligatures=TeX]{Consolas}
 
 % Command to insert the cover page for each module
 \newcommand{\coverpage}[4]{
@@ -43,6 +44,14 @@
   \nopagecolor{}
 }
 
+% Setup hyperlink colours
+\usepackage[]{hyperref}
+\hypersetup{
+  colorlinks=true,
+  linkcolor=myPurple,
+  urlcolor=myPurple
+}
+
 % Set headers and footers, as well as PDF metadata
 \usepackage{lastpage}
 \usepackage{fancyhdr}
@@ -57,7 +66,7 @@
   \fancypagestyle{plain}{
     \renewcommand{\headrulewidth}{0pt}
 
-    \fancyfoot[L]{Hugh Baldwin}
+    \fancyfoot[L]{Hugh Baldwin \\ \small{\url{https://github.com/HughTB/cs-notes}}}
     \fancyfoot[C]{\textbf{\thepage} of \pageref*{LastPage}}
     \fancyfoot[R]{#1}
 
@@ -69,7 +78,7 @@
 
   \renewcommand{\headrulewidth}{0pt}
 
-  \fancyfoot[L]{Hugh Baldwin}
+  \fancyfoot[L]{Hugh Baldwin \\ \small{\url{https://github.com/HughTB/cs-notes}}}
   \fancyfoot[C]{\textbf{\thepage} of \pageref*{LastPage}}
   \fancyfoot[R]{#1}
 
@@ -96,12 +105,20 @@
 % Title Time Date Lecturer Session-Type
 \newcommand{\session}[5]{
   \chapter{#5 - #1}
-  \vspace{-35pt}
-  \large{#2}
-  \hfill
-  \large{#3}
-  \hfill
-  \large{#4}
+
+  \vspace{-45pt}
+
+  \hrule
+
+  \vspace{-10pt}
+
+  \begin{center}
+    \begin{tabular}{ p{0.3\linewidth} p{0.3\linewidth} p{0.3\linewidth} }
+      \begin{flushleft}#2\end{flushleft} & \begin{center}#3\end{center} & \begin{flushright}#4\end{flushright} \\
+    \end{tabular}
+  \end{center}
+
+  \vspace{-20pt}
 }
 
 \newcommand{\lecture}[4]{
@@ -116,7 +133,3 @@
 \usepackage[dvipsnames]{xcolor}
 
 \definecolor{myPurple}{RGB}{134, 53, 227}
-
-% Setup hyperlink colours
-\usepackage[]{hyperref}
-\hypersetup{linkcolor=myPurple}
