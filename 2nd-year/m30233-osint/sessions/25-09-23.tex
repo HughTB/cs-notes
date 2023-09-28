@@ -1,0 +1,142 @@
+\lecture{Network Services}{09:00}{25/09/23}{Athanasios Paraskelidis}
+
+\section*{DHCP}
+
+\begin{itemize}
+  \item DHCP stands for Dynamic Host Configuration Protocol
+  \item The main motivation of DHCP was to provide a set of configuration parameters to automatically configure new devices as they are added to the network. The main parameters are as follows:
+  \begin{itemize}
+    \item IP address
+    \item Gateway address
+    \item Subnet mask
+    \item DNS server address
+  \end{itemize}
+  \item Before DHCP, either devices were configured manually, or the bootstrap protocol (BOOTP) was used
+  \item The main improvements over BOOTP are:
+  \begin{itemize}
+    \item Support for temporary allocation of IP addresses
+    \item DHCP clients can automatically discover the local DHCP server
+    \item Once the server is setup, there is almost 0 human interaction unless something goes wrong
+    \item Still compatible with BOOTP clients
+  \end{itemize}
+  \item A lease is the length of time that an allocated IP address can be used before either a new address is needed, or a request to continue using the current address needs to be approved
+  \item An IP address can be released by the client if it is nolonger needed, e.g. the device shuts down or nolonger needs to communicate on the network
+  \item Advantages
+  \begin{itemize}
+    \item Saves manually configuring every single device
+    \item Ability to move to a different network without having to reset any network settings on the device
+    \item Allows more efficient use of the IP space, as inactive devices do not need to keep a lease on an address
+  \end{itemize}
+  \item Disadvantages
+  \begin{itemize}
+    \item DHCP uses UDP to configure devices, so the communication is unreliable and insecure
+    \item Possibly allows unauthorised clients, but this can be avoided using MAC address white/blacklisting
+    \item Potential for malicious DHCP servers setup on a network that provide incorrect network settings
+  \end{itemize}
+\end{itemize}
+
+\section*{DNS}
+
+\begin{itemize}
+  \item DNS stands for Domain Name System
+  \item This is the system which devices use to convert the human-readable domain names into IP addresses which computers can use to communicate to the server
+  \item DNS is a globally distributed mapping database between domain names and IP addresses
+  \item There are 3 main components
+  \begin{itemize}
+    \item A \textbf{name space}
+    \item \textbf{Servers} that make the name space available
+    \item \textbf{Resolvers} which make the request from clients to servers
+  \end{itemize}
+  \item As DNS is globally distributed, some data is maintained locally, but also retrievable globally
+  \begin{itemize}
+    \item No single server holds all DNS records
+  \end{itemize}
+  \item A DNS lookup can be performed my any device
+  \begin{itemize}
+    \item Remote DNS data is usually cached locally to improve performance
+  \end{itemize}
+  \item DNS has 'loose coherency'
+  \begin{itemize}
+    \item The database is always internally consistent
+    \item Each version of the database has a serial number, which is incremented every time the database changes
+    \item Changes to the master copy of the database are replicated to secondary servers regularly, depending upon the timing set by the zone administrator
+    \item Cached data expires depending upon timing set by the zone administrator
+  \end{itemize}
+  \item There is no limit to the size of the database
+  \begin{itemize}
+    \item Having a very large number of records on one server would decrease performance
+    \item Therefore, the database is spread across many servers around the internet
+  \end{itemize}
+  \item There is no limit to the number of queries which can be made at any time, or by a single user
+  \item Queries are usually distributed between multiple DNS servers as well as local caches
+  \begin{itemize}
+    \item e.g. nameserver1 and 2
+  \end{itemize}
+  \item Clients can query and use the data from any server, primary or secondary
+  \item Clients will typically have their own local cache of more frequently accessed records
+  \item DNS uses both TCP and UDP
+  \begin{itemize}
+    \item TCP is used for communication between servers, for example when replicating records from a primary to secondary server
+    \item UDP is used for communication between clients and servers
+  \end{itemize}
+  \item The database can be updated dynamically
+  \begin{itemize}
+    \item Add, delete or modify any record on the server
+    \item These only need to be performed on the main server, as the secondary servers will replicate the changes over time
+  \end{itemize}
+  \item There are two main types of servers
+  \begin{itemize}
+    \item Authoritative
+    \begin{itemize}
+      \item Primary server - Where data is added and modified
+      \item Secondary server - Servers which replicate the primary server to share the load
+    \end{itemize}
+    \item Non-authoritative
+    \begin{itemize}
+      \item Caching servers - temporarily retain records from authoritative servers to improve resolving performance and reduce load on authoritative servers
+    \end{itemize}
+  \end{itemize}
+  \item Domains can be resolved either Iteratively or Recursively
+  \begin{itemize}
+    \item Iteratively
+    \begin{itemize}
+      \item The client's domain name resolver starts by querying the root nameserver
+      \item The root nameserver responds with the address of the nameserver on the next level down
+      \item The domain name resolver then queries this nameserver, and so on until the nameserver with the full domain is found
+    \end{itemize}
+    \item Recursively
+    \begin{itemize}
+      \item The client's domain name resolver queries the root nameserver
+      \item The root nameserver itself queries the nameserver on the next level down
+      \item This process repeats until the nameserver with the full address is found
+      \item The IP address of the domain is then passed back up the chain and to the requester
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section*{Domain Names}
+
+\begin{itemize}
+  \item A domain name is the sequence of labels from a node to the root, separated by dots
+  \begin{itemize}
+    \item e.g. port.ac.uk has 3 labels
+    \begin{itemize}
+      \item port
+      \item ac
+      \item uk
+    \end{itemize}
+    \item There can be up to 127 labels in a domain name
+    \item But there can only be 255 characters in the domain overall
+  \end{itemize}
+  \item The root domain or Top Level Domain (TLD) of a domain is the final label, e.g. the TLD of port.ac.uk would be uk
+  \item A subdomain is any domain which resides below the TLD. In the case of port.ac.uk,
+  \begin{itemize}
+    \item uk is the TLD
+    \item ac is the Second Level Domain
+    \item port is the actual domain name
+  \end{itemize}
+  \item Name servers store information about domains in units called zones
+  \begin{itemize}
+    \item Each zone usually corresponds to a subdomain, for example the .uk TLD has many sub-zones, such as .ac.uk, .gov.uk and .co.uk
+  \end{itemize}
+\end{itemize}

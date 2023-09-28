@@ -1,0 +1,135 @@
+\lecture{Workshop 1 and 2 Async}{16:00}{27/09/23}{Dalin Zhou}
+
+\section*{Data Structures}
+
+\begin{itemize}
+  \item A data structure is a way to store and organise data
+  \begin{itemize}
+    \item A collection of elements
+    \item A set of relations between the elements
+  \end{itemize}
+  \item Classification of data structures
+  \begin{itemize}
+    \item Linear
+    \begin{itemize}
+      \item Unique predecessor and successor
+      \item e.g. Stack, Queue, etc
+    \end{itemize}
+    \item Hierarchical
+    \begin{itemize}
+      \item Unique predecessor, many successors
+      \item e.g. Family tree, management structre, etc
+    \end{itemize}
+    \item Graph
+    \begin{itemize}
+      \item Many predecessors, many successors
+      \item e.g. Railway or road map, social network
+    \end{itemize}
+    \item Set
+    \begin{itemize}
+      \item No predecessor or successor
+      \item e.g. A class of students
+    \end{itemize}
+  \end{itemize}
+  \item Static vs Dynamic
+  \begin{itemize}
+    \item A static data structure has a fixed size, which cannot be exceeded and must be allocated in it's entirety when created
+    \item A dynamic data structure has a dynamic size, which can change at runtime and only uses as much memory as is needed for it's contents
+  \end{itemize}
+  \item Each program would need a different data structre - there is no one-size-fits-all
+\end{itemize}
+
+\subsection*{Abstract Data Types}
+
+\begin{itemize}
+  \item An ADT is a collection of data and associated methods
+  \item The data in the ADT cannot be directly accessed, only by using the methods defined in the ADT
+\end{itemize}
+
+\begin{itemize}
+  \item Stacks
+  \begin{itemize}
+    \item A stack is a collection of objects in which only the top-most element can be modified at any time
+    \item This means it is a LIFO (Last-in first-out) structure
+    \item A stack must implement the following methods:
+    \begin{itemize}
+      \item Push - Add an item to the top of the stack
+      \item Pop - Remove the item from the top of the stack
+      \item Peek - Examine the item at the top of the stack
+      \item Empty - Determine if the stack is empty
+      \item Full - Determine if the stack is full
+      \item A stack is typically implemented using an array, which is hidden behind the methods of the ADT
+    \end{itemize}
+  \end{itemize}
+  \item Queues
+  \begin{itemize}
+    \item A queue is a collection of objects in which the object which has been in the queue for the longest time is removed first
+    \item This means it is a FIFO (First-in first-out) structure
+    \item A queue must implement the following methods:
+    \begin{itemize}
+      \item Enqueue - Add a new item to the tail of the queue
+      \item Dequeue - Remove the item at the head of the queue
+    \end{itemize}
+    \item A queue is typically implemented using an array, which is hidden behind the methods of the ADT
+    \item There are two methods of implementing a queue
+    \begin{itemize}
+      \item Fixed head
+      \begin{itemize}
+        \item The head of the queue is always at the 0th position in the array, and elements are shifted as they are dequeued
+      \end{itemize}
+      \item Dynamic head
+      \begin{itemize}
+        \item The head of the queue changes to the index of the current head of the queue, and elements are not shifted
+        \item Since this leaves empty spaces before the head, space may be wasted. To solve this, a circular array could be used
+      \end{itemize}
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section*{Algorithms}
+
+\begin{itemize}
+  \item An algorithm is a procedure that takes a value or set there of as input and produces a value or set there of as an output
+  \item A sequence of computational steps that transforms the input into the output
+  \item Ideally, we would always use the most efficient algorithm that is available
+  \item Classification of algorithms
+  \begin{itemize}
+    \item Brute-force
+    \item Divide and conquer
+    \item Backtracking
+    \item Greedy
+    \item etc
+  \end{itemize}
+\end{itemize}
+
+\section*{Big-O Notation}
+
+\begin{itemize}
+  \item To determine the Big-O of an algorithm
+  \begin{itemize}
+    \item Count how many basic operations (assignment, addition, multiplication and division) there are for the worst-case scenario (e.g. 10 items in a stack of length 10)
+    \item Ignore the less dominant terms of this equation
+    \item Ignore any constant coefficients
+    \item The remaining terms become the Big-O complexity of the algorithm
+  \end{itemize}
+  \item Example 1:
+  \begin{itemize}
+    \item There are $2n + 1$ operations for an algorithm
+    \item We can ignore the $+ 1$ as this has less impact, leaving $2n$
+    \item We can ignore the constant coefficient $2$, leaving $n$
+    \item So the Big-O notation would be $O(n)$
+  \end{itemize}
+  \item Example 2:
+  \begin{itemize}
+    \item There are $2n^2 + n + 1$ operations for an algorithm
+    \item We can ignore the $+ 1$, leaving $2n^2 + n$
+    \item We can ignore the $+ n$, leaving $2n^2$
+    \item We can ignore the $2$, leaving $n^2$
+    \item So the Big-O notation would be $O(n^2)$
+  \end{itemize}
+  \item Order of dominance:
+  \begin{itemize}
+    \item Constant < Linear < Logarithmic < Quadratic < Cubic < ...
+    \item $O(1)$ < $O(n)$ < $O(n\log_2 n)$ < $O(n^2)$ < $O(n^3)$ < ...
+  \end{itemize}
+\end{itemize}

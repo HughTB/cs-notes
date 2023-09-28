@@ -13,7 +13,7 @@
 
 \setmainfont[Ligatures=TeX]{IBM Plex Sans}
 \setsansfont[Ligatures=TeX]{IBM Plex Sans}
-\setmonofont[Ligatures=TeX]{Consolas}
+\setmonofont[Ligatures=TeX]{IBM Plex Mono}
 
 % Command to insert the cover page for each module
 \newcommand{\coverpage}[4]{
@@ -129,7 +129,14 @@
   \session{#1}{#2}{#3}{#4}{Practical}
 }
 
+\newcommand{\prereading}[1]{
+  \session{#1}{}{}{}{Prereading}
+}
+
 % Use the xcolor package, and add my custom purple
 \usepackage[dvipsnames]{xcolor}
 
 \definecolor{myPurple}{RGB}{134, 53, 227}
+
+% Use the amsmath package so normal text can be used within math blocks
+\usepackage{amsmath}
