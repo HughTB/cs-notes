@@ -60,7 +60,57 @@
 \subsection*{Registers}
 
 \begin{figure}[h]
-  \caption{General purpose registers in an x86 Intel CPU}
   \centering
   \includegraphics[width=0.8\textwidth]{registers.png}
+  \caption{General purpose registers in an x86 Intel CPU}
 \end{figure}
+
+\begin{itemize}
+  \item There are also special purpose registers, such as the Program Counter (PC) and the Program Status Word
+  \item The Program Status Word sets the mode in which the CPU is operating
+\end{itemize}
+
+\subsection*{Assembly Language}
+
+\begin{itemize}
+  \item Assembly Language is the lowest-level programming language before Machine Code. It is slightly abstracted from machine code and uses neumonic symbols to represent instructions
+  \item For example:
+  \begin{itemize}
+    \item \begin{verbatim}MOV EBX, EAX\end{verbatim}
+    \item This copies the value in EAX into the EBX register
+    \item \begin{verbatim}ADD EBX, 4\end{verbatim}
+    \item This adds the value 4 to the EBX register
+    \item This is equivalent to $b = a + 4$
+  \end{itemize}
+  \item The MOV instruction can also be used to move values between registers and the main memory
+  \item I/O devices such as hard disks have a set of ports, which can be accessed to control the device and transfer data
+  \item The special instructions IN and OUT are used to read from or write to ports
+  \item For example:
+  \begin{itemize}
+    \item \begin{verbatim}IN EAX, 368\end{verbatim}
+    \item This copies the value from the port 368 into the EAX register
+  \end{itemize}
+  \item The IN and OUT instructions can only be used when the CPU is running in Kernel Mode
+\end{itemize}
+
+\section*{User and Kernel Mode}
+
+\begin{itemize}
+  \item CPUs support running in two different modes: Kernel mode and User mode
+  \item When running in User mode, some instructions (such as IN and OUT) cannot be used
+  \item Typically, the Kernel of an operating system will run mostly or entirely in Kernel Mode
+\end{itemize}
+
+\section*{Interrupts}
+
+\begin{itemize}
+  \item When an external device needs to gain the attention of the CPU, it sends an interrupt
+  \item A couple of examples are as follows
+  \begin{itemize}
+    \item When a disk has requested data in it's buffer
+    \item When the key on an old PS/2 keyboard is pressed
+  \end{itemize}
+  \item When the CPU recieves an interrupt, it must abandon whatever it is currently doing and run an Interrupt Handler routine
+  \item Interrupt Handlers run in Kernel mode
+  \item The CPU places whatever resources it was using onto the stack and executes the interrupt handler. Once the handler has finished, it returns to the execution path stored on the stack
+\end{itemize}
