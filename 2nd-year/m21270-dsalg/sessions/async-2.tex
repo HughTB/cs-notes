@@ -1,0 +1,81 @@
+\lecture{Workshop 3 and 4 Async}{15:00}{05/10/23}{Dalin Zhou}
+
+\section*{Searching Algorithms}
+
+\begin{itemize}
+  \item It is much easier to search for an item if they are already sorted
+  \item Linear Search
+  \begin{itemize}
+    \item In a linear search, you start at index 0 and keep looking through the items in the array until the item is found
+    \item Since the worst-case would be checking every item in the list, the worst-case Big-O would be $O(n)$
+    \item Theoretically, the best case would be where the item is at the start of the array and so would be $O(1)$
+    \item The average case is theoretically $\frac{n}{2}$, but that is still a Big-O of $O(n)$
+    \item This works for sorted and unsorted lists
+  \end{itemize}
+  \item Binary Search
+  \begin{itemize}
+    \item In a binary search, you start by checking the middle of the list
+    \item If the item is larger than the value in the middle, you check the top half of the list. If it's smaller, check the bottom half
+    \item Repeat this process, splitting the list in half, until the item is found
+    \item In the case of an list with an even number of items, look at the middle item rounded down (e.g. in a list of 8 items, start with the item at index 3)
+    \item The worst-case would be $1 + \log_2 n$ operations, so $O(\log_2 n)$
+    \item The best-case would still be $O(1)$ if the item is at the mid-point in the list
+    \item The average would be $O(\log_n 2)$
+    \item This only works for pre-sorted lists, so if the list is not sorted, there is an efficiency tradeoff to sort the list before it can be searched
+  \end{itemize}
+\end{itemize}
+
+\section*{Sorting Algorithms}
+
+\begin{itemize}
+  \item Selection Sort
+  \begin{itemize}
+    \item This works by sorting the list one item at a time
+    \item It does this by dividing the list into two sections: the sorted part on the left and the unsorted part on the right
+    \item The smallest or largest item is selected from the list (depending if sorting ascending or descending) and swapped into the first position in the sorted part
+    \item This process is repeated until the entire list is sorted
+    \item Each selection requires $n - 1$ comparisons, and the selection process must be performed $n - 1$ times
+    \item Therefore both the best and worst-case would be $(n - 1)(n - 1) = n^2 - 2n + 1$ and therefore a Big-O of $O(n^2)$
+  \end{itemize}
+  \item Bubble sort
+  \begin{itemize}
+    \item This works by repeatedly looping through the list, swapping adjacent items that are in the wrong order
+    \item This causes either the largest or smallest item to 'bubble up' to the top of the list
+    \item The process is repeated until all items have been rearranged into the correct order
+    \item Each iteration requires $n - 1$ comparisons, and must be repeated $n$ times
+    \item Therefore the best and worse case would be $(n)(n - 1) = n^2 - n$ and therefore a Big-O of $O(n^2)$
+    \item There is a variant of bubble sort which uses a flag to determine when the list is sorted, and so if the list starts out sorted, it would only need $n$ operations and therefore the best-case Big-O becomes $O(n)$
+  \end{itemize}
+  \item Insertion Sort
+  \begin{itemize}
+    \item This works by sorting the list one item at a time
+    \item The list is once again divided into a sorted and unsorted section
+    \item Start by iterating over the items in the array until the first unsorted item is found
+    \item Then shift it down a place and check again. If it is sorted now, it has been inserted into the correct place. If not, continue shifting and comparing items until it is in the "relatively" correct place
+    \item This may not be the correct position, but it is now sorted correctly relative to all the items it has been compared against
+    \item The insertion process should be repeated until the entire list is iterated over without finding an item out-of-order
+    \item The best-case is that the list is already sorted, and so $n$ comparisons are made to determine that it is sorted, resulting in a best-case Big-O of $O(n)$
+    \item The worst-case is that the list is entirely unordered, and so $n$ comparisons need to be made $n$ times and therefore a Big-O of $O(n^2)$
+  \end{itemize}
+\end{itemize}
+
+\section*{Recursion}
+
+\begin{itemize}
+  \item With an iterative algorithm, the code is explicitly repeated using a for or while loop
+  \item With a recursive algorithm, the code repeats implicitly, depending upon how many times the function is called within itself
+  \item All recursive algorithms use a divide-and-conquer strategy to split the problem into smaller problems
+  \item However, there are some significant issues with recursive algorithms:
+  \begin{itemize}
+    \item If a recursive function does not have a \textbf{stopping} or \textbf{base} case, it will infinitely recurse
+    \item There is also system overhead when calling functions, so a recursive function is often less time efficient than an iterative function
+    \item There is a limit to how many times you can recurse before you get a stack overflow error
+    \item They can also end up using an excessive amount of memory due to placing everything on the stack
+  \end{itemize}
+  \item The following are reasons recursive algorithms may not be ideal:
+  \begin{itemize}
+    \item Some algorithms or data structures are not well suited to be iterated recursively
+    \item The recursive solution may be significantly harder to understand or program than its iterative counterpart
+    \item There may be unforseen space or time consequences to using a recursive algorithm
+  \end{itemize}
+\end{itemize}
