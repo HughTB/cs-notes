@@ -1,0 +1,91 @@
+\lecture{IP Addresses and Subnetting I}{09:00}{02/10/23}{Athanasios Paraskelidis}
+
+\begin{itemize}
+\item Layer 3 networking is the layer that handles routing data between networks, such as a local and wide area network
+\item Layer 3 functionality is spread over the network - in routers as well as client devices
+\end{itemize}
+
+\section*{Internet Protocol}
+
+\begin{itemize}
+  \item Connectionless
+  \item Best effort delivery
+  \begin{itemize}
+    \item Unreliable
+    \item Packets may not arrive at all, or in the wrong order
+    \item There is no built-in error handling other than error checking
+  \end{itemize}
+  \item When transmitting
+  \begin{itemize}
+    \item Encapsulates data from the transport layer in datagrams
+    \item Adds header data to the datagrams (source and destination addresses, time to live, etc)
+    \item Apply the routing algorithm once on the internet
+    \item Will continue to route the packet until either it reaches the target network card, or exceedes it's time to live
+  \end{itemize}
+  \item When receiving
+  \begin{itemize}
+    \item Check the validity of all datagrams
+    \item Reads the header and checks if forwarding is needed
+    \begin{itemize}
+      \item If the destination address is on the LAN, send the datagram to the destination
+      \item If it isn't, relay it to the next router on it's route
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{IPv4 \& Subnetting}
+
+\begin{itemize}
+  \item 32-bit string
+  \begin{itemize}
+    \item 4*8 bit integers (1 byte, or 1 octet)
+    \item Each byte can be 0-255
+    \item Intended to be human-readable
+    \item Allows for $2^{32}$ or $4,294,967,296$ theoretical addresses, less in practice
+  \end{itemize}
+  \item The IP address is split into two fields
+  \begin{itemize}
+    \item The Network Prefix
+    \item The Host ID
+    \item Any devices with the same network prefix are on one network
+    \item Two devices cannot have the same Host ID
+  \end{itemize}
+  \item The network prefix can be 8, 16 or 24 bits in length, leaving 24, 16 or 8 bits for Host IDs
+  \item There are 3 main classes of IP addresses
+  \begin{itemize}
+    \item Class A: Network prefix always starts with 0, followed by 7 bits, and 24 bits for the Host ID (1.X.X.X - 126.X.X.X)
+    \item Class B: Network prefix always starts with 10, followed by 14 bits, and 16 bits for the Host ID (128.0.X.X.X - 191.255.X.X)
+    \item Class C: Network prefix always starts with 110, followed by 21 bits, and 8 bits for the Host ID (192.0.0.X - 223.255.255.X)
+  \end{itemize}
+  \item There are also 2 more reserved classes
+  \begin{itemize}
+    \item Class D: Network prefix starts with 1110, followed by a 28 bit multicast ID (224.X.X.X - 239.X.X.X)
+    \item Class E: Network prefix starts with 1111, followed by 28 bits reserved for experimentation (240.X.X.X - 255.X.X.X)
+  \end{itemize}
+  \item The Class A network 127.X.X.X is reserved for loopback addresses, every computer has 127.0.0.1 as a loopback address, some computers may have more than 1
+  \item Each class of network has 2 less usable host addresses than would be expected, e.g.
+  \begin{itemize}
+    \item A class A network provides $2^{24} - 2$ host addresses ($16,777,214$)
+    \item A class B network provides $2^{16} - 2$ host addresses ($65,634$)
+    \item A class C network provides $2^8 - 2$ host addresses ($254$)
+  \end{itemize}
+  \item This is because X.X.X.0 is the network address, which cannot be assigned to a computer, and X.X.X.255 is used as the network's broadcast address
+\end{itemize}
+
+\subsection*{Subnet Masks}
+
+\begin{itemize}
+  \item A subnet mask tells the computer which parts of the IP address are reserved for the network prefix
+  \item The default subnet mask for each class is as follows:
+  \begin{itemize}
+    \item Class A: 255.0.0.0
+    \item Class B: 255.255.0.0
+    \item Class C: 255.255.255.0
+  \end{itemize}
+  \item The subnet mask also determines how many devices can be on the network at a time, as it sets how many bits are left for the Host ID
+  \item A network address is the network prefix, with all host bits set to 0, e.g.
+  \begin{itemize}
+    \item The network address of 10.128.47.87 is 10.0.0.0
+    \item The network address of 192.168.10.104 is 192.168.10.0
+  \end{itemize}
+\end{itemize}
