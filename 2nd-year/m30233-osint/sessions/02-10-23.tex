@@ -70,6 +70,13 @@
     \item A class C network provides $2^8 - 2$ host addresses ($254$)
   \end{itemize}
   \item This is because X.X.X.0 is the network address, which cannot be assigned to a computer, and X.X.X.255 is used as the network's broadcast address
+  \item There are 3 ranges of IP addresses that can be used by anyone on a local network, one in class A, B and C
+  \begin{itemize}
+    \item Class A: 10.0.0.0 - 10.255.255.255
+    \item Class B: 172.16.0.0 - 172.32.255.255
+    \item Class C: 192.168.0.0 - 192.168.255.255
+  \end{itemize}
+  \item In order to connect to devices on the internet, a NAT (Network Address Translation) service is needed on the network (usually on the router)
 \end{itemize}
 
 \subsection*{Subnet Masks}
@@ -88,4 +95,19 @@
     \item The network address of 10.128.47.87 is 10.0.0.0
     \item The network address of 192.168.10.104 is 192.168.10.0
   \end{itemize}
+  \item But why do we need subnets?
+  \begin{itemize}
+    \item If you are assigned a Class B network address (e.g. 128.147.0.0), you have up to 65534 host addresses available
+    \item It's not possible to effectively manage that many clients on a single physical network, and would be a waste of most of those IP addresses
+    \item Therefore, we should split the network into subnets which each have a much more managable number of devices
+    \item e.g. we could use the 3rd byte of the address as a subnet ID and have 256 subnets, each with 254 hosts
+    \item Since the subnet ID is configurable, we could also use 4 bits for the subnet ID, allowing 16 subnets with 4094 hosts each
+  \end{itemize}
+  \item There is an alternative way to write subnet masks, which is called the slash notation
+  \begin{itemize}
+    \item This is noted by adding the number of bits reserved for the network address after a slash at the end of the IP
+    \item For example, you could say that you have a Class B network with the ID 148.197.0.0 and therefore subnet mask 255.255.0.0, or you could simply write it as 148.197.0.0/16
+  \end{itemize}
+  \item This allows us to use custom length subnet masks when creating subnets
+  \item For example, you may have a Class B address and want to have 32 subnets. To do this, you would need an additional 5 bits for a subnet ID, and therefore should use the subnet mask /21. This allows for 32 subnets with $2^{11}-2$ or $2,046$ hosts each
 \end{itemize}

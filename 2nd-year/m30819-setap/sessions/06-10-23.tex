@@ -1,0 +1,97 @@
+\lecture{Development Process Models}{11:00}{06/10/23}{Claudia Iacob}
+
+\section*{System Requirements}
+
+\begin{itemize}
+  \item Functional Requirements
+  \begin{itemize}
+    \item What does the system need to do?
+    \item What features does it need?
+  \end{itemize}
+  \item Non-functional Requirements
+  \begin{itemize}
+    \item Overall constraints of the system
+    \item What hardware does it need to run on?
+    \item How quickly does it need to run?
+    \item How fast should each endpoint of an API be?
+  \end{itemize}
+  \item Requirements should be as specific as possible, to avoid confusion between teams
+  \item They should also take into account what data is needed for the system to run, as well as it's computational requirements
+\end{itemize}
+
+\section*{Software Design}
+
+\begin{itemize}
+  \item More than just the design of the UI
+  \item Also includes
+  \begin{itemize}
+    \item Algorithms to be used for data processing
+    \item Use case modelling
+    \item Architectural design - How the application will be structured overall (frontend and backend and how they will be connected)
+    \item Database design - How will the data be stored in the database. What data needs to be stored?
+    \item Behaviour modeling - How will the parts of the system interact? How will errors be handled?
+  \end{itemize}
+\end{itemize}
+
+\section*{Software Implementation}
+
+\begin{itemize}
+  \item Coding and debugging
+  \item Writing Documentation
+  \item Continuous integration - deploy new versions of code automatically after testing functionality
+  \item Version control - manage versions of code
+\end{itemize}
+  
+\subsection*{Software Testing and Evaluation}
+
+\begin{itemize}
+  \item Evalutation - Are the non-fucntional requirements met?
+  \item Validation - Is this the right system for the problem?
+  \item Verification - Are the functional requirements met?
+  \item Acceptance - Does the client agree that requirements are met, and will they accept and use it?
+\end{itemize}
+
+\section*{Software Development Lifecycle Models}
+
+\begin{itemize}
+  \item Iterative
+  \item Incremental
+  \item Aglie
+  \item Reuse
+  \item Waterfall
+\end{itemize}
+
+\subsection*{Iterative}
+
+\begin{itemize}
+  \item Iterate over the Specification, Design, Implementation and Testing
+  \item The first iteration is usually a basic mockup to check that the client requirements are understood
+  \item Gather feedback after each iteration, and keep improving until the final product is finished
+\end{itemize}
+
+\subsection*{Incremental}
+
+\begin{itemize}
+  \item Specify multiple increments based upon the specification
+  \item Each increment could be as simple as one feature, or could itself need to be broken down more in a very complex system
+  \item Each increment should be designed and implemented on their own, and then integrated and tested with all other increments, until the final product is reached
+\end{itemize}
+
+\subsection*{Reuse}
+
+\begin{itemize}
+  \item Create the complete specification for the system
+  \item Discover all available existing software and evaluate how they could be integrated
+  \item Adapt existing software and write new systems to interface with it
+  \item Integrate all reused and new software into a final system matching the specification
+\end{itemize}
+
+\subsection*{Waterfall}
+
+\begin{itemize}
+  \item Create the specification
+  \item Create the complete design of the overall system
+  \item Convert the design into code and integrate systems with each other
+  \item Test the system as a whole
+  \item Deploy and maintain the system. If there are any issues with the software, go back to the specification stage
+\end{itemize}
