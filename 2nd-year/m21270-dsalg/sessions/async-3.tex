@@ -1,0 +1,34 @@
+\lecture{Workshop 5 Async}{15:00}{12/10/23}{Dalin Zhou}
+
+\section*{Sorting Algorithms}
+
+\begin{itemize}
+  \item Merge Sort
+  \begin{itemize}
+    \item Recursively divide the list into two equal halves until there is only one element in each group
+    \item Merge the smaller lists into several larger ones, sorting as you go
+    \begin{itemize}
+      \item Start by checking the first item of each list, move the smaller one to the combined list
+      \item Continue comparing the first item from each list until all items have been moved into the combined list
+    \end{itemize}
+    \item Repeat the merging process until you are left with only one sorted list
+    \item On average, the Big-O is $O(n \log_2 n)$
+  \end{itemize}
+  \item Quick Sort
+  \begin{itemize}
+    \item Select an item from the array to be the pivot (this can be selected arbitrarily, or randomly)
+    \item Any elements which are smaller than the pivot are placed to it's left, and all larger elements to it's right
+    \item The pivot will always be placed in it's correct, final position
+    \item Then, recursively perform a quicksort on the two halves of the array (everything to the left and everything to the right of the pivot)
+    \item The best-case Big-O is $O(n \log_2 n)$, worst-case is $O(n^{2})$. On average, the Big-O is approximately $O(n \log_2 n)$
+  \end{itemize}
+\end{itemize}
+
+\section*{Backtracking Algorithms}
+
+\begin{itemize}
+  \item A backtracking algorithm is one which attempts to search for a solution by constructing partial solutions, and checking if they're consistent with the requirements and limitations of the problem
+  \item The algorithm takes partial solutions one step at a time, and if said step violates the requirements, it backtracks a step and tries again
+  \item If nothing it can do from there works, it backtracks again until either it can find a suitable solution, or it has tested every option and deems the problem unsolvable
+  \item Backtracking algorithms work especially well for problems which have a large solution space (lots of possible solutions) and very strict requirements, as many possible solutions can be eliminated quickly
+\end{itemize}
