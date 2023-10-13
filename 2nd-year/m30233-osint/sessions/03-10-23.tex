@@ -13,4 +13,16 @@
     \item A process has one or more threads, each of which may be run in parallel
     \item Threads within a single process can share resources with each other, but have their own thread of execution
   \end{itemize}
+  \item When multiple threads are run concurrently, the result is usually non-deterministic
+  \begin{itemize}
+    \item This means that it is impossible to predict the order in which the instructions will run
+    \item This can lead to a program giving completely different results depending upon which order the instructions run
+  \end{itemize}
+  \item Non-determinism can also lead to race conditions if multiple threads access the same variable
+  \begin{itemize}
+    \item A race condition can lead to counting errors, data corruption or a complete deadlock of the program, depending upon which order the instructions execute
+    \item A specific type of race condition is interference, which is when multiple threads operate on the same variable, and interfere with each others results, such as two threads adding to a value, and the second thread overwriting the value of the first thread
+  \end{itemize}
+  \item One method of avoiding non-determinism is to avoid threads sharing any variables at all. This works perfectly for some applications, but is very restrictive and can greatly reduce the efficiency of certain algorithms
+  \item Any part of a program which requires using shared variables is known as the critical section, which must not be run at the same time as the critical section of any other thread
 \end{itemize}

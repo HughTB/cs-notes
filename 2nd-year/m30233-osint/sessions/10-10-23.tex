@@ -1,0 +1,66 @@
+\lecture{Mutual Exclusion}{13:00}{10/10/23}{Tamer Elboghdadly}
+
+\begin{itemize}
+  \item Techniques to ensure critical sections do not execute concurrently
+  \item An atomic instruction or code fragment is a piece of code that executes without interruption, meaning that other threads cannot interfere
+\end{itemize}
+
+\section*{Naïve ME Solutions}
+
+\subsection*{Locks}
+
+\begin{itemize}
+  \item This works by using a single boolean variable to determine if the variables are locked by a thread or not
+  \item When the variables are locked, in theory only one thread has access to them
+  \item However, because the threads are running in parallel, there is a chance that multiple threads will read the lock variable as false simultaniously, resulting in two threads entering the critical section at once
+  \item Therefore, this does not achieve Mutual Exclusion
+\end{itemize}
+
+\subsection*{Taking Turns}
+
+\begin{itemize}
+  \item This works by using a single variable to store which thread should get the next turn
+  \item Each thread sits in a while loop until its their turn to enter the critical section. After finishing it's critical section, the thread assigns the variable to the next thread
+  \item While this does guarantee Mutual Exclusion, it doesn't guarantee progress, as if any of the threads stalls at any point, all of the other threads will be left waiting for their turn
+\end{itemize}
+
+\subsection*{Interested Flags}
+
+\begin{itemize}
+  \item This works similarly to a lock flag, but rather than having only one lock, each thread is assigned an interested variable
+  \item When a thread wants to enter the critical section, it sets it's own interested flag to true, and then waits until all other interested flags are false
+  \item However, it is possible for both threads to set their interested flags at the same time, and therefore both enter a while loop
+  \item Once again, this does provide Mutual Exclusion, but doesn't guarantee progress
+\end{itemize}
+
+\subsection*{Peterson's Algorithm}
+
+\begin{itemize}
+  \item This method combines interested flags with taking turns
+  \item Each thread has an interested flag, and when it wants to enter the critical section, it sets it's interested flag, and then foregoes it's turn, assigning it to the other thread
+  \item It then waits for the other thread to take it's turn, or in the case that neither thread is in the critical section, the other thread will reach the critical section and then forego it's turn
+  \item This algorithm does work in theory and practice, but there's no way to generalise it for an arbitrary number of threads. It's very easy to implement for just 2 threads, but it gets exponentially harder as more threads are added
+\end{itemize}
+
+\section*{Practical Solutions}
+
+\subsection*{Hardware Test and Set}
+
+\begin{itemize}
+  \item This is an atomic instruction built into the instruction set of most modern processors
+  \item An atomic instruction is one which performs a complex action, but acting like a single instruction
+  \item That means that it's impossible for more than one thread to write using an atomic instruction at a time
+  \item This basically allows us to use a lock variable, but without causing another race condition
+  \item However, this is not really suitable in a multitasking environment, as it wastes a lot of CPU cycles continuously checking if the lock is available
+\end{itemize}
+
+\subsection*{Semaphores}
+
+\begin{itemize}
+  \item A semaphore is an integer variable that can be accessed by any thread, but only using two methods - P and V
+  \item P decreases the value of the semaphore by one, but can never go below zero
+  \item V increases the vaule of the semaphore by one
+  \item If P failes to decrease the value, the thread calling it blocks until another thread increases it by one, allowing it to exit the block
+  \item Since the semaphore starts at one, the first thread to reach the critical section decreases it by one and enters the critical section
+  \item If another thread reaches the critical section, it has to block until the first thread has exited the critical section and increases the semaphore
+\end{itemize}
