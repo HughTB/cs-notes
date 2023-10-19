@@ -1,0 +1,41 @@
+\lecture{Workshop 6 Async}{15:00}{19/10/23}{Dalin Zhou}
+
+\section*{Linked Lists}
+
+\begin{itemize}
+  \item A linked list is a collection of items, known as nodes, which have 2 components each
+  \begin{itemize}
+    \item Information - The actual data
+    \item Reference - A pointer or reference to the next node in the list (sometimes called a link)
+  \end{itemize}
+  \item This means that it is a type of linear data structure
+  \item Unlike an array, a linked list is a dynamic data structure. This means that the list can increase or decrease in size
+  \item The first element in the linked list is just a pointer to the first node, known as the head
+  \item The last element in the linked list is a node with a null reference, known as the tail
+  \item Advantages over a static data structure:
+  \begin{itemize}
+    \item Easy to increase or decrease in size to fit the required number of elements
+    \item Very efficient, $O(1)$ insertion and deletion operation \emph{once located}
+  \end{itemize}
+  \item Disadvantages
+  \begin{itemize}
+    \item Does not allow direct access to individual items - you must start at the head and follow the path of references to find the item you want
+    \item This means an access operation has a Big-O of $O(n)$
+    \item More memory is needed as compared to a static data structure, as each node needs to store the data as well as a reference to the next node
+  \end{itemize}
+  \item There are several types of linked list:
+  \begin{itemize}
+    \item Singly linked lists - Each node stores one data value and one reference to another node
+    \item Singly linked list with dummy node - This adds a dummy node at the start which contains no data, but links to the next node. This is useful to reduce programming errors when deleting items from a linked list
+    \item Circular singly linked list - The last node's reference is set to the first node in the list, rather than a null reference. This can be useful if the list needs to be traversed several times for one algorithm
+    \item Doubly linked list - Includes a reference to the previous node. This allows easier reverse traversal at the cost of more memory use. Can also be circular
+    \item SkipList - This is an extension of a singly linked list, to include randomised forward links which allow skipping part of the list (hence the name). This is especially useful as it allows for more efficient searching, and on average all operations are performed with $O(\log_2 n)$ efficiency
+    \item With a skiplist, you can include as many levels of references, but this comes with the tradeoff of using more storage for each level
+  \end{itemize}
+  \item Since there are multiple levels in a skiplist, it's possible that by starting with the highest level, we can exclude a large number of items with only one comparison
+  \item This comes with the tradeoff that if the item we're looking for is only on the lowest level, we have to make multiple comparisons as we move down the levels
+  \item This means that there's a chance of using either more or less comparisons than a linear search, and so on average it could be faster, depending upon how many levels we have
+  \item One method of determining which level to insert an item at is to randomly select it. This way, there is a random distribution of items in each level
+  \item An ideal skiplist has half as many references for each new level that's added (all on the lowest level, half on the next, a quarter on the next, etc)
+  \item There is no guarantee of better performance than a standard linked list, so it is best to weigh up the tradeoffs depending upon your specific use case
+\end{itemize}
