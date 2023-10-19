@@ -63,4 +63,5 @@
   \item If P failes to decrease the value, the thread calling it blocks until another thread increases it by one, allowing it to exit the block
   \item Since the semaphore starts at one, the first thread to reach the critical section decreases it by one and enters the critical section
   \item If another thread reaches the critical section, it has to block until the first thread has exited the critical section and increases the semaphore
+  \item When using as a method for mutual exclusion, a binary semaphore is usually used (as the name suggests, this can only be 1 or 0)
 \end{itemize}

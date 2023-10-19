@@ -1,0 +1,36 @@
+\lecture{Variable Length Subnet Masks}{09:00}{16/10/23}{Athanasios Paraskelidis}
+
+\section*{Subnetting with VLSM}
+
+\begin{itemize}
+  \item Using classful subnetting wastes a lot of IP addresses, so a new approach was needed - VLSM
+  \item VLSM allows for more than one subnet mask within the same network, allowing for different subnets to be different sizes, based on their needs
+  \item This also allows for much more efficient used of the IP address space
+  \item Also allows route aggregation, meaning that less routing information is needed
+  \item Links between routers are in and of themselves networks - although they only need enough IP addresses for the routers, so a direct link only needs 2 usable addresses
+  \item The smallest subnet you can have is a /30 subnet, which has 4 IP addresses, with only 2 usable
+  \begin{itemize}
+    \item This is usually used only for point-to-point links, such as a connection between 2 routers
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+  \item The routing protocol needs to support VLSM, by carrying extended network prefixes
+  \begin{itemize}
+    \item Some routing protocols that support VLSM are: RIPv2, OSPF, EIGRP, BGP
+  \end{itemize}
+  \item When using VLSM, we can completely ignore the standard classes of IP addresses, as long as we have been assigned the full address range
+  \item When assigning subnets with VLSM, you should consider the largest subnet first, and then use the remaining space to create any additional subnets
+  \item If needed, you can create sub-subnets within larger subnets to allow creating more, smaller subnets
+\end{itemize}
+
+\section*{Supernetting}
+
+\begin{itemize}
+  \item Supernetting is combining multiple small (usually class C) networks into one larger one
+  \item This creates a single address space with more addresses
+  \item You can only use supernetting if the networks you wish to combine are contiguous
+  \item Convert the addresses into binary, and count from left to right the number of identical bits. This gives you the supernet mask for the network
+  \item The supernet address will always be the network address of the first of the contiguous networks
+  \item You need to make sure that the supernet mask does not allow you to address IPs outside of your contiguous networks
+\end{itemize}
