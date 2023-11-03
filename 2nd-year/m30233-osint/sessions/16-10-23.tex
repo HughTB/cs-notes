@@ -22,6 +22,11 @@
   \item When using VLSM, we can completely ignore the standard classes of IP addresses, as long as we have been assigned the full address range
   \item When assigning subnets with VLSM, you should consider the largest subnet first, and then use the remaining space to create any additional subnets
   \item If needed, you can create sub-subnets within larger subnets to allow creating more, smaller subnets
+  \item VLSM uses a longest match forwarding algorithm
+  \item This means that it looks through the routing table to find the longest match
+  \begin{itemize}
+    \item The longest match is the entry which reduces the size of the network as much as possible - find the smallest network to route to
+  \end{itemize}
 \end{itemize}
 
 \section*{Supernetting}

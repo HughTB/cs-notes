@@ -1,0 +1,25 @@
+\lecture{Supernetting \& Classless Inter-Domain Routing}{09:00}{30/10/23}{Athanasios Paraskelidis}
+
+\section*{CIDR}
+
+\begin{itemize}
+  \item Also known as Supernetting
+  \item Considered as a fundamental solution to reducing the size of routing tables
+  \item Also used as a temporary solution to the lack of internet addresses in IPv4
+  \item A Class C address is too small for most companies, so most requested a class B address, but in the process wasted lots of addresses, as they did not need as many addresses as it provided
+  \item CIDR is similar to VLSM, but applies to the entire internet rather than one specific network
+  \item For CIDR to work, the network prefix must always be specified
+  \item Routers on the internet nolonger use classes, and only the network prefix is important
+  \item Since the network prefix is important for routers to know, the only requirement for CIDR to work is for the routing protocols to forward network prefixes
+  \item CIDR will only provide any routing advantages if topologically significant addresses are used (addresses which all reside within one routing area)
+\end{itemize}
+
+\section*{Supernetting}
+
+\begin{itemize}
+  \item Supernetting is combining multiple small (usually Class C) networks into a larger one to create a larger range of addresses
+  \item The IP addresses you wish to supernet must be contiguous
+  \item The exact opposite of subnetting, and reserves part of the network address to use as host addresses
+  \item You must have control over enough networks to make up an entire bit (if you wanted to reserve 2 bits, you would need 4 contiguous addresses)
+  \item Your supernet address becomes the first IP address, followed by the new subnet prefix
+\end{itemize}

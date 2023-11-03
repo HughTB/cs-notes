@@ -1,0 +1,83 @@
+\lecture{Processes and Scheduling}{13:00}{31/10/23}{Tamer Elboghdadly}
+
+\section*{Processes}
+
+\begin{itemize}
+  \item A process is a collection of threads which belong to a program
+  \item Several copies of the same program can be running at once, using separate processes
+  \item A process has a space in memory which is split into multiple sections
+  \begin{itemize}
+    \item Program code - The actual code for the program
+    \item Data section - Global and static variables
+    \item Heap - Memory which can be dynamically allocated during runtime
+    \item Stack - Memory used temporarily during runtime when functions are called
+  \end{itemize}
+  \item Part of this memory is known as the execution state, which includes the program counter, stack and data section
+\end{itemize}
+
+\section*{Process Control Blocks}
+
+\begin{itemize}
+  \item The operating system maintains a process table
+  \item Within this process table, each process has a Process Control Block
+  \item For processes which are not currently running, the PCB contains
+  \begin{itemize}
+    \item The contents of all registers at the time the process was last running
+    \item Pointers associated with memory management for the process
+    \item Any other information which may be needed to restore the process to a running state, exactly as it was before
+    \item It does not contain variables, as these are assumed to be in the processes' main memory block
+  \end{itemize}
+\end{itemize}
+
+\section*{Dispatcher}
+
+\begin{itemize}
+  \item The dispatcher actually gives control of the processor over to the process selected by the scheduler
+  \item This involves
+  \begin{itemize}
+    \item Stopping the currently running process
+    \item Storing it's information in the PCB associated with it
+    \item Re-loading the information in the new process' PCB
+    \item Switching between Kernel and User mode
+    \item Jumping to the correct point in memory to resume execution
+  \end{itemize}
+  \item This set of tasks is collectively known as context switching
+\end{itemize}
+
+\section*{Scheduling}
+
+\begin{itemize}
+  \item The scheduler is responsible for selecting the next process to run on the processor
+  \item To do this, it uses a scheduling algorithm, which takes into account the following:
+  \begin{itemize}
+    \item When should processes be swapped?
+    \item Under what circumstance should the process be swapped? (Time used, if a process stalls, etc)
+    \item How long should threads be given the CPU?
+    \item Which order should processes run in?
+  \end{itemize}
+  \item Processes which are ready to be run, but waiting for processor time are placed into the ready queue
+  \item The scheduling algorithm is responsible for deciding when to swap the currently running process and the one at the start of the ready queue
+  \item Typically, when a process is stopped, it is placed at the rear of the ready queue, unless it was stopped to wait for a resource
+  \item There is usually also a waiting queue, where processes which are not yet ready to continue go to wait for whatever is stalling them
+\end{itemize}
+
+\section*{System Calls}
+
+\begin{itemize}
+  \item Since user processes are run in user mode, they do not have direct access to hardware or other resources
+  \item Therefore, the must user so-called system calls to request that the operating system performs a function on their behalf
+  \item System calls are usually implemented using software interrupts (sometimes called traps) so that the running process is immediately suspended while the operating system runs the function
+  \item System calls include the following functions:
+  \begin{itemize}
+    \item Creating a new process
+    \item Waiting for another process to exit
+    \item Exiting the current process
+    \item Creating or opening a file
+    \item Closing a file
+    \item Deleting an existing file
+    \item Reading from or writing to a file
+    \item Creating or removing a directory
+    \item Setting the working directory
+    \item etc
+  \end{itemize}
+\end{itemize}
