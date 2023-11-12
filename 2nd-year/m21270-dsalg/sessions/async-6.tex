@@ -1,0 +1,162 @@
+\lecture{Workshop 8 and 9 Async}{11:00}{12/11/23}{Dalin Zhou}
+
+\section*{Self-Balancing Trees}
+
+\begin{itemize}
+  \item A self-balancing tree is one which automatically reduces it's height as much as possible
+  \item This improves the searching performance within the tree, and since insertion and deletion also require searching, the entire tree becomes more efficient
+  \item Rotations are performed on the tree, which reduces it's height
+  \item A rotation changes the structure of the tree, but without chaning the order, and as such it remains a BST
+  \item There are two popular methods for creating a self-balancing tree
+  \begin{itemize}
+    \item AVL trees
+    \item Red-Black trees
+  \end{itemize}
+\end{itemize}
+
+\section*{Tree Rotation}
+
+\begin{itemize}
+  \item A tree rotation is used to change the structure of the tree, without changing the order of the elements
+  \item This is useful for reducing the height of a BST, while keeping it a BST
+  \item A psuedocode implementation would look like this
+  \item \begin{verbatim}
+temp = root.left
+root.left = root.left.right
+temp.right = root
+root = temp
+  \end{verbatim}
+  \item This would cause a right rotation, and could be used on a left-sided tree. The same operation could be performed on a right-sided tree simply by flipping left and right in the example
+\end{itemize}
+
+\section*{AVL Trees}
+
+\begin{itemize}
+  \item The heights of the left and right tree differ by no more than 1
+  \item Left and right subtrees are also AVLs in and of themselves
+  \item Each node of an AVL tree includes an additional variable known as the balance factor
+  \begin{itemize}
+    \item The balance factor is the height of the left subtree minus the height of the right subtree
+    \item A node with a balance factor anywhere from -1 to 1 is considered balanced
+    \item A balance factor of -2 or 2 is considered unbalanced, and any other value should be impossible as the tree should've been rebalanced before it was possible for it to become so unbalanced
+  \end{itemize}
+  \item To rebalance the tree, a rotation is performed on either the entire tree, or a subtree depending upon which node is unbalanced
+\end{itemize}
+
+\subsection*{Creating an AVL tree}
+
+\begin{itemize}
+  \item Data items are inserted using the normal BST insertion rules
+  \item The balance factor of each node from the root to the newly inserted node may change, and so need to be recalculated
+  \item If the balance factor of any node is too high, the tree becomes unbalanced
+  \item This means that the tree needs to be rebalanced using a rotation
+  \item The rotation will take place about the unbalanced node closest to the newly inserted node
+  \item To reduce the complexity of rotations, there are only 4 possible rotations, split into two groups
+  \item Single Rotations
+  \begin{itemize}
+    \item Left-Left Rotation (LL)
+    \begin{itemize}
+      \item The unbalanced node and it's left subtree are left-heavy
+      \item The balance factor of the unbalanced node is +2 and it's left subtree has a balance factor of +1
+      \item The tree is rebalanced by completing a single rotation to the right
+    \end{itemize}
+    \item Right-Right Rotation (RR)
+    \begin{itemize}
+      \item The unbalanced node and it's right subtree are right-heavy
+      \item The balance factor of the unbalanced node is -2 and it's right subtree has a balance factor of -1
+      \item The tree is rebalanced by completing a single rotation to the left
+    \end{itemize}
+  \end{itemize}
+  \item Double Rotations
+  \begin{itemize}
+    \item Left-Right Rotation (LR)
+    \begin{itemize}
+      \item The unbalanced node is left-heavy and it's left subtree is right-heavy
+      \item The balance factor of the unbalanced node is +2 and it's left subtree has a balance factor of -1
+      \item The tree cannot be rebalanced by a single rotation, so a left rotation around the child followed by a right rotation around the unbalanced node is required
+    \end{itemize}
+    \item Right-Left Rotation (RL)
+    \begin{itemize}
+      \item The unbalanced node is right-heavy and it's right subtree is left-heavy
+      \item The balance factor of the unbalanced node is -2 and it's left subtree has a balance factor of +1
+      \item The tree cannot be rebalanced by a single rotation, so a right rotation around the child followed by a left rotation around the unbalanced node is required
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\section*{Self-Organising Trees}
+
+\begin{itemize}
+  \item A Splay Tree is a type of self-organising tree which ensures that recently accessed nodes are always quick to access again
+  \item This is based on the idea that you are likely to need to access the same data again soon
+  \item It keeps the most commonly used data near the top of the tree where it can be accessed quickly
+\end{itemize}
+
+\subsection*{Splay Trees}
+
+\begin{itemize}
+  \item A Splay Tree adjusts itself after every search, insertion or deletion operation
+  \item It has excellent performance in cases where some data is accessed more frequently than others
+  \item Does not have the minimum height available
+  \item Still follows all of the normal rules for a BST
+\end{itemize}
+
+\subsection*{Creating a Splay Tree}
+
+\begin{itemize}
+  \item Data items are inserted using the normal BST insertion rules
+  \item The inserted item is then moved to thr root of the tree using a series of rotations, in a process known as splaying
+  \item This means that the most recently inserted item is at the root of the tree, and as such will be the fastest item to access
+  \item Splaying always moves a lower item to the top
+  \item It uses a series of double rotations until the node is either
+  \begin{itemize}
+    \item The root of the tree
+    \item A child of the root node, in which case a single rotation is used
+  \end{itemize}
+  \item There are more possible rotations with a Splay tree, but 4 of them are the same as those used in an AVL tree
+  \begin{itemize}
+    \item A Zig rotation is a sinle rotation and is equivalent to an LL or RR rotation
+    \item A ZigZag rotation is a double rotation, equivalent to an LR or RL rotation
+  \end{itemize}
+  \item The additional type of rotation is known as a ZigZig rotation
+  \begin{itemize}
+    \item A ZigZig rotation does not reduce the height of the splay tree, but instead essentially reverses the left and right subtree
+    \item (If all subtrees are on the right, they are re-ordered and placed on the left of the previously lowest leaf node)
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Searching a Splay Tree}
+
+\begin{itemize}
+  \item Use the normal searching rules for a BST
+  \item If the item is successfully found, splay the found item into the root of the tree
+  \item If the item is not found, splay the last checked item into the root of the tree
+  \item This makes it faster to locate an existing item
+  \item It also makes it faster to determine that the item is not in the tree
+\end{itemize}
+
+\subsection*{Deleting from a Splay Tree}
+
+\begin{itemize}
+  \item Search for the item as usual
+  \item If the item is located, either
+  \begin{itemize}
+    \item Splay the item to be deleted into the root of the tree
+    \item Remove the item and replace it in the normal way for a BST (rightmost item in left subtree, or rightmost item in left subtree)
+  \end{itemize}
+  \item or
+  \begin{itemize}
+    \item Remove the item and replace it in the normal way for a BST
+    \item Splay the parent of the deleted node into the root of the tree
+  \end{itemize}
+  \item If the item was not located, splay the last checked item into the root of the tree
+\end{itemize}
+
+\subsection*{Performance}
+
+\begin{itemize}
+  \item No operation is guaranteed to be more efficient than a BST
+  \item The best case Big-O is still $O(1)$
+  \item The worst case Big-O is still $O(n)$
+  \item However, over a series of operations, the average Big-O trends towards $O(\log_2 n)$
+\end{itemize}
