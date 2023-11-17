@@ -1,0 +1,166 @@
+\lecture{Static and Dynamic Routing}{09:00}{06/11/23}{Athanasios Paraskelidis}
+
+\begin{itemize}
+  \item Routing is forwarding packets from a source network to a desintation network
+  \item The source and destination could be a network of any size - anywhere from a single computer to the entire internet
+  \item Routing protocols are typically based around solving a graph, known as graph theory
+  \item There are a number of important factors to consider
+  \begin{itemize}
+    \item When should a packet be routed?
+    \item What is the best route to take?
+    \item What if the topology of the network changes?
+    \item What if the destination doesn't exist?
+  \end{itemize}
+\end{itemize}
+  
+\section*{When should a packet be routed?}
+
+\begin{itemize}
+  \item Workstation A wants to send a packet to Workstation B
+  \item Workstation A checks if Workstation B is on the same network, but checking it's routing table
+  \item If Workstation B is on a different network, the packet is sent to Workstation A's default gateway, which then routes the packet to Workstation B
+\end{itemize}
+
+\section*{Static Routing}
+
+\begin{itemize}
+  \item Manually populated routing tables
+  \item Not feasable to maintain in modern networks
+  \item Can still be used for small, stable networks without redundant links
+  \item Dynamic routing protocols used network resources to learn what they can route to
+  \item Static routing can be combined with dynamic routing
+  \item Static routing is still occasionally used for very secure network, as the administrator has complete control over routing
+\end{itemize}
+
+\section*{Routing Tables}
+
+\begin{tabular}{ |c|c|c|c|c| }
+  \hline Code & Network/Mask & AD/Metric & Next Hop & Interface \\
+  \hline O & 10.0.0.0/8 & 110/20 & 200.1.1.1 & S0 \\
+  O & 172.16.0.0/16 & 100/15 & 200.1.1.1 & S0 \\
+  O & 192.168.1.0/24 & 100/20 & 200.2.2.2 & S1 \\
+  C & 210.1.1.4/30 & 0/0 & Directly Connected & E0 \\
+  \hline
+\end{tabular}
+\begin{itemize}
+  \item 
+  \begin{itemize}
+    \item Code - What method was used to discover the route
+    \item Network, Mask - The address and subnet mask of the destination network
+    \item Administrative Distance, Metric - Used to select the best route. AD depends on the network used, Metric measures the speed of the route
+    \item Next Hop - If destination network is not directly connected to the current router, what is the next router to send the packet through
+    \item Interface - Which network or serial port on the current router should be used to route the packet
+  \end{itemize}
+  \item Routing tables only contain information about routable networks, not every host on them
+  \item Once the packet reaches the destination network, the network gateway is responsible for getting the packet to it's final destination
+\end{itemize}
+
+\section*{Dynamic Routing}
+
+\begin{itemize}
+  \item Static routing is impossible to maintain in a network as large as the internet, so a new, automated routing solution was needed
+  \item There are many dynamic routing protocols, but most have the following key features
+  \begin{itemize}
+    \item They learn about the network over time
+    \item They are able to automatically update their own routing tables
+  \end{itemize}
+  \item Dynamic routing can be used on a network of any size, but certain routing *protocols* are better suited to very large or very small networks
+  \item The issue with having many different routing protocols is routers which don't share a protocol are unable to communicate
+\end{itemize}
+
+\section*{Routing Protocols}
+
+\subsection*{Convergence}
+
+\begin{itemize}
+  \item If the topology of the network changes, every router needs it's routing table updated
+  \item The time it takes to accomplish this is known as the "Convergence Time"
+  \item This is important as in the event that a network link or router fails, every other router needs to know
+  \item If routers are not informed of topology changes, packets may be routed to inaccessable of failed routers, causing lost packets
+  \item Protocols with a slower convergence time are typically less desirable as any failure will be more impactful
+  \item Slow convergence can also cause *routing-loops*
+\end{itemize}
+
+\subsection*{Metrics}
+
+\begin{itemize}
+  \item There are multiple different factors which can influence the metric of any particular route
+  \item Hop Count - The number of routers which have to be traversed to reach the destination network
+  \item Path Length - A refinement of hop count, as it takes the cost of each individual hop into account
+  \item Bandwidth - The speed of the links between routers
+  \item Delay - The time to cross each link
+  \item Load - The congestion on each link due to traffic
+  \item Reliability - Based on the previous reliability of routers and links
+  \item Not every protocol used all of the listed metrics
+\end{itemize}
+
+\subsection*{Types of Dynamic Routing Protocols}
+
+\begin{itemize}
+  \item Interior Gateway Protocols
+  \begin{itemize}
+    \item Routes packets within large, autonomous networks
+  \end{itemize}
+  \item Exterior Gatweay Protocols
+  \begin{itemize}
+    \item Routes packets between autonomous networks, such as the a LAN and the Internet
+  \end{itemize}
+  \item The vast majority of protocols fall under Interior Gateway Protocols
+\end{itemize}
+
+\section*{Distance-Vector Routing}
+
+\begin{itemize}
+  \item Routing information is recieved only from immediate neighbours
+  \item Said information is sent between routers as a broadcast of 'update packets'
+  \item Each router compares the information in the update with the existing information in it's routing table, and updates it accordingly
+  \item These routers then pass the information on to their neighbours, and so on until the network is converged
+  \item The metric used in a Distance-Vector protocol such as RIP (Routing Information Protocol) is the number of hops between the current router and the destination
+  \item If multiple paths to a destination are discovered, only the one with the lower hop count is added to the routing table
+  \item Each router only stores the next hop that packets need to take to get to the destination, and each router uses it's own routing table to determine where to send the packets
+  \item This can lead to routing loops, as it's possible that routers with out-of-date information may route packets through a router with no connection to the destination, or only a connection through itself
+  \item On networks with a very consistent delay between nodes, distance vector routing works well, as it picks the route having to pass through the least routers
+  \item On unstable networks with unpredictable delay, distance vector would be sub-optimal as it does not take reliability or speed into account whatsoever
+\end{itemize}
+
+\section*{Link-State Routing}
+
+\begin{itemize}
+  \item Uses first-hand information to make descisions
+  \item Routes based upon shortest-path-first, usually using Dijkstra's algorithm
+  \item Routing information is transmitted using Link State Advertisement
+  \item The data includes the state of all directly connected links
+  \item This allows every router to have a complete map of the network topology, meaning that they are able to make more intelligent descisions about how to route packets
+  \item As only the link state is sent between routers, the convergence speed is greatly improved
+  \item Table updates are only triggered by the change of a link state, which minimises the use of bandwidth for routing updates, rather than actual traffic
+  \item They also use multicast rather than broadcast, allowing the data to be sent only to specific routers, once again reducing the bandwidth used for routing updates
+  \item It is also less prone to routing loops as each router can determine the entire route a packet should take, rather than only what the next node will be
+  \item Some Link-State protocols are able to hold multiple routes for each destination, but when only one route can be stored, it should be the best path available
+  \item In multipath routing protocols, it is possible to use multiple routes at a time, reducing the bandwidth used on each route, known as load balancing or multiplexing
+  \item Using load balancing or multiplexing can improve both the performance and reliability of the network, as each individual link is not using all of it's bandwidth for a single connection
+\end{itemize}
+
+\subsection*{Hierarchical Routing}
+
+\begin{itemize}
+  \item When using a link-state protocol, it is also possible to implement hierarchical routing
+  \item This allows the configuration of a hierarchy of routers, and only routers on the same level or area will be updated at once
+  \item Updates are kept within an area, but if a destination is connected to a different area, specific updates can be communicated to the other area
+  \item This allows for better management of network resources
+\end{itemize}
+
+\section*{Route Summarisation}
+
+\begin{itemize}
+  \item Route summarisation is defining a single path to multiple subnets
+  \item This allows the routing table to be much smaller, as splitting the data into subnets is done only on the destination router, rather than every router along the way
+  \item By reducing the size of the routing table, you also reduce
+  \begin{itemize}
+    \item Bandwidth use
+    \item Memory use
+    \item CPU use
+    \item Routing lookup time
+  \end{itemize}
+  \item Summaristaion can be used on the address assignment level, or the organisation level
+  \item Auto-summarisation is available in some routing protocols, but can usually be disabled for specific use cases
+\end{itemize}
