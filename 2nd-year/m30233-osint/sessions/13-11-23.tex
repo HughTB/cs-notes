@@ -1,0 +1,155 @@
+\lecture{Routing Information Protocol (RIP)}{09:00}{13/11/23}{Athanasios Paraskelidis}
+
+\begin{itemize}
+  \item A very old protocol from the 80s
+  \item Has support for classless networks
+  \item It uses a distance vector algorithm to determine the best path, specifically a variant of the Bellman-Ford algorithm
+  \item Therefore, the main metric it uses is hop count
+  \item It also means that RIP does not consider bandwidth, load or reliability of each hop
+\end{itemize}
+
+\section*{Versions of RIP}
+
+\subsection*{Version 1}
+
+\begin{itemize}
+  \item Class-based routing
+  \item Limited support for classless routing
+  \item Shouldn't be in use any more, as it is very outdated and insecure
+\end{itemize}
+
+\subsection*{Version 2}
+
+\begin{itemize}
+  \item Auto-summarisation (route aggregation or CIDR) is on by default
+  \item Multicast is used rather than broadcast when communicating with other routers
+  \begin{itemize}
+    \item Routers listen on 224.0.0.9 for updates from other routers, reducing overhead on the network for devices uninterested in RIP updates
+  \end{itemize}
+  \item Supports simple password authentication. Not very secure but better than nothing
+\end{itemize}
+
+\section*{Advertising Routes}
+
+\begin{itemize}
+  \item When the router is booted, a new routing table is created and populated with only directly connected networks, and any statically assigned routes
+  \item After initialisation, the router sends it's routing table to every immediate neighbour on every interface
+  \item It continues to send it's routing table to every neighbour every 30 seconds, even if there is no updated information
+  \item An intentional random delay can be added so that each router sends updates at slightly different times, as to not overwhelm the network
+  \item It is possible to configure a RIP router to only send updates when necessary
+\end{itemize}
+
+\section*{Learning Routes}
+
+\begin{itemize}
+  \item Once a new route is discovered by recieving updates from other routers, it is added to the routing table
+  \item The router advertises it's new route to all other routers
+  \item Every router learns every path to every network
+  \item Changes or failures are also advertised to neighbouring routers
+  \item The time it takes for this information to spread to all routers is known as convergence time
+  \item Once the information is spread to all routers, the network is considered to be converged
+  \item Every router continues to broadcast their routing protocol every 30 seconds
+\end{itemize}
+
+\section*{The Routing Table}
+
+\begin{itemize}
+  \item The routing table contains lots of information about different routes that are known by the router
+  \item The first column contains a letter
+  \begin{itemize}
+    \item A C means that the route is directly connected to this router
+    \item An R means that the route was learned using RIP updates
+  \end{itemize}
+  \item The second column contains the destination network or host
+  \item The third column contains the network mask of the destination
+  \item The fourth column contains the administritive cost (120 for RIP and 110 for OSPF) and routing cost (in the case of RIP, the number of hops)
+  \item The final column contains the next hop, including it's address, the port to be used, and when it was last updated
+\end{itemize}
+
+\section*{Routing Timers}
+
+\begin{itemize}
+  \item RIP has 3 timers it uses to update it's routing tables
+  \item Update Timer
+  \begin{itemize}
+    \item Determines how often to broadcast the routing table
+    \item Defaults to 30 seconds unless configured otherwise
+  \end{itemize}
+  \item Invalid Timer
+  \begin{itemize}
+    \item If a route is not in any updated tables within this time, the route is assumed to be no longer available
+    \item Defaults to 180 seconds unless configured otherwise
+  \end{itemize}
+  \item Flush Timer
+  \begin{itemize}
+    \item If a route is still not heard in any updated tables within this time, after the invalid timer, neighbours are informed that the route should be flushed (removed)
+    \item Defaults to 90 seconds unless configured otherwise
+  \end{itemize}
+  \item The invalid and flush timer are there to reduce the frequency that a route is removed and then added again when an interface goes down for a short time
+\end{itemize}
+
+\section*{Preventing Routing Loops}
+
+\begin{itemize}
+  \item Only maintain the best routes with the lowest metric within your routing table
+  \item Timeout directly connected routes immediately upon failure
+  \item Other methods include
+  \begin{itemize}
+    \item Route Poisoning
+    \item Split Horizon
+    \item Triggered Updates
+    \item Poison Reverse
+    \item Maximum of 15 hops
+  \end{itemize}
+\end{itemize}
+
+\section*{Advantages}
+
+\begin{itemize}
+  \item Widely supported on a variety of hardware
+  \item Still usable in smaller networks
+  \item Reasonable ease of configuration
+  \item Good for networks with few to no redundant paths
+  \item Good for networks where each link has similar speed and latency
+\end{itemize}
+
+\section*{Disadvantages}
+
+\begin{itemize}
+  \item The maximum hop count is 15, and so it is unsuitable for large networks
+  \begin{itemize}
+    \item If the cost for a route is 16, it means the destination is unreachable via RIP
+  \end{itemize}
+  \item Prone to routing loops due to slow convergence
+  \item Uses a significant portion of bandwidth for itself (Known as a chatty protocol) as it broacasts the entire routing protocol over the network periodically
+  \item Shortest path is not necessarily the fastest
+\end{itemize}
+
+\section*{Preventing Routing Loops}
+
+\subsection*{Split Horizon}
+
+\begin{itemize}
+  \item Used in routing protocols other than RIP
+  \item Never advertise a route to the router it was learned from
+  \item This helps to prevent loops caused by a dead link that was learned from immediate neighbours
+\end{itemize}
+
+\subsection*{Hold-Down Timer}
+
+\begin{itemize}
+  \item The default value for the hold down-timer is 180 seconds
+  \item Once an entry in the routing table is updated, any updates should be ignored until the hold-down timer expires
+  \item This helps to improve the routing stability, as the routing table won't be constantly changing
+  \item In the event of an intermittent failure of one router, it is possible that the network traffic would be significantly disrupted and cause massive overhead
+  \item This is known as route flapping, which can be reduced by the hold-down timer, as it means that the router won't be re-added to the routing table for at least 180 seconds
+\end{itemize}
+
+\subsection*{Triggered Updates}
+
+\begin{itemize}
+  \item A trigger update is a complementary rule to route poisoning
+  \item A router that knows of a failed route will not wait for the update timer to inform neighbours of the failure
+  \item This update only includes information about the poisoned routes
+  \item This increases the speed at which poisoned routes converge
+\end{itemize}

@@ -1,0 +1,152 @@
+\lecture{File Systems}{13:00}{14/11/23}{Tamer Elboghdadly}
+
+\begin{itemize}
+  \item There are many methods of physically storing a file
+  \item Operating Systems reduce the complexity of programs by abstracting the way that each file is accessed
+  \item Files typically have some content, and metadata
+  \item The main functions that can be performed with a file are
+  \begin{itemize}
+    \item Creating a new file
+    \item Rename an existing file
+    \item Deleting an existing file
+    \item Opening an existing file into memory
+    \item Closing a file in memory
+    \item Read data from a file in memory
+    \item Write data to a file in memory
+    \item Seek to a specific position in a file in memory
+    \item Get information from the metadata
+    \item Set information in the metadata
+  \end{itemize}
+  \item Metadata usually contains information such as 
+  \begin{itemize}
+    \item File Type
+    \item File Size
+    \item Ownership and Permissions
+    \item Time and Date of last modification
+    \item Location of the file
+  \end{itemize}
+\end{itemize}
+
+\section*{Directories}
+
+\begin{itemize}
+  \item A directory is a special type of file which contains a list of references to other files
+  \item Entries in a directory always point to another file, which can either be a regular file or a directory
+  \item Directories contained within another directory are known as child directories
+  \item Referenced files or directories are considered to be contained within the directory
+\end{itemize}
+
+\subsection*{The Root Directory}
+
+\begin{itemize}
+  \item Every file system has a root directory
+  \begin{itemize}
+    \item In UNIX-based systems, this is known as "/"
+    \item In Windows, this is known as "\textbackslash", but also depends upon the drive letter, so the root of the boot drive would be "C:\textbackslash"
+  \end{itemize}
+  \item Neither files nor directories contain an absolute path to themselves or their children
+  \item This means that you have to traverse the file system from the root to get to a file
+  \item To locate the file "/home/hugh/cs-notes/README.md"
+  \begin{itemize}
+    \item Go to the root directory, /, and find the directory "home"
+    \item Go to "home" and find the directory "hugh"
+    \item Go to "hugh" and find the directory "cs-notes"
+    \item Go to "cs-notes" and find the file "README.md"
+  \end{itemize}
+\end{itemize}
+
+\section*{Blocks and Clusters}
+
+\begin{itemize}
+  \item Most file systems store file contents in the unit of storage of the drive it will be stored on
+  \item In the case of a HDD, a unit may consist of one or more consecutive sectors
+  \begin{itemize}
+    \item In UNIX-based systems, these units are known as blocks
+    \item In Windwos, these units are known as clusters
+  \end{itemize}
+  \item Either way, a the size of a block is usually some binary multiple of the physical sector size of the disk (e.g. 1KB, 2KB, 4KB, etc)
+  \item Each file is allocated a whole number of blocks to store it's content
+\end{itemize}
+
+\section*{Types of File System}
+
+\begin{itemize}
+  \item On the user level, most file systems look very similar
+  \item This is because the operating system abstracts most of the complexity of a file system, and usually supports more than one file system
+  \item Different file systems exist, and the one which should be used depends on many factors, such as
+  \begin{itemize}
+    \item The type and characteristics of the physical storage
+    \item The operating system in use
+    \item The version of the operating system
+    \item The preference of the person who setup the file system
+  \end{itemize}
+  \item A few examples are
+  \begin{itemize}
+    \item FAT (File Allocation Table) - Legacy DOS file system, but still widely used in it's 32-bit variant for smaller devices
+    \item NTFS (New Technology File System) - Default boot partition format for modern Windows versions, much more reliable and configurable than FAT
+    \item Ext (Extended file system) Family - Default format for most modern Linux OSes
+    \item HFS+ (Hierarchical File System Plus) - Default format in modern versions of macOS
+  \end{itemize}
+\end{itemize}
+
+\section*{File Systems in Detail}
+
+\subsection*{FAT (File Allocation Table)}
+
+\begin{itemize}
+  \item The original file system used for MS-DOS, circa 1980
+  \item Designed by Bill Gates and used in Microsoft Basic
+  \item Updated versions of FAT were still used by Windows up until Windows Millenium Edition
+  \item Windows ME replaced FAT with NTFS
+  \item Updated versions, such as FAT32, are still used on smaller storage devices as it is usable in all modern operating systems, so allows easy file transfer between them
+  \item A FAT32 directory is a 32 byte string and contains the file name, file metadata and a reference to the first cluster of data
+  \item Since the directory only contains a reference to the first cluster, all remaining clusters of a file are located in a separate data structure, the File Allocation Table
+  \item This uses a linked list, where the links are stored on their own in a dedicated area of the disk
+  \item The FAT entries contain only a reference to a single cluster in the data area
+  \item They act as a data structure known as a cluster chain, but for all intents and purposes, it's just a linked list
+\end{itemize}
+
+\subsection*{Ext (Extended File System) Family}
+
+\begin{itemize}
+  \item Used by various UNIX-based systems, such as Linux
+  \item The current default format for Linux systems is Ext4
+  \item Everything in UNIX is a file, including physical devices such as USB peripherals, DVD drives, and even displays
+  \item Allocation follows an inode (index node) approach
+  \begin{itemize}
+    \item This means that any block can be in an allocated or unallocated state
+    \item Every file or directory has exactly one inode
+    \item The inode is a small (typically 128 byte) data structure containing metadata and block pointers for the contents of the file
+    \item Within the file system, the inode number is the main method of refering to a file or directory
+  \end{itemize}
+  \item Since directories are also files, they have their own inode
+  \item This inode contains a list of names and inode numbers for the file and directories inside the directory, and basically nothing else
+  \item Every directory also contains two files, "." and ".." which are a reference to the directory itself, and the previous directory respectively
+\end{itemize}
+
+\subsection*{NTFS (New Technology File System)}
+
+\begin{itemize}
+  \item Introduced and used for versions of Windows after NT (New Technology)
+  \item This includes all modern versions of Windows, such as 10 and 11
+  \item A much more complex file system than FAT, which has native support for
+  \begin{itemize}
+    \item Long unicode file names
+    \item Ownership and Permission structures
+    \item Encryption
+    \item Journaling
+    \item Etc
+  \end{itemize}
+  \item The primary metadata storage is in the Master File Table (MFT)
+  \item It contains at least one entry, or file record, for every file and directory
+  \item A file record is similar to an inode from Ext
+  \item Every file record in the MFT has a fixed size, which is configurable in the boot sector but is usually left at the default of 1KB
+  \item The value of any attribute can be resient or non-resident
+  \begin{itemize}
+    \item Attributes with a short, fixed length will usually be resident, and therefore stored entirely within the file record
+    \item Attributes with large values (including \$DATA attributes which store the actual file content) will usually be non-resident, and therefore stored outside the file record with only references to the actual location
+  \end{itemize}
+  \item Unlike Ext where inodes are stored in a separate space, the entire NTFS file system is able to store clusters
+  \item This means that the MFT is paradoxically stored within a file itself
+  \item It is also not stored in any specific physical location, and can be spread around the disk
+\end{itemize}

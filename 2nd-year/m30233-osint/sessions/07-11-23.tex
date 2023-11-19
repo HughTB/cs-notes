@@ -1,0 +1,98 @@
+\lecture{Interprocess Communication}{13:00}{07/11/23}{Tamer Elboghdadly}
+
+\begin{itemize}
+  \item Threads can pass information between them using shared variables, as they use the same address space
+  \item Since each process has it's own address space, they can't share variables with other processes
+  \item This means that a specific mechanism to allow communication between processes, which is known as Interprocess Communication or IPC
+  \item There are many different methods and implementations of IPC, which are designed for different purposes, such as communicating between threads on different computers
+  \begin{itemize}
+    \item Pipes and Sockets (Stream oriented)
+    \item Shared Memory (Memory oriented)
+    \item Message Passing (Message oriented)
+    \item Remote Procedure Call (Procedure oriented)
+  \end{itemize}
+\end{itemize}
+
+\section*{Single System IPC}
+
+\begin{itemize}
+  \item Communication between two or more processes within the same computer
+\end{itemize}
+
+\subsection*{Pipes}
+
+\begin{itemize}
+  \item One of the simplest forms of IPC
+  \item Commonly used in Unix-based systems, such as Liunx
+  \item A pipe has an input and an output
+  \begin{itemize}
+    \item A stream of bytes from one process is written to the output
+    \item The same stream of bytes can then be read from the input to the second process
+  \end{itemize}
+  \item The pipe is a one-way file, which can be read only by one process and written by the other
+  \item The kernel buffers data between the two threads, specifically using a bounded buffer (typically 64KB in size) with blocking (when a process is reading or writing, the other process must wait)
+  \item The pipe is created by a parent process, and can be used to communicate one-way between two child processes
+  \begin{itemize}
+    \item The parent process is usually the user's shell, with which they can pipe information from one command into another
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Shared Files}
+
+\begin{itemize}
+  \item Multiple process access one file to communicate
+  \item The file requires a lock to ensure only one process is accessing it at a time
+\end{itemize}
+
+\section*{Multi-System IPC}
+
+\begin{itemize}
+  \item Communication between two or more processes on two or more computers
+\end{itemize}
+
+\subsection*{Message Passing}
+
+\begin{itemize}
+  \item Similar to a pipe, but the data is split into messages of a certain size
+  \item It uses connectionless messaging
+  \item This can cause issues as there is no guarantee that a message was recieved, or that they were recieved in the correct order
+  \item This can be solved using a buffer on the sender side
+  \begin{itemize}
+    \item Zero-capacity buffer - The Sender will always wait for the reciever to acknowledge the message
+    \item Finite-capacity buffer - The Sender will continue to send messages until the buffer is full, messages are removed from the buffer when the reciever acknowledges them
+    \item Infinite-capacity buffer - The Sender will continue to send messages forever, regardless of acknowledgement
+  \end{itemize}
+  \item There are a few implementations available, but the standard is the Message Passing Interface, which is used by open source projects, as well as hardware vendors
+\end{itemize}
+
+\subsection*{Sockets}
+
+\begin{itemize}
+  \item Sockets are a form of message passing more similar to pipes
+  \item They can connect processes on different computers, including different operating systems or over the internet
+  \item They are more similar to pipes as they can be used in UDP mode, allowing for stream communication rather than the message-based communication of TCP
+  \item The reciever creates a socket with a certain port, and the sender opens (connects to) the socket based upon it's IP address and port
+  \item If the connection is accepted, the sender can start to send a stream of data over the network
+  \item This means that it is a connection-based protocol
+\end{itemize}
+
+\subsection*{Remote Procedure Call}
+
+\begin{itemize}
+  \item A server exposes a set of procedures (functions) which other computers are able to call
+  \item A client is then able to call a remote procedure on a server, and recieve the results of the procedure
+  \item This allows for low-powered clients to run high-power functions on a remote server
+  \item It also makes it easier to write client/server based programs, as the programmer only needs to write the application itself, and not the protocol that the application will use for communication
+  \item There are some issues with RPC
+  \begin{itemize}
+    \item If the two computers use a different architecture or operating system, they may need to convert results between different formats
+    \item This requires External Data Representation (XDR), which is a format both computers are able to use, which is converted to/from on both ends
+  \end{itemize}
+  \item There are several implementations
+  \begin{itemize}
+    \item CORBA, Common Object Request Broker Architecture
+    \item RMI, Java Remote Method Invokation
+    \item SOAP, Simple Object Access Protocol
+    \item WCF, Windows Communication Foundataion
+  \end{itemize}
+\end{itemize}
