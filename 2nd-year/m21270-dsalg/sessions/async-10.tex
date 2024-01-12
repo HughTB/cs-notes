@@ -1,0 +1,208 @@
+\lecture{Workshop 15 and 16 Async}{14:00}{12/01/24 (Redone)}{Dalin Zhou}
+
+\section*{Graphical Data Structures}
+
+\begin{itemize}
+  \item A graph consists of nodes which have many predecessors and successors
+  \item Graphs are used for a wide variety of applications, such as storing a map of a rail network, social media connections, etc
+\end{itemize}
+
+\subsection*{Terminology}
+
+\begin{itemize}
+  \item Nodes/Vertices
+  \begin{itemize}
+    \item The actual items, could be locations, people, or items
+  \end{itemize}
+  \item Edges
+  \begin{itemize}
+    \item Connections between nodes/vertices
+  \end{itemize}
+  \item Undirected Graph
+  \begin{itemize}
+    \item Each edge is just a link, with no particular direction
+  \end{itemize}
+  \item Directed Graph
+  \begin{itemize}
+    \item Each edge has a direction (explicit predecessor and successor) and can only be traversed in that direction
+  \end{itemize}
+  \item Adjacent Vertices
+  \begin{itemize}
+    \item Vertices connected by a single edge
+  \end{itemize}
+  \item Path
+  \begin{itemize}
+    \item A sequence of edges which can be used to traverse from one vertex to another
+  \end{itemize}
+  \item Degree
+  \begin{itemize}
+    \item The number of edges or adjacent vertices of a vertex
+  \end{itemize}
+  \item In/Out-Degree
+  \begin{itemize}
+    \item Sum of entering/leaving edges respectively
+  \end{itemize}
+  \item Weighted Graph
+  \begin{itemize}
+    \item Each edge has an assigned weight
+    \item The weight can mean anything (distance, capacity, etc)
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Graph Representation}
+
+\begin{itemize}
+  \item Adjacency Matrix
+  \begin{itemize}
+    \item An adjacency matrix is a matrix with a position for each possible connection between two vertices
+    \item It is an $n$-by-$n$ matrix, where $n$ is the number of vertices in the graph
+    \item Each position stores a boolean value, representing whether there is a connection between the two vertices
+    \item For a weighted graph, the value is either the weight of the edge, or infinity
+    \item For a directed graph, the value remains 0 or 1, but is a 1 for the row->column
+    \item The size of the graph must be known in advance, and duplicate edges cannot be stored
+    \item If a graph is sparse, a significant part of the matrix will be empty
+    \item $O(1)$ efficiency for all edge operations, $O(n^2)$ to insert or delete a new vertex
+  \end{itemize}
+  \item Adjacency List
+  \begin{itemize}
+    \item A set of SLLs, one for each vertex
+    \item Each SLL contains all vertices which are adjacent to the vertex, stored at the head
+    \item One SLL for each vertex in an undirected graph, or 2 for a directed graph
+    \item The size of the graph can dynamically change, allows for duplicated edges
+    \item For an undirected graph, each edge is stored twice
+    \item Space efficient for a sparse graph, less so for a dense graph
+    \item $O(n)$ efficieny to search for or delete an edge, $O(1)$ to insert an edge at the head, $O(1)$ to insert a new vertex, $O(n)$ to delete a vertex
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Traversal}
+
+\begin{itemize}
+  \item Depth First Search (DFS)
+  \begin{itemize}
+    \item Traverse as deep as possible until a dead-end is found
+    \item Backtrack to find another dead-end
+    \item Repeat until all paths are found
+    \item Pesudocode implementation (each vertex starts as being marked "unvisited")
+  \begin{verbatim}
+push vertex onto stack
+mark as visited
+while stack not empty {
+  pop vertex off stack
+  process the vertex
+  for each adjacent unvisited vertex {
+    push vertex onto stack
+    mark as visited
+  }
+}
+  \end{verbatim}
+  \end{itemize}
+  \item Breadth First Search (BFS)
+  \begin{itemize}
+    \item Find all adjacent vertices (fan out as much as possible)
+    \item Fan out on all adjacent vertices until every vertex is visited
+    \item Pesudocode implementation (each vertex starts as being marked "unvisited")
+  \begin{verbatim}
+enqueue vertex onto queue
+mark as visited
+while queue not empty {
+  dequeue vertex off queue
+  process the vertex
+  for each adjacent unvisited vertex {
+    enqueue vertex onto queue
+    mark as visited
+  }
+}
+  \end{verbatim}
+  \end{itemize}
+\end{itemize}
+
+\section*{Applications of Graphical Data Structures}
+
+\subsection*{Greedy Algorithms}
+
+\begin{itemize}
+  \item A decision is made at each stage which seems good at the time, with no consideration for it's consequences
+  \item Once this decision is made, it is never reconsidered
+  \item It is hoped that a series of relative good decisions leads to globally optimal solution
+  \item Greedy algorithms do not consistently find the optimal solution, as they are unable to operate on all of the data, only that which they considered when making local decisions
+\end{itemize}
+
+\subsection*{Shortest Path Trees}
+
+\begin{itemize}
+  \item A shortest path tree is a tree (subgraph) that contains all of the vertices and a subset of edges, where the path from the root to any other vertex has the shortest distance
+  \item One vertex is chosen as the root, which could be strategic, or arbitrary
+  \item This is useful for route planning algorithms for road maps, airlines, etc
+\end{itemize}
+
+\subsection*{Dijkstra's Algorithm}
+
+\begin{itemize}
+  \item Finds all of the shortest paths from a given vertex of a graph to all other vertices at once
+  \item Sometimes known as the 'single-source shortest paths algorithm'
+  \item The method goes as follows
+  \begin{itemize}
+    \item Place the source vertex, $S$ at the root of the shortest path tree
+    \item For each vertex, $V_i$ that has a single edge from $S$, the distance is stored and $V_i$ is added to a priority queue
+    \item All other vertices are given a distance of infinity
+    \item Perform this loop until the priority queue is empty
+    \begin{itemize}
+      \item The vertex in the priority queue with the shortest distance from $S$, $V_s$ is selected and added to the shortest path tree
+      \item For each vertex $V_i$ adjacent to $V_s$ that has a single edge from $V_s$ to $V_i$, the distance from $S$ to $V_i$ is calculated
+      \item If this new value is less than the value already stored, update the value and add the vertex $V_i$ to the priority queue
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Spanning Trees}
+
+\begin{itemize}
+  \item A graph can contain multiple paths between vertices
+  \item A spanning tree is a tree (subgraph) which contains all of the vertices with only one path between each pair of vertices
+  \item Any one graph can have many spanning trees
+  \begin{itemize}
+    \item BFS of a graph gives a breadth-first spanning tree
+    \item DFS of a graph gives a depth-first spanning tree
+  \end{itemize}
+  \item This is useful for planning routes to use the minimum resources, such as a telephone network between towns, connections between terminals on a circuit board, etc
+\end{itemize}
+
+\subsection*{Minimum Spanning Tree}
+
+\begin{itemize}
+  \item There can be several spanning trees for any given graph, but in a weighted graph you can have more and less efficient spanning trees
+  \item The minimum spanning tree is a specific spanning tree which has the lowest total weight
+  \item To find the minimum spanning tree, every other spanning tree must also be known and compared
+  \item This is useful for planning a new network, with the weight of each edge representing it's cost
+\end{itemize}
+
+\subsection*{Prim's Algorithm}
+
+\begin{itemize}
+  \item Builds upon a single partial minimum spanning tree
+  \item At each step, add an edge connecting the nearest vertex which is not already in the spanning tree
+  \item Pseudocode implementation
+\begin{verbatim}
+while not all vertices in tree {
+  examine all vertices in the graph with an endpoint in the tree and the other not
+  find the shortest edge and add to the tree
+}
+\end{verbatim}
+\end{itemize}
+
+\subsection*{Kruskal's Algorithm}
+
+\begin{itemize}
+  \item Combines sets of partial spanning trees
+  \item At each step, add the shortest edge in the graph whose vertices are in different partial minimum spanning trees
+  \item Pseudocode implementation
+\begin{verbatim}
+while tree is incomplete and there are edges to add {
+  find the shortest edge which hasn't been considered yet
+  if it's endpoints are in different trees {
+    join the trees
+  }
+}
+\end{verbatim}
+\end{itemize}

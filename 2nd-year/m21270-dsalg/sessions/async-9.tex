@@ -1,0 +1,161 @@
+\lecture{Workshop 13 and 14 Async}{11:00}{12/11/23}{Dalin Zhou}
+
+\section*{Heaps}
+
+\begin{itemize}
+  \item A max-heap is a binary tree with the following characteristics
+  \begin{itemize}
+    \item It is a complete binary tree - all levels other than the last are full and the last level has all it's leaves on the left side
+    \item The key in the root is larger than both child nodes
+    \item Both subtrees satisfy these requirements
+  \end{itemize}
+  \item A heap can be implemented using a linear datastructure, such as a list or array
+  \begin{itemize}
+    \item The root of the tree is stored at element 0
+    \item Then it's children are stored from left to right, and so on down the tree
+    \item We can get the index of the current node's children or parent using the following formulae, assuming the indexes start at 0
+    \begin{itemize}
+      \item $p = \frac{c - 1}{2}$ where p = parent index, c = current index
+      \item $l = 2c + 1$ where l = left index, c = current index
+      \item $r = 2c + 2$ where r = right index, c = current index
+    \end{itemize}
+  \end{itemize}
+  \item A heap can be used to implement
+  \begin{itemize}
+    \item Djikstra's Algotithm
+    \item Kruskal's Algotithm
+    \item Huffman's Algorithm
+    \item Priority Queues
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Insertion}
+
+\begin{itemize}
+  \item When an item is inserted, it is always placed as the next leaf on the lowest level
+  \item If the lowest level is full, it is placed as the left-most node on a new, lower level
+  \item Insertion will probably break the heap properties of the tree, and so must be corrected
+  \begin{itemize}
+    \item The inserted item is moved up the tree until it either ends up as the root node, or finds a parent which restores the heap properties
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Deletion}
+
+\begin{itemize}
+  \item Any item in the tree can be deleted at any time, but this may leave two detached subtrees
+  \item To restore the tree, move the right-most item on the lowest level into the root, then move it down the tree until the heap properties are restored
+\end{itemize}
+
+\section*{Priority Queues}
+
+\begin{itemize}
+  \item A priority queue is an abstract data type with the following operations
+  \begin{itemize}
+    \item Insert an element with an associated priority
+    \item Remove the element with the highest priority
+  \end{itemize}
+  \item This can be implemented with a static, unsorted array
+  \begin{itemize}
+    \item Each entry contains the value of the element, and it's priority
+    \item Inserting an element is efficient as it can be inserted into the first empty space, and so has a Big-O of $O(1)$
+    \item Removing an element however, is inefficient as the entire array must be searched to find the element with the highest priority, and so has a Big-O of $O(n)$
+  \end{itemize}
+  \item It can alternatively be implemented using a heap
+  \begin{itemize}
+    \item The highest priority item will always be sorted to the root of the tree
+    \item This gives a Big-O of $O(log_2 n)$ for both insertion and removal
+  \end{itemize}
+\end{itemize}
+
+\section*{Heap Sort}
+
+\begin{itemize}
+  \item A heap can be used as a form of sorting algorithm
+  \item Build a heap form the elements to be sorted
+  \item Retrieve the root of the tree as the largest or smallest item for a max- and min-heap respectively
+  \item Swap the root with the rightmost leaf on the biottom level
+  \item Rebuild the heap without the previous root
+  \item Recurse this algorithm until the last node is found
+\end{itemize}
+
+\section*{Data Compression}
+
+\begin{itemize}
+  \item Since files such as videos can be very large when stored at original quality, compression is needed to reduce the size and bandwith needed to store and transfer files
+  \item We only talk about text compression as this is the most simple to implement, but most of the concepts carry over to other types of data
+  \item Both the sender and reciever of the data must know and understand the encoding scheme used to represent the text
+  \item There are two types of data compression
+  \item Lossless Compression
+  \begin{itemize}
+    \item All of the original data can be reproduced using only the compressed data
+    \item Used in text compression, as al of the original text must be preserved
+    \item Compression ratios of between 2:1 and 8:1 depending upon the implementation
+  \end{itemize}
+  \item Lossy Compression
+  \begin{itemize}
+    \item The decompressed data is slightly different to the original data, and the original data cannot be reproduced
+    \item A small loss of accuracy is traded for a massive increase in compression ratio
+    \item Used for the compression of sound, images and videos where a slight loss of data is acceptable given the greatly reduced size
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Fixed-Length Coding}
+
+\begin{itemize}
+  \item Each of the codes used to represent a chunk of data are the same length
+  \item This is efficient when only needing to represent a small number of codes
+  \item e.g. If only 4 different codes were needed, they could be represented by a 2-bit number
+  \begin{itemize}
+    \item This would allow 4 different values of arbitrary length to be encoded using only 2 bits each
+    \item For a message made up with only 4 letters, the length could be reduced by 4-fold by reducing the number of bits for each letter from 8 to 2
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Variable-Length Coding}
+
+\begin{itemize}
+  \item Each of the codes used to represent a chunk of data can be any length
+  \item Shorter codes are used for more frequently occuring characters
+  \item Longer codes are used for less frequently occuring characters
+  \item Using variable length coding can reduce the size of an encoded string
+  \item It is possible for the size to be increased, if the codebook is implemented improperly or if the frequency of characters is relatively similar
+  \item Decoding is also slower as it hard to determine how many bits in the encoded string correspond to which codes
+\end{itemize}
+
+\section*{Huffman Coding}
+
+\begin{itemize}
+  \item Huffman coding uses a statistical method to determine each variable-length code
+  \item The most frequently occuring characters are converted to short codes and the least frequent charactesr are converted to longer codes
+  \item A huffman tree is a weighted binary tree where
+  \begin{itemize}
+    \item Each leaf node represents a character to be encoded
+    \item Each branch is labelled with a 1 or 0
+  \end{itemize}
+  \item Huffman codes are determined by following the path from the root to the leaf node in question, adding a 1 or 0 to the code based upon the branches
+\end{itemize}
+
+\subsection*{Creating a Huffman Tree}
+
+\begin{itemize}
+  \item Initially, you have a list of leaf nodes containing the characters and their frequencies
+  \begin{itemize}
+    \item The list of leaves is then sorted by frequency
+    \item Combine the two nodes with the lowest frequencies
+    \item Create a binary tree with the parent node containing the sum of frequencies of it's children
+    \item Sort the nodes and repeat until there's only one node left
+  \end{itemize}
+  \item This requires a priority queue, and therefore can use a min-heap to represent the queue
+  \begin{itemize}
+    \item Remove the two nodes with the lowest frequencies from the heap
+    \item Create a new internal node with said nodes as its children and the sum of their frequencies as its value
+    \item Insert to the new node back into the min-heap
+  \end{itemize}
+  \item The final remaining node is the root of the huffman tree
+  \item To get the huffman code for a symbol, you traverse the tree from the root to the symbol
+  \begin{itemize}
+    \item For each left-branch you take, add a 0
+    \item For each right-branch, add a 1
+  \end{itemize}
+\end{itemize}
