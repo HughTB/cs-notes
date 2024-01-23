@@ -1,0 +1,74 @@
+\lecture{Introduction to Functional Programming}{12:00}{22/01/24}{Matthew Poole}
+
+\begin{itemize}
+  \item For this module, we will be using the GHC (Glasgow Haskell Compiler), or more specifically it's interactive shell, GHCi
+\end{itemize}
+
+\section*{Imperative VS Functional Programming}
+
+\begin{itemize}
+  \item Most programming languages are imperative
+  \begin{itemize}
+    \item Such as Python, JavaScript, C, etc
+  \end{itemize}
+  \item Functional programming is another programming paradigm, which is based upon the mathematical concept of a function
+  \item Imperative programming has state, statements (or commands) and side effects
+  \item Pure Functional programming has no state, statements, or side effects
+  \item A side effect is the change of state caused by calling a functionl assigning a variable, etc
+  \begin{itemize}
+    \item This means that it is not always possible to predict the result of running a program, even with access to it's
+    source code
+  \end{itemize}
+\end{itemize}
+
+\begin{itemize}
+  \item Since most programs need to cause a side effect (usually outputting data), most functional programming languages are
+  not purely functional, but tend to organise the code such that only one part causes side effects
+\end{itemize}
+
+\section*{Functional Programming Languages}
+
+\begin{itemize}
+  \item There are two types of functional programming languages
+  \item Pure
+  \begin{itemize}
+    \item Languages such as Haskell
+    \item Has absolutely no state or side effects
+  \end{itemize}
+  \item Impure
+  \begin{itemize}
+    \item Languages such as ML, Clojure, Lisp, Scheme, OCaml, F\#
+    \item Has some state or side effects, either everywhere or in a specific part of code
+  \end{itemize}
+  \item There are also some functional constructs in major imperative langages such as Python, JavaScript, and more
+\end{itemize}
+
+\section*{FP Basics}
+
+\subsection*{Expressions}
+
+\begin{itemize}
+  \item An expression is a piece of text which has a value
+  \item To get the value from the expression, you evaluate it
+  \item This gives you the value of the expression
+  \item e.g.
+  \item \begin{verbatim}
+Expression -> evaluate -> Value
+2 * 3 + 1  -------------> 7
+  \end{verbatim}
+\end{itemize}
+
+\subsection*{Functions}
+
+\begin{itemize}
+  \item A function whose output relies only upon the values that are input into it
+  \item The result will always be the same, given the same values
+  \item This is the same as a mathematical function, which is where the name Functional Programming comes from
+\end{itemize}
+
+\section*{Haskell Basics}
+
+\begin{itemize}
+  \item In Haskell, all functions have higher precidence than operators
+  \item This means that you have to explicity use brackets to ensure the correct order of operations
+\end{itemize}
