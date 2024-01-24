@@ -1,0 +1,102 @@
+\lecture{Sets}{17:00}{23/01/24}{Janka Chlebikova}
+
+A set is a collection of objects, known as elements or members (I will stick to members). Each member only appears once
+ in the set. There is no particular order for members of a set, so there are several different ways to represent the
+ same set. The members of a set can be just about anything, as long as they all abide by the same rules, and are in
+ some way related.
+
+\section*{Notation}
+
+There are several ways of noting a set, such as writing out all of the members of the set, or by using a rule which
+ describes all of the members of a set.
+
+For example, the following sets are equivalent
+\begin{itemize}
+  \item $A = \{1, 2, 3, 4, 5\}$
+  \item $A = \{x \mid 0 < x \leq 5\}$
+\end{itemize}
+
+If the object, $x$ is in the set $S$, you would write it as $x \in S$. If not, it would be written as $x \notin S$ \
+You can also describe a set by specifying a propery that the members share, e.g.
+\begin{itemize}
+  \item $B = \{3, 6, 9, 12\}$
+  \item $B = \{x \mid x \mathrm{\ is\ a\ multiple\ of\ } 3 \mathrm{,\ and\ } 0 < x \leq 15\}$
+  \item $\begin{aligned}
+    S &= \{\dots, -3, -1, 1, 3, \dots\} \\
+    & = \{x \mid x \mathrm{\ is\ an\ odd\ integer}\} \\
+    & = \{x \mid x = 2k + 1 \mathrm{\ for\ some\ integer\ } k\} \\
+    & = \{x \mid x = 2k + 1 \mathrm{\ for\ some\ } k \in \mathbb{Z}\} \\
+    & = \{2k + 1 \mid k \in \mathbb{Z}\}
+  \end{aligned}$
+\end{itemize}
+
+\section*{The Number Sets}
+
+Some letters are reserved for specific sets of numbers which can be used elsewhere to simplify definitions, the
+ following are the most commonly used number sets
+\begin{itemize}
+  \item $\mathbb{N}$ is used for the set of natural numbers, $\mathbb{N} = \{0, 1, 2, 3, 4, \dots\}$
+  \item $\mathbb{Z}$ is used for the set of integers, $\mathbb{Z} = \{\dots, -2, -1, 0, 1, 2, \dots\}$
+  \item $\mathbb{Q}$ is used for the set of rational numbers, $\mathbb{Q} = \{0, \frac{1}{2}, \frac{1}{3}, \dots\}$
+  \item There is also the empty or null set, $\emptyset$ which contains no items, so $\emptyset = \{\}$
+\end{itemize}
+
+A set can either by finite or infinite, and the cardinality of a set is the number of members, e.g. $\lvert S \rvert = $
+ the number of members of $S$. For example, $\mathbb{N}$ and $\mathbb{Z}$ are infinite sets, and the set
+ $A = \{1, 2, 3\}$ is a finite set with a cardinality of 3, so $\lvert A \rvert = 3$
+
+\section*{Subsets}
+
+If every member of $A$ is also a member of $B$, $A$ is said to be a subset of $B$, which can be written as
+ $A \subseteq B$. If $B$ also has at least 1 member which is not a member of $A$, then $A$ is a proper subset of $B$,
+ which can be written as $A \subset B$. If $A$ is not a subset of $B$, it can be written as $A \nsubseteq B$. Since the
+ null set, $\emptyset$ contains no elements, it is a subset of every other set.
+
+\subsection*{Equality of Sets}
+
+If two sets, $A$ and $B$ are equal, they have exactly the same members, which can be written as $A = B$. Alternatively,
+ $A = B$ if the following conditions are true:
+\begin{itemize}
+  \item $A \subseteq B$, and so for each $x$, if $x \in A$ then $x \in B$
+  \item $B \subseteq A$, and so for each $y$, if $y \in B$ then $y \in A$
+\end{itemize}
+
+\section*{Operations}
+
+The intersection of two sets, $A$ and $B$ is every member in both sets, $A \cap B$. For example, the intersection of the
+ sets $X = \{1, 2, 3, 4, 5\}$ and $Y = \{4, 5, 6, 7, 8\}$ is $X \cap Y = \{4, 5\}$. If there are no common members, then
+ the two sets are said to be disjoint. You can remember this by the fact that $\cap$ looks like an n, and therefore is
+ the I\textbf{n}tersection of two sets.
+
+The union of two sets, $A$ and $B$ is every member in either set, $A \cup B$. For example, the union of the sets
+ $X = \{1, 2, 3, 4, 5\}$ and $Y = \{4, 5, 6, 7, 8\}$ is $X \cup Y = \{1, 2, 3, 4, 5, 6, 7, 8\}$. You can remember this
+ by the fact that $\cup$ looks like a U, and therefore is the \textbf{U}nion of two sets.
+
+The difference of two sets, $A$ and $B$ are all members of the first set which are not members of the second set,
+ $A \backslash B$. For example, the difference of the sets $X = \{1, 2, 3, 4, 5\}$ and $Y = \{4, 5, 6, 7, 8\}$ is
+ $X \backslash Y = \{1, 2, 3\}$. This is the effectively subtracting the sets, $X - Y$.
+
+If we consider all of the sets to be a subset of a particular set, $U$ which contains all of the members of the
+ ``Universe of Discourse'', then the complement of a set, $A$ is any members of $U$ whcih are not in $A$. This is
+  represented as either $A'$ or $\overline{A}$
+
+All of these operations can be represented using a Venn diagram.
+
+Like binary arithmetic, these operations follow a few rules:
+\begin{itemize}
+  \item Commutative - $A \cup B = B \cup A$ and $A \cap B = B \cap A$
+  \item Associative - $(A \cup B) \cup C = A \cup (B \cup C)$ and $(A \cap B) \cap C = A \cap (B \cap C)$
+  \item Distributive - $A \cap (B \cup C) = (A \cap B) \cup (A \cap C)$ and
+   $A \cup (B \cap C) = (A \cup B) \cap (A \cup C)$
+  \item de Morgan's - $(A \cap B)' = A' \cup B'$ and $(A \cup B)' = A' \cap B'$
+\end{itemize}
+
+To get the cardinality of the union of two finite sets, you might think it would just be
+ $\lvert A \cup B \rvert = \lvert A \rvert + \lvert B \rvert$, however, this results in counting $\lvert A \cap B \rvert$
+ twice, and so the correct cardinality is $\lvert A \cup B \rvert = \lvert A \rvert + \lvert B \rvert - \lvert A \cap B \rvert$
+
+\section*{The Power Set}
+
+The power set is a set containing all subsets of the set, so if $S = \{a, b, c\}$, then the power set $P(S)$ would be
+ $P(S) = \{\emptyset, \{a\}, \{b\}, \{c\}, \{a, b\}, \{b, c\}, \{a, c\}, \{a, b, c\}\}$. If the set $S$ has $n$ members,
+ $P(S)$ has $2^n$ members.
