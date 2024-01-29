@@ -8,13 +8,6 @@
   top=20mm
 }
 
-% Set fonts
-\usepackage[no-math]{fontspec}
-
-\setmainfont[Ligatures=TeX]{IBM Plex Sans}
-\setsansfont[Ligatures=TeX]{IBM Plex Sans}
-\setmonofont[Ligatures=TeX]{IBM Plex Mono}
-
 % Command to insert the cover page for each module
 \newcommand{\coverpage}[4]{
   \begin{titlepage}
@@ -144,3 +137,11 @@
 % Use the amsfonts package for blackboard bold fonts
 \usepackage{amsfonts}
 \usepackage{amssymb}
+
+% Use the mathspec package to set main and math fonts
+\usepackage{mathspec}
+
+\setmainfont[Ligatures=TeX]{IBM Plex Sans}
+\setsansfont[Ligatures=TeX]{IBM Plex Sans}
+\setmonofont[Ligatures=TeX]{IBM Plex Mono}
+\setmathfont(Digits,Latin){IBM Plex Math}
