@@ -1,0 +1,68 @@
+\lecture{Intro to Functional Programming II}{12:00}{22/01/24}{Matthew Poole}
+
+\section*{Tracing a Functional Program}
+
+In an imperative program, it is obvious that you trace the program by determining the effect of each statement on the
+ overall state of the program. However, with a functional program, each step of the tracing process is evaluating an
+ expression, known as calculation. For example, we can trace the following program
+\begin{verbatim}
+twiceSum :: Int -> Int -> Int
+twiceSum x y = 2 * (x + y)
+
+twiceSum 4 (2 + 6)
+\end{verbatim}
+by replacing each of the parameters of \verb_twiceSum_ as below
+\begin{verbatim}
+twiceSum 4 (2 + 6)
+~> 2 * (4 + (2 + 6))
+~> 2 * (4 + 8)
+~> 2 * 12
+~> 24
+\end{verbatim}
+
+As above, in Haskell, the arguments are passed into the function verbatim, so the first step of executing a function is
+ usually evaluating the arguments. This means that Haskell uses Non-Strict Computation - The arguments are passed
+ into the function before being evaluated. Some functional programming languages use Strict Computation, meaning that
+ the arguments are evaluated before being passed into the function. It doesn't really make a difference, other than that
+ you may be asked to use a specific method in questions on exams, etc.
+
+\section*{Guards}
+
+Guards are boolean expressions which can be used when defining a function to give different results, depending upon the
+ input or a property thereof. This is especially useful for \textbf{Guarding} against invalid inputs. The syntax in
+ Haskell is as below
+\begin{verbatim}
+maxVal :: Int -> Int -> Int
+maxVal x y
+  | x >= y    = x
+  | otherwise = y
+\end{verbatim}
+If the first guard is true, then the corresponding result is returned. If it's false, the next guard is evaluated, and
+ corresponding value returned. You can also create a ``default'' case which is used if none of the other guards are
+ true, which uses the keyword \verb_otherwise_. Guards can also be used instead of a chain of if statements, which is
+ easier to understand, and simpler to create in the first place.
+
+\section*{Local Definitions}
+
+If your function uses a very complex mathematical calculation, you may want to break the calculation into several steps.
+ In Haskell, you can do this using Local Definitions. Using the \verb_where_ keyword, you can define what are
+ effectively local variables. This is useful as you can break down complex calculations into multiple, less complex and
+ easier to understand ones. For example, the following function,
+\begin{verbatim}
+distance :: Float -> Float -> Float -> Float -> Float
+distance x1 y1 x2 y2 = sqrt ((x1 - x2)^2 + (y1 - y2)^2)
+\end{verbatim}
+could also be written as
+\begin{verbatim}
+distance x1 y1 x2 y2 = sqrt (dxSq + dySq)
+  where
+  dxSq = dx^2
+  dySq = dy^2
+  dx = x1 - x2
+  dy = y1 - y2
+\end{verbatim}
+The order of local definitions is irrelevant, and will still work if you reference a definition before it is actually
+ defined. Local definitions are only usable within the function they are defined, hence ``local'', but are able to
+ reference each other, and the parameters of the function. As well as ``variables'', you can also define ``functions''
+ as local definitions. This is useful to simplify repetitive code, which is used only within the function itself. Local
+ definitions can also be used in conjunction with guards, in which case they are defined after the guards.
