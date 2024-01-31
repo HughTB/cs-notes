@@ -12,11 +12,11 @@ areaOfCircle r = pi * r^2
 
 -- Ex 4
 volumeOfCylinder :: Float -> Float -> Float
-volumeOfCylinder h r = pi * r^2 * h
+volumeOfCylinder h r = areaOfCircle r * h
 
 -- Ex 5
 distance :: Float -> Float -> Float -> Float -> Float
-distance x1 y1 x2 y2 = sqrt((y1 - y2)^2 + (x1 - x2)^2)
+distance x1 y1 x2 y2 = sqrt ((y1 - y2)^2 + (x1 - x2)^2)
 
 -- Ex 6
 threeDifferent :: Int -> Int -> Int -> Bool
@@ -36,4 +36,4 @@ averageThree x y z = fromIntegral (x + y + z) / 3
 
 -- Ex 10
 absolute :: Int -> Int
-absolute x = if x > 0 then x else x * (-1)
+absolute x = if x > 0 then x else (-x)
