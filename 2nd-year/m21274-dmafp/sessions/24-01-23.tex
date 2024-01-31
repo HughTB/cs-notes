@@ -17,7 +17,7 @@ For example, the following sets are equivalent
 \end{itemize}
 
 If the object, $x$ is in the set $S$, you would write it as $x \in S$. If not, it would be written as $x \notin S$ \
-You can also describe a set by specifying a propery that the members share, e.g.
+You can also describe a set by specifying a property that the members share, e.g.
 \begin{itemize}
   \item $B = \{3, 6, 9, 12\}$
   \item $B = \{x \mid x \mathrm{\ is\ a\ multiple\ of\ } 3 \mathrm{,\ and\ } 0 < x \leq 15\}$
@@ -77,7 +77,7 @@ The difference of two sets, $A$ and $B$ are all members of the first set which a
  $X \backslash Y = \{1, 2, 3\}$. This is the effectively subtracting the sets, $X - Y$.
 
 If we consider all of the sets to be a subset of a particular set, $U$ which contains all of the members of the
- ``Universe of Discourse'', then the complement of a set, $A$ is any members of $U$ whcih are not in $A$. This is
+ ``Universe of Discourse'', then the complement of a set, $A$ is any members of $U$ which are not in $A$. This is
   represented as either $A'$ or $\overline{A}$
 
 All of these operations can be represented using a Venn diagram.
@@ -100,3 +100,9 @@ To get the cardinality of the union of two finite sets, you might think it would
 The power set is a set containing all subsets of the set, so if $S = \{a, b, c\}$, then the power set $P(S)$ would be
  $P(S) = \{\emptyset, \{a\}, \{b\}, \{c\}, \{a, b\}, \{b, c\}, \{a, c\}, \{a, b, c\}\}$. If the set $S$ has $n$ members,
  $P(S)$ has $2^n$ members.
+
+\section*{Partitions}
+
+The collection of nonempty subsets of $S$ is a \textbf{partition} of the set $S$, if and only if every element in $S$
+ belongs to exactly one member of the partition. This means that the partition sets are mutually disjoint, and the union
+ of all sets in the partition is equal to $S$
