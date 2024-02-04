@@ -1,0 +1,96 @@
+\lecture{Implementation and Compilation}{14:00}{02/02/24}{Jiacheng Tan}
+
+There are 3 main methods of implementing a language:
+\begin{itemize}
+  \item Compilation - Programs are translated into machine language, either before (Compilation) or during (JIT)
+   execution
+  \item Pure Interpretation - Programs are interpreted by another program, known as an interpreter
+  \item Hybrid Interpretation - A compromise between the two, code is compiled into an intermediary language, which is
+   then interpreted with a Language Virtual Machine
+\end{itemize}
+
+\section*{Compilation}
+
+\begin{itemize}
+  \item High-level code is translated into machine code for a specific platform
+  \item This results in slow translation, but much faster execution
+  \item The compilation process has multiple stages
+  \begin{itemize}
+    \item Lexical Analysis - Converts characters in the source into lexical units
+    \item Syntax Analysis - Transforms lexical units into parse trees which represent the syntactic structure of the
+     program
+    \item Semantics Analysis - Generate intermediary code
+    \item Code Generation - Intermediary code is translated into platform-specific machine code
+  \end{itemize}
+  \item The program which completes this process is known as the Compiler
+  \item During this process, the compiler uses a "Symbol Table", which each stage interacts with
+\end{itemize}
+
+\subsection*{Lexical Analysis}
+
+The scanner reads the source code one character at a time and returns a sequence of tokens which are sent to the next
+ phase. Tokens are symbolic names for elements of the source language. An example of a token in C++ is the keyword
+ `void`, which is a type definition, another example is `;`, which delimits the end of a statement. Each token is also
+ stored in the symbol table, along with it's attributes.
+
+\subsection*{Symbol Table}
+
+The symbol table stores all of the identifiers of a source program, along with their attributes. These attributes
+ include information such as the type of a variable, the size or length of a string or array, the arguments to be used
+ with a function and the types of each argument, etc.
+
+\subsection*{Syntax Analysis or Parsing}
+
+The parser analysis the structure of the source code. The parser takes the output of the lexical analyser as a sequence
+ of tokens. It attempts to apply the syntactic rules (or grammar) of the language to the sequence of tokens. The parser
+ uses the language's grammar to derive a parse tree for each statement. Parsers usually construct Abstract Syntax Trees
+ (ASTs), which are slightly simpler and easier to represent with a computer, but which still represent the same syntax.
+ If the syntax tree is invalid for the language's grammar, a syntax error is generated and the compilation process stops
+
+\subsection*{Semantic Analysis}
+
+The semantic analyser catches any other issues that are still valid syntax. For example, if you attempt to add a string
+ to a float, it could still be syntactically correct, but semantically makes no sense and is not possible to compute.
+ It is also able to find issues with the variable types of function arguments, such as attempting to use a string in the
+ place of an integer or float.
+
+\subsection*{Code Generation and Optimisation}
+
+The code optimiser attempts to improve the time and space efficiency of the program. It can do this in several ways,
+ such as simplifying constants (e.g. replacing 10 * 10 with 100), removing unreachable code, optimising the flow of
+ code, etc.
+
+The final task of the compiler is to generate the final output code. This could be in the form of platform-specific
+ machine code, or intermediary code for use with a virtual machine. This stage also deals with scheduling and assigning
+ registers for use during execution
+
+\section*{Pure Interpretation}
+
+\begin{itemize}
+  \item High level code is directly executed by another program known as the interpreter
+  \item There is no syntax or semantics analysis, and there is no optimisation
+  \item Only really suitable for small, non-real-time applications
+  \item It also often requires more space as it needs to store the symbol table during execution
+  \item Very few modern languages use interpreters, other than Python, JavaScript and PHP
+\end{itemize}
+
+\section*{Hybrid Interpretation}
+
+\begin{itemize}
+  \item A compromise between compilers and pure interpreters
+  \item High-level languages are translated or compiled into an intermediary language, using the same compilation steps
+   as before
+  \item The intermediary code is then run by a platform-specific virtual machine, which interprets the code into machine
+   language
+\end{itemize}
+
+\section*{Just-in-Time}
+
+\begin{itemize}
+  \item Programs are initially translated into an intermediary language
+  \item This is then loaded into memory and segments of the program are then translated into machine code just before
+   execution
+  \item The machine code is then kept in case the function is called again somewhere else in the program
+  \item This drastically improves the execution speed as compared to pure interpretation, but is still slower and
+   typically less space and memory efficient than a compiled program
+\end{itemize}
