@@ -1,0 +1,90 @@
+\lecture{Pattern Matching and Recursion}{12:00}{05/02/24}{Matthew Poole}
+
+\section*{Importing Libraries}
+
+As with any other language, you can import files in Haskell. There are some standard libraries included in GHC, such as
+ the \verb`Data.Char` library, which includes functions for manipulating strings, such as \verb`toUpper` and
+ \verb`toLower`. (Astounding features, I know). To import an entire module, you use \verb`import Data.Char`, but to
+ import only specific functions you can use \verb`import Data.Char (toUpper, toLower)`. There is also a ``standard
+ prelude'' which is imported automatically by the interpreter. It includes the definitions of standard functions, such
+ as \verb`mod` as well as commonly used types.
+
+Haskell includes functions, which are used as with prefix notation, e.g. \verb`mod n 2` and operators which are used
+ with infix notation, e.g. \verb`2 - 1`. There is an operator which uses prefix notation, the unary minus which is used
+ to represent a negative number. You can use any binary function (one with two arguments) as an infix operator, by
+ surrounding it with backticks, e.g. \verb`mod n 2` could also be written as \verb+n `mod` 2+. You can also use an
+ operator as a function by surrounding it with brackets, e.g. \verb`1 + x` could also be written as \verb`(+) 1 x`.
+
+\section*{Pattern Matching}
+
+There are two ways of defining functions - using single equations and using guards - which have already been covered,
+ but there is another way, which is using pattern matching. Patterns work in a similar way to guards, and one example
+ is the function \verb`not` which is defined in the prelude as 
+\begin{verbatim}
+not :: Bool -> Bool
+not True    = False
+not False   = True
+\end{verbatim}
+This definition is a sequence of equations. For each pattern (on the left) there is a result (on the right). When the
+ function is called, the input is checked against each pattern, and if it matches, that pattern's output is returned.
+
+You can also use the wildcard pattern \verb`_`, which matches any value. This is often useful for simplifying complex
+ patterns. For example, if we wanted to redefine the boolean or operator, \verb`||`, we could define it as
+\begin{verbatim}
+(||) :: Bool -> Bool -> Bool
+True || True    = True
+True || False   = True
+False || True   = True
+False || False  = False
+\end{verbatim}
+but this is very complex, and defines 3 redundant patterns. We could instead use the wildcard, and define it as
+\begin{verbatim}
+(||) :: Bool -> Bool -> Bool
+False || False  = False
+_ || _          = True
+\end{verbatim}
+I would argue this is not necessarily more readable, but it is more compact and technically more efficient
+
+\section*{Recursion}
+
+For and while loops are very much imperative constructs, as they operate on the state of the program. This means that
+ they cannot exist in pure functional programming. Therefore recursion is a fundamental concept in the functional
+ paradigm. Recursion is used heavily throughout functional programming, but especially when a list or other iterable
+ data type is involved.
+
+One common example of iteration is to calculate the factorial of a number. Since the factorial of a number, $n$ is
+ defined as $n \times (n - 1) \times (n - 2) \times \dots \times 2 \times 1$ and by convention, $n! = 1$, we can define
+ the factorial of $n$ where $n > 0$ in terms of the factorial of $n - 1$. e.g. $3! = 3 \times 2!$. This gives us a very
+ simple recursive algorithm, which could be defined as follows in Haskell
+\begin{verbatim}
+fact :: Int -> Int
+fact n
+  | n > 0   = n * fact (n - 1)
+  | n == 0  = 1
+\end{verbatim}
+This definition, despite being correct, will fail for negative integers as there is no guard for that case. To fix this,
+ you could add the following \verb`otherwise` guard to give an error message
+\begin{verbatim}
+  | otherwise = error "Undefined for negative integers"
+\end{verbatim}
+
+\section*{General Recursion}
+
+The previous example of a recursive function was, in fact, a primitive recursive function, e.g. the base case considers
+ the value of 0 and the recursive case considers how to get from $n - 1$ to $n$. Another example of a primitive
+ recursive function is to perform multiplication with addition, e.g.
+\begin{verbatim}
+mult :: Int -> Int -> Int
+mult n m
+  | n == 0  = 0
+  | n > 0   = m + mult (n - 1) m
+\end{verbatim}
+Since this function also has a base case of \verb`n == 0`, it is primitive. A general recursive function is one in which
+ the base case is not checking for a value of 0. For example, if we were to implement integer division using
+ subtraction, the base case would be where the divisor is greater than the dividend. e.g.
+\begin{verbatim}
+divide :: Int -> Int -> Int
+divide n m
+  | n < m       = 0
+  | otherwise   = 1 + divide (n - m) m
+\end{verbatim}
