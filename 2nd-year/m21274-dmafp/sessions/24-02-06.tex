@@ -1,0 +1,75 @@
+\lecture{Functions}{17:00}{07/02/24}{Janka Chlebikova}
+
+\section*{Functions}
+
+A function is a special type of relation, specifically one in which each member of the input set is related to at most
+ one member of the output set. This is known as a function from A to B. A more formal definition of a function is
+ ``With the non-empty sets $A$ and $B$, a function from $A$ to $B$, $f : A \rightarrow B$ is a relation from $A$ to $B$
+ such that for each $x \in A$ there is exactly one element in $B$, $f(x) \in B$, associated with $x$ by relation $f$''
+
+\subsection*{Total and Partial Functions}
+
+A total function is one in which every member of the input set, $A$, has a corresponding member in the output set, $B$.
+ For example, the function $f : \mathbb{Z} \rightarrow \mathbb{Z}$ defined by $f(x) = 2x$ is a total function, as every
+ possible integer has a corresponding integer output.
+
+For a partial function on the other hand, each member of the input set $A$ may or may not have a corresponding member in
+ the output set $B$. An example of this is the function $f : \mathbb{Z} \rightarrow \mathbb{Q}$ defined by
+ $f(x) = \frac{1}{x}$ is a partial function as the input value $0$ has no defined output, since $\frac{1}{0}$ is
+ undefined.
+
+\section*{Domain, Co-Domain and Range}
+
+The domain of a function is the set of all inputs for which there is a defined output. This is the case with both total
+ and partial functions, as the domain is a subset of the input set, e.g. $D \subset A$. In the case of a total function,
+ $D \subseteq A$ and therefore $D = A$, but for a partial function $D \subset A$. For the total function
+ $f : \mathbb{Z} \rightarrow \mathbb{Z}$ defined by $f(x) = x^2$, the domain is $\mathbb{Z}$, but for the partial
+ function $g : \mathbb{Z} \rightarrow \mathbb{Q}$ defined by $g(x) = \frac{1}{x}$, the domain is $\mathbb{Z} - \{0\}$ as
+ $\frac{1}{0}$ is still undefined.
+
+The co-domain of a function is the domain of the output. e.g. for the function $f : A \rightarrow B$, the domain is $A$
+ and co-domain is $B$. $B$ contains all possible outputs of the function, as well as any other members of $B$.
+
+The range of a function is the subset of the co-domain for which each member is associated with an input member of the
+ domain, and therefore $\mathrm{range}(f) \subset \mathrm{domain}(f)$. e.g. $\mathrm{range}(f) = \{f(x) \mid x \in A\}$.
+
+\section*{Function Properties}
+
+There are three main properties which a function can be: injective, surjective and/or bijective.
+
+\subsection*{Injective}
+
+A function is injective (or one-to-one) if it maps each member of the input set $A$ to a unique member of the output set
+ $B$. So, for all $x, y \in A$, if $x \neq y$ then $f(x) \neq f(y)$. A function cannot be injective if there is some two 
+ values, $x, y \in A$ for which $f(x) = f(y)$.
+
+\subsection*{Surjective}
+
+A function is surjective if the range of the function is equal to it's co-domain. e.g. for the function
+ $f : A \rightarrow B$, $\mathrm{range}(f) = B$. To put it more technically, for all $y \in B$ there exists $x \in A$
+ such that $f(x) = y$.
+
+\subsection*{Bijective}
+
+A function is bijective if it is both injective and surjective.
+
+\section*{Composite Functions}
+
+A composite function is one which is defined in terms of another. For the functions $f : A \rightarrow B$ and
+ $g : B \rightarrow C$, the composition of $g$ with $f$ is the function $g \circ f$ such that
+ $g \circ f : A \rightarrow C$ and is defined by $(g \circ f)(x) = g(f(x))$ for all $x \in A$ and therefore the value of
+ $f(x)$ must be calculated before that of $g(f(x))$. The function $g \circ f$ is pronounced as ``$g$ of $f$''.
+
+\section*{Inverse Functions}
+
+For a bijective function, $f : X \rightarrow Y$, there is an inverse function, $f^{-1} : Y \rightarrow X$, which is
+ defined as $f^{-1}(y) = x$ if and only if $f(x) = y$. For example, if the function $g : A \rightarrow B$ gives
+ $g(a) = 1$ and $g(b) = 2$, then the inverse function $g^{-1} : B \rightarrow A$ must give $g^{-1}(1) = a$ and
+ $g^{-1}(2) = b$.
+
+\section*{Arity}
+
+The arity of a function or operator is the number of members of the domain which are used to calculate the output value.
+ Functions with an arity of 1 are known as unary (this includes functions like $f(x)$ as well as the unary minus (the 
+ $-$ from $-1$)), 2 are known as binary, 3 as ternary, etc. For example, the function $f : A \rightarrow B$ defined by
+ $f(x, y) = x \times y$ is a binary function and therefore a arity of 2.
