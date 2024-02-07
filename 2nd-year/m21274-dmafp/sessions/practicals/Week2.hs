@@ -1,7 +1,7 @@
 -- Ex 1
 absolute :: Int -> Int
 absolute x
-  | x < 0     = x * (-1)
+  | x < 0     = -x
   | otherwise = x
 
 -- Ex 2
@@ -44,6 +44,7 @@ howManyAboveAverage a b c
 -- Ex 7
 validDate :: Int -> Int -> Bool
 validDate day month
+  | day <= 0 || month <= 0 || month > 12                                  = False
   | day > 28 && month == 2                                                = False
   | day > 30 && (month == 4 || month == 6 || month == 9 || month == 11)   = False
   | day > 31                                                              = False
