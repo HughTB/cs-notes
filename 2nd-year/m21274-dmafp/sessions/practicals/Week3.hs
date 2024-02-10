@@ -90,19 +90,19 @@ validDate :: Int -> Int -> Bool
 validDate day month = day <= (daysInMonth month)
 -- This doesn't entirely work - you could input an invalid day or month
 
--- Ex 5
-sumNumbers :: Int -> Int
-sumNumbers x
-  | x > 0  = x + sumNumbers (x - 1)
-  | x == 0 = 0
-  | x < 0  = error "Invalid input"
+-- Ex 5 (Redefined in 11)
+-- sumNumbers :: Int -> Int
+-- sumNumbers x
+--   | x > 0  = x + sumNumbers (x - 1)
+--   | x == 0 = 0
+--   | x < 0  = error "Invalid input"
 
--- Ex 6
-sumSquares :: Int -> Int
-sumSquares x
-  | x > 0  = x^2 + sumSquares (x - 1)
-  | x == 0 = 0
-  | x < 0  = x^2 + sumSquares (x + 1)
+-- Ex 6 (Redefined in 11)
+-- sumSquares :: Int -> Int
+-- sumSquares x
+--   | x > 0  = x^2 + sumSquares (x - 1)
+--   | x == 0 = 0
+--   | x < 0  = x^2 + sumSquares (x + 1)
 
 -- Ex 7 (Redefined in 11)
 -- power :: Int -> Int -> Int
@@ -137,5 +137,15 @@ findRoot n s
   | otherwise  = findRoot n (s - 1)
 
 -- Ex 11
--- power :: Int -> Int -> Int
--- power _ y 
+sumNumbers :: Int -> Int
+sumNumbers 0 = 0
+sumNumbers n = n + sumNumbers (n - 1)
+-- Not sure how to check for a negative with a pattern, maybe use guard?
+
+sumSquares :: Int -> Int
+sumSquares 0 = 0
+sumSquares n = n^2 + sumSquares (n - 1)
+
+power :: Int -> Int -> Int
+power _ 0 = 1
+power x y = x * power x (y - 1)
