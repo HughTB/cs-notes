@@ -1,0 +1,98 @@
+\lecture{Tuples, Lists and Strings}{12:00}{12/02/2024}{Matthew Poole}
+
+\section*{Characters and Strings}
+
+Haskell includes both \verb`Char` and \verb`String` data types. The \verb`Data.Char` module includes some useful
+ functions for working with characters, such as \verb`toUpper` and \verb`toLower`, which do as they suggest. There is
+ also the function \verb`isDigit`, which is useful for checking if a string or character can be parsed into a number.
+ As with most programming languages, Strings are defined as a list of characters.
+
+\section*{Tuples}
+
+Tuples are used to combine several pieces of data into a single value which can be passed between functions more easily.
+ For example, if we wanted a function to return someone's name, and the score they got in a test, it could return that
+ using a tuple on the form \verb`("Thomas", 68)`. The specific type of that tuple is \verb`(String, Int)`, a singular
+ data type. This allows you to use it as an input or return type for any function, for example, the following function
+ takes two student's scores and returns the name of whichever student got the higher score
+\begin{verbatim}
+betterScore :: (String, Int) -> (String, Int) -> String
+betterScore (name1, score1) (name2, score2)
+  | score1 >= score2  = name1
+  | otherwise         = name2
+\end{verbatim}
+
+When using tuples or other composite data types in Haskell, it is a good idea to define a type synonym, such as
+ \verb`:type StudentMark = (String, Int)`. This can then be used in the code rather than writing the full type definition
+ each time, for example, \verb`betterScore` can be re-written as follows
+\begin{verbatim}
+betterScore :: StudenMark -> StudentMark -> String
+betterScore (name1, score1) (name2, score2)
+  | score1 >= score2  = name1
+  | otherwise         = name2
+\end{verbatim}
+
+\section*{Polymorphic Functions}
+
+A polymorphic function is one which has multiple definitions with different input types. For example, the length
+ function defined in the prelude works on any type of list, and always returns the number of items in the list. The
+ length function actually uses a type variable, which can take an arbitrary type which can be referenced in the function.
+ The type definition of length is \verb`length :: [a] -> Int`, which is known as the function's \textbf{most general
+ type}. You can define a polymorphic function in several ways, but if you don't include a type definition, and just
+ defined the function itself, e.g. \verb`square n = n * n`, then Haskell attempts to infer the most general type by
+ analysing the structure of the function. In this case, it is inferred as \verb`square :: Num a => a -> a`, which means
+ that a can be any numeric data type.
+
+\section*{Lists}
+
+Lists are used to store any number of values of the same type, as in any other language. In Haskell, they are the main
+ data structure, and are used extensively in actual programs. Lists are defined as in most other languages, e.g.
+ \verb`[1, 2, 3, 4, 5]`. The data type of a list can be defined in a function definition by surrounding the data type
+ with square brackets, e.g. \verb`stringList :: [String]`. The empty list (\verb`[]`) can be of any data type. Strings
+ in Haskell, as with most languages, are defined as a list of characters, quite literally defined as
+ \verb`:type String = [Char]` in the prelude. This means that any operation working on lists will also work on strings,
+ such as concatenating.
+
+When creating a list, you can also use a range format to populate a list, for example \verb`[1 .. 5]` is the same as
+ writing out \verb`[1, 2, 3, 4, 5]`. This also works with floats and characters and therefore strings, as
+ \verb`['a' .. 'z']` gives a string containing the entire alphabet.
+
+\subsection*{List Comprehension}
+
+A list comprehension is effectively a method of mapping one list onto another. For example, if we have the list
+ \verb`a = [1, 2, 3, 4, 5]`, then the comprehension \verb`[ 2*i | i <- a ]` would give the value \verb`[2, 4, 6, 8, 10]`.
+ The data type of the output list does not have to be the same as the input list, which allows you to check through a
+ list and return a list of boolean values all at once.
+
+You can also add a test at the end of the generator (\verb`i <- a`) which will only add a value to the output list if
+ the input value passes the test. For example, if we modified the previous comprehension to be \verb`[ 2*i | i <- a, i < 5]`
+ it would only return the values \verb`[2, 4, 6]`, as only the input values \verb`1, 2 & 3` pass the test.
+
+Rather than a single variable, you can use a pattern on the left side of the \verb`<-` to extract multiple values. For
+ example, if we have a list of tuples and wish to add the two values together, we could use the comprehension
+ \verb`[ i+j | (i,j) <- b ]`.
+
+You can also use comprehensions within functions. If you wanted to define a function to do that pair addition, you can
+ write it as follows
+\begin{verbatim}
+addPairs :: [(Int, Int)] -> [Int]
+addPairs pairs = [ i+j | (i,j) <- pairs ]
+\end{verbatim}
+
+\subsection*{List Functions}
+
+Every list function is polymorphic, and can be used on any type of list, as long as both input lists are of the same
+ type. More specifically, they all have the same type definition of \verb`[a] -> [a] -> [a]`
+
+The list function \verb`:` is probably one of the most used list functions, and adds an element to the front of a list,
+ e.g. \verb`3:[5, 7, 2]` returns \verb`[3, 5, 7, 2]`.
+
+The \verb`++` operator joins two lists together, e.g. \verb`[1, 2, 3] ++ [4, 5, 6]` returns \verb`[1, 2, 3, 4, 5, 6]`.
+ Since strings are lists of characters, this is also how you concatenate strings together, e.g. \verb`"hello " ++ "there"`
+ returns \verb`"hello there"`.
+
+The \verb`!!` operator returns the element at a given position in a list, e.g. \verb`["one", "two", "three"] !! 2`
+ returns `"three"`, since Haskell uses 0-indexed lists. This is not used very often in Haskell, but is still useful to
+ know just in case it's ever needed.
+
+Finally, the \verb`null` function checks if a list is empty, e.g. \verb`null [1, 2]` returns \verb`False` and
+ \verb`null []` returns \verb`True`
