@@ -1,0 +1,155 @@
+\lecture{Logic}{17:00}{13/02/24}{Janka Chlebikova}
+
+\section*{Propositions}
+
+A proposition is a statement that is either true or false, but not both. The letters $p, q, r, s$, etc. denote
+ propositional variables, each of which has one of two truth values, true or false. Statements can be combined using
+ logical connectives to create compound statements.
+
+\section*{Logical Connectives}
+
+The three main logical connectives are not ($\neg$), and ($\wedge$), or ($\vee$). These work in the same way as they do in
+ other places, such as boolean algebra, but use different and objectively the correct symbols.
+
+\subsection*{Not (Negation)}
+
+The negation of a statement $p$ is the statement not $p$, or $\neg p$
+
+\subsection*{And (Conjunction)}
+
+The conjunction of two statements, $p$ and $q$, is the compound statement $p$ and $q$, or $p \wedge q$.
+
+\subsection*{Or (Disjunction)}
+
+The (inclusive) disjunction of two statements, $p$ and $q$, is the compound statement $p$ or $q$, or $p \vee q$. There
+ is also an exclusive disjunction, which means that only one of the two statements can be true, and so is exclusive.
+
+\section*{Conditional Propositions}
+
+\subsection*{Implication}
+
+An implication compound proposition ($\Rightarrow$) means an `if-then' relation, e.g. if it is raining ($p$), then I get
+ wet ($q$). $p \Rightarrow q$. Since it is an implication, $q$ can be true regardless of the value of $p$, but if $p$ is
+ true then $q$ must also be true. This can be represented using the following truth table:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ c c c }
+    $p$ & $q$ & $p \Rightarrow q$ \\
+    \hline
+    T & T & T \\
+    T & F & F \\
+    F & T & T \\
+    F & F & T
+  \end{tabular}
+\end{table}
+
+As suggested, if $p$ is false, then $p \Rightarrow q$ is true, since there is no implication as to the value of $q$
+
+\subsection*{Bi-conditional}
+
+A bi-conditional compound proposition ($\Leftrightarrow$) means an `if and only if' relation, and as such $q$ can be
+ true if and only if $p$ is true. This can be represented using the following truth table:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ c c c }
+    $p$ & $q$ & $p \Rightarrow q$ \\
+    \hline
+    T & T & T \\
+    T & F & F \\
+    F & T & F \\
+    F & F & T
+  \end{tabular}
+\end{table}
+
+\subsection*{Negation of Conditional Propositions}
+
+The negation of a conditional proposition, $p \Rightarrow q$ would be $p \wedge \neg q$ since
+\begin{center}
+  $\neg (p \Rightarrow q) \equiv \neg (\neg p \vee q) \equiv \neg (\neg p) \wedge \neg q \equiv p \wedge \neg q$
+\end{center}
+
+\subsection*{Contrapositives}
+
+The contrapositive of a conditional proposition, $p \Rightarrow q$ would be $\neg p \Rightarrow \neg q$.
+
+\section*{Truth of Compound Propositions}
+
+It is possible to construct truth tables for more complex compound statements, as we did for boolean algebra. The order
+ of precedence for connectives is as follows:
+\begin{itemize}
+  \item Brackets
+  \item Not ($\neg$)
+  \item And ($\wedge$)
+  \item Or ($\vee$)
+  \item Implication ($\Rightarrow$)
+  \item Bi-conditional ($\Leftrightarrow$)
+\end{itemize}
+For multiple of the same precedence, you can calculate them in any order (left to right or right to left).
+
+\section*{Statement Properties}
+
+\subsection*{Tautology}
+
+A statement is a tautology if it is true for all possible values of it's propositional variables, e.g. $p \vee \neg q$
+ is a tautology since it is always true, as demonstrated by the below truth table:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ c c c }
+    $p$ & $\neg p$ & $p \vee \neg p$ \\
+    \hline
+    T & F & T \\
+    F & T & T \\
+  \end{tabular}
+\end{table}
+
+\subsection*{Contradiction}
+
+A statement is a contradiction if it is false for all possible values of it's propositional variables, e.g.
+ $p \wedge \mathrm{p}$ is a contradiction since it is always false, as demonstrated by the below truth table:
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ c c c }
+    $p$ & $\neg p$ & $p \wedge \neg p$ \\
+    \hline
+    T & F & F \\
+    F & T & F \\
+  \end{tabular}
+\end{table}
+
+\subsection*{Contingency}
+
+A statement is a contingency if it can be either true or false depending upon the values of the propositional variables.
+
+\section*{Logical Equivalence}
+
+Two or more propositions with the same truth values are said to be logically equivalent, since either one will produce
+ the same output given the same propositional variables. For example, $p \Rightarrow q \equiv \neg p \vee q$ since
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ c c c c c }
+    $p$ & $q$ & $p \Rightarrow q$ & $\neg p$ & $\neg p \vee q$ \\
+    \hline
+    T & T & T & F & T \\
+    T & F & F & F & F \\
+    F & T & T & T & T \\
+    F & F & T & T & T \\
+  \end{tabular}
+\end{table}
+
+Like boolean algebra, propositions follow a few basic rules,
+\begin{itemize}
+  \item Commutative - $p \wedge q \equiv q \wedge p$, $p \vee q \equiv q \vee p$
+  \item Distributive - $(p \vee (q \wedge r)) \equiv ((p \vee q) \wedge (p \vee r))$
+  \item De Morgan's - $\neg (p \vee q) \equiv \neg p \wedge \neg q$, $\neg (p \wedge q) \equiv \neg p \vee \neg q$
+\end{itemize}
+
+You can determine if two propositions are logically equivalent in one of two ways, either by using truth tables or by
+ using basic logical equivalences (the above rules) to simplify the propositions and make them easier to discuss. Using
+ truth tables can be complex and cumbersome since if there are more than two propositional variables, there will be many
+ rows in each table.
+
+\section*{Necessary and Sufficient Conditions}
+
+The sufficient condition of an `if-then' statement is $r$, for $s$ where `if $r$ then $s$'
+
+The necessary condition of an `if-then' statement is $r$, for $s$ where `if $s$ then $r$' or `if not $r$ then not $s$'
