@@ -74,7 +74,7 @@ exOr _ _        = False
 -- Ex 3
 ifThenElse :: Bool -> Int -> Int -> Int
 ifThenElse True x _  = x
-ifThenElse False _ y = y
+ifThenElse _ _ y = y
 
 -- Ex 4
 daysInMonth :: Int -> Int
@@ -123,8 +123,7 @@ gcd :: Int -> Int -> Int
 gcd x y
   | x < 0 || y < 0 = error "Invalid input"
   | x == y = x
-  | x < y = gcd (y - x) x
-  | y < x = gcd (x - y) y
+  | otherwise = gcd (abs (x - y)) (min x y)
 
 -- Ex 10
 intSquareRoot :: Int -> Int
@@ -144,7 +143,7 @@ sumNumbers n = n + sumNumbers (n - 1)
 
 sumSquares :: Int -> Int
 sumSquares 0 = 0
-sumSquares n = n^2 + sumSquares (n - 1)
+sumSquares n = n ^ 2 + sumSquares (n - 1)
 
 power :: Int -> Int -> Int
 power _ 0 = 1
