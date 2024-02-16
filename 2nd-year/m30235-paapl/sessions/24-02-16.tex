@@ -1,0 +1,99 @@
+\lecture{Describing Language Syntax}{14:00}{16/02/24}{Jiacheng Tan}
+
+\section*{Context-Free Grammars}
+
+There are four classes of grammars for describing natural languages: regular, context-free, context-sensitive, and
+ recursively enumerable. Of these, regular and context-free grammars have been found to be useful for describing
+ programming languages. Context-Free Grammars are by far the most widely used in describing programming languages.
+
+A context-free grammar is usually defined as a tuple, $G = (T, N, S, P)$, where
+\begin{itemize}
+  \item $T$ - A finite, non-empty set of terminal symbols, which consist of strings referring to parts of sentences in
+   the language
+  \item $N$ - A finite, non-empty set of non-terminal symbols, which refer to syntactic structures defined by other
+   structures and rules
+  \item $S \in N$ - The start symbol
+  \item $P$ - A set of (context-free) productions of the form $A \rightarrow \alpha$ ($A$ produces $\alpha$) where $A \in N$
+   and $\alpha \in {(T \cup N)}^*$
+\end{itemize}
+
+For example, $G_1 = (T, N, S, P)$ where
+\begin{itemize}
+  \item $T = \{a, b\}$
+  \item $N = \{S\}$
+  \item $P = \{S \rightarrow ab, S \rightarrow aSb\}$
+\end{itemize}
+or $G_2 = (T, N, S, P)$ where
+\begin{itemize}
+  \item $T = \{a, b\}$
+  \item $N = \{S, C\}$
+  \item $P = \{S \rightarrow \epsilon, S \rightarrow C, S \rightarrow aSa, S \rightarrow bSb, C \rightarrow a, C \rightarrow b\}$
+\end{itemize}
+As you can see, $G_2$ uses a recursive production to allow for more complex productions to be simplified.
+
+\subsection*{Shorthand}
+
+Rules for each non-terminal can be written in an alternative shorthand notation, using |. For example, $G_1$ could also
+ be written as $G_1 \mid ab \mid aSb$.
+
+\section*{Backus-Naur Form (BNF)}
+
+Another alternative nottaion for CFG definitions is the Backus-Naur Form (BNF). In BNF, non-terminal symbols are given a
+ descriptive name, enclosed within \verb`< >`. For example, you could define \verb`<digit>` to represent $0, 1, \dots, 9$.
+ This is typically the for which programming languages are actually defined in.
+
+As an example, you could use \verb`<exp>`, \verb`<number>` and \verb`<digit>` as non-terminals, and $+, -, *, /, 0, 1, \dots, 9$
+ as terminal symbols. Using these symbols, the syntactic structure for an arithmetic expression could be defined by the
+ following productions:
+\begin{verbatim}
+<exp> -> <exp> + <exp> | <exp> - <exp> | <exp> * <exp>
+  | <exp> / <exp> | (<exp>) | <number>
+<number> -> <digit> | <digit> <number>
+<digit> -> 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9
+\end{verbatim}
+
+\section*{Derivations}
+
+You can use a context-free grammar to derive strings of terminal symbols. Starting with the start symbol $S$, you
+ repeatedly apply the production rules until you are left with a string containing only terminal symbols, which is known
+ as a sentence. This process is known as a derivation. Every string of symbols in a derivation is a sentential form.
+
+For example, if we used the grammar $G_2$, we can derive the string $abbba$ as follows
+\begin{itemize}
+  \item Start at the symbol $S$
+  \item Apply the rule $S \rightarrow aSa$, and replace $S$ with $aSa$ to obtain the string $aSa$
+  \item Apply the rule $S \rightarrow bSb$, and replace the $S$ in $aSa$ with $bSb$ to get the string $abSba$
+  \item Apply the rule $S \rightarrow C$, and replace the $S$ in $abSba$ with $C$ to get the string $abCba$
+  \item Apply the rule $C \rightarrow b$, and replace the $C$ in $abCba$ with $b$ to get the final string, $abbba$ which
+   consists only of terminal symbols
+\end{itemize}
+
+If we can get from $\alpha$ to $\beta$ using a single production, you can say that $\alpha$ immediately derives $\beta$,
+ which is written as $\alpha \Rightarrow \beta$. Therefore you can write the full derivation of $abbba$ from $S$ as
+\begin{equation*}
+  \begin{split}
+    S & \Rightarrow aSa \\
+    & \Rightarrow abSba \\
+    & \Rightarrow abCba \\
+    & \Rightarrow abbba
+  \end{split}
+\end{equation*}
+
+With this definition of a derivation, we can define a language as ``A grammar is made up of exactly those sentences
+ which can be derived from it''
+
+\subsection*{Left- and Right-Most Derivations}
+
+A derivation can be either left- or right-Most, depending upon the order in which non-terminal symbols are resolved. If
+ you start from the left and work rightwards, that is the left-most derivation of the sentence. If you were to instead
+ start from the right and work leftwards, that would be a right-most derivation of the sentence. You can also have a
+ neither left- nor right-most derivation, in which you start in the middle and work outwards.
+
+For some grammars, the left- and right-most derivations of a given sentence could be different, i.e. have a different
+ parse tree.
+
+\section*{Parse Trees}
+
+You can also represent the structure of an expression given by a derivation as a parse tree. I will not give an example,
+ but the internal nodes represent non-terminal symbols which are used in the derivation, and leaf nodes represent the
+ terminal symbols.
