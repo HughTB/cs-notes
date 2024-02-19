@@ -1,0 +1,97 @@
+\lecture{Syntax Analysis and Parsing}{14:00}{19/02/24}{Jiacheng Tan}
+
+\section*{Ambiguity}
+
+Some grammars are ambiguous, such that there are multiple valid derivations of any given sentence. This means that the
+ parse trees would be different, and therefore could produce different results. For exmaple, using the same grammar as
+ the previous lecture, a left-most derivation of the sentence \verb`x + y * z` could be either
+\begin{verbatim}
+<exp> => <exp> + <exp>
+      => x + <exp>
+      => x + <exp> * <exp>
+      => x + y * <exp>
+      => x + y * z
+\end{verbatim}
+which would give you a parse tree equivalent to \verb`x + (y * z)`, or it could be
+\begin{verbatim}
+<exp> => <exp> * <exp>
+      => <exp> + <exp> * <exp>
+      => x + <exp> * <exp>
+      => x + y * <exp>
+      => x + y * z
+\end{verbatim}
+which would give you a parse tree equivalent to \verb`(x + y) * z`, which gives you a completely different value.
+
+For almost any language, it is possible to completely remove the ambiguity by introducing new or extra non-terminals
+ and rules. For example, if you were to add a new rule that forces the \verb`+` operation to appear higher in parse
+ trees than \verb`*`. E.g.
+\begin{verbatim}
+<exp> -> <exp> + <term> | <term>
+<term> -> <term> * <factor> | <factor>
+<factor> -> x | y | z
+\end{verbatim}
+where \verb`term` and \verb`factor` are new non-terminals which have been added to remove the ambiguity.
+
+\section*{The Limits of Context-Free Grammars}
+
+Some programming languages cannot be fully described using only CFGs. For example, if a variable must be defined before
+ it is referenced, the context is required to determine whether the reference or decleration comes first. These are 
+ known as Context-sensitive properties, and must be resolved by the semantic analyser rather than the syntax analyser.
+
+\section*{Syntax Analysis}
+
+Given some input source code, the goal of syntax analysis is to: find all syntax errors and produce a descriptive error
+ for the user; and produce the parse tree for the program to be used in code generation. This process is completed by a
+ syntax analyser, sometimes known as the parser. There are several algorithms which can be used for parsing, which fall
+ into two categories.
+
+\subsection*{Top-Down Parsers}
+
+Starting at the root (the start symbol of the grammar), each node of the parse tree is visited before it's branches.
+ The branches are visited from left-to-right, giving a left-most derivation. When manually performing the derivation,
+ you start by replacing the start symbol with the right-hand-side of it's production. Then you replace the left-most
+ non-terminal symbol with the right-hand-side of (one of) it's production(s). You repeat this process until the string
+ consists only of terminal symbols.
+
+\textbf{INSERT EXAMPLE HERE}
+
+\subsection*{Bottom-Up Parsers}
+
+Starting at the leaves of the parse tree, and progressing towards the root, giving a right-most derivation.
+
+\textbf{INSERT EXAMPLE HERE}
+
+\section*{More on Top-Down Parsers}
+
+Different top-down parsers may use different information or rules to determine which production should be selected to
+ replace a non-terminal symbol. Most compare the next input token with the first symbol of each production, these
+ parsers are known as predictive parsers. These work using only the next input symbol and the current non-terminal.
+
+\subsection*{Recursive Descent Parsers (RDP)}
+
+A recursive descent parser is an implementation of a parser based upon the BNF of a grammar. An RDP consists of a
+ collection of functions (or subprograms), many of which are recursive. Each non-terminal symbol corresponds to a
+ single function, which handles parsing that particular non-terminal symbol in the grammar. For example, if you wanted
+ to implement the following grammar
+\begin{verbatim}
+<exp> -> <exp> + <term> | <exp> - <term> | <term>
+<term> -> <term> * <factor> | <term> / <factor> | <factor>
+<factor> -> integer | (<exp>)
+\end{verbatim}
+with an RDP, you would need to implement 3 functions - \verb`exp()`, \verb`term()` and \verb`factor()`. Assuming that
+ there is another function, \verb`lex()` which updates the variable \verb`nextToken` to be the next token in the
+ sentence, each function will need to
+\begin{itemize}
+  \item Check if the symbol is terminal, in which case make a call to \verb`lex()`
+  \item Check if the symbol is non-terminal within the current production, in which case make a call to the corresponding
+   function
+  \item If it is neither, then there is a syntax error and it should be raised with a helpful message for the user
+\end{itemize}
+
+\subsection*{Rules With Multiple Productions}
+
+When parsing a rule with more than one production, it is necessary to select which of the productions should be parsed.
+ This can be done in several ways, but in the case of a predictive parser, the production should be selected based upon
+ the next input token. The next input token is compared with the first token of each production until either a match is
+ found, or all options are expended. If the token does not match any of the productions, there is a syntax error and an
+ error should be raised with a helpful message for the user.
