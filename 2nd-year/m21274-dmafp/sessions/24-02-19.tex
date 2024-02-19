@@ -1,0 +1,53 @@
+\lecture{List Patterns and Recursion}{12:00}{19/02/24}{Matthew Poole}
+
+\section*{Patterns}
+
+Previously we have looked at patterns for defining functions, but they can also be used for pattern matching with lists.
+Patterns can include literal values, variables or wildcards, but they can also be tuples. For example, the pattern
+ \verb`(x, _) = x` would extract the first value from a tuple and discard the other value. This is exactly how the
+ \verb`fst` and \verb`snd` functions are defined. These functions are projection functions and are polymorphic as they
+ word for tuples of any type.
+
+\subsection*{List Patterns}
+
+\verb`[]` and \verb`:` are both constructors which can be used to construct a list. For example, the list \verb`[1, 2]`
+ can be constructed using \verb`[1, 2]`, \verb`1:[2]` or even \verb`1:2:[]`. The last example is how lists are
+ represented internally within Haskell, and the other constructor is just syntactic sugar to make it easier to define
+ lists.
+
+You can also use these constructors within patterns, for example if you want to only deal with the first element of
+ the list. For example, the \verb`head` function in the prelude is defined as \verb`head (x:xs) = x` where \verb`x`
+ matches the first element of the list, and \verb`xs` matches the rest of the list. The naming convention of \verb`x`
+ and \verb`xs` is standard, and means "x and exes". In this case, since we don't care about the rest of the list,
+ \verb`xs` could be replaced with a wildcard. Similarly, the \verb`tail` function uses the same trick but discarding
+ the first element and returning the rest of the list. When using list patterns, if you want to match an empty list,
+ that pattern must appear first as otherwise it will still match any other list pattern.
+
+\section*{Recursion Over Lists}
+
+As with any other recursive functions, to define a recursive function over a list, you need a base case and recursive
+ case. However, unlike other recursive functions the base case always considers the empty list, and the recursive case
+ always considers a non-empty list, matched by \verb`(x:xs)` and passes the tail of the list into the function call.
+ If we want to recurse over a list and perform a calculation on each element but leave them in a list, you can prepend
+ the element back into the list, within the recursive case. For example, if you wanted to double every item in the list
+ you would use a base case which returns \verb`0`, and a recursive case like \verb`func (x:xs) = x * 2 : func xs`. This
+ function is an example of primitive recursion, but there is also general recursion.
+
+\subsection*{General Recursion (Over Lists)}
+
+An example of general recursion is the function \verb`zip` from the prelude. This function joins two lists into a
+ single list of tuples. It's type definition is \verb`zip :: [a] -> [b] -> [(a, b)]`. In this case, the lists don't
+ have to be lists of the same type, and if the second list is longer than the first, the remaining elements are just
+ sent into the void. The easiest way to define this function would be to use a recursive function where the recursive
+ case takes two non-empty lists \verb`x:xs` and \verb`y:ys`, and places \verb`x` and \verb`y` into a tuple, before
+ recursing on the tail of the two lists. The base case would need to return an empty list (\verb`[]`) if either of the
+ input lists are empty. This could be written as three separate patterns, e.g.
+\begin{verbatim}
+zip (x:xs) [] = []
+zip [] (y:ys) = []
+zip [] []     = []
+\end{verbatim}
+or using a single base case with wildcards, e.g.
+\begin{verbatim}
+zip _ _ = []
+\end{verbatim}
