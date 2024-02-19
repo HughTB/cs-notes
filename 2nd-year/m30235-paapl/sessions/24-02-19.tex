@@ -53,7 +53,23 @@ Starting at the root (the start symbol of the grammar), each node of the parse t
  non-terminal symbol with the right-hand-side of (one of) it's production(s). You repeat this process until the string
  consists only of terminal symbols.
 
-\textbf{INSERT EXAMPLE HERE}
+With the grammar
+\begin{verbatim}
+S -> AB
+A -> aA | Epsilon
+B -> b | bB
+\end{verbatim}
+and the string \verb`aaab`
+\begin{verbatim}
+S
+AB
+aAB
+aaAB
+aaaAB
+aaa{Epslion}B
+aaaB
+aaab
+\end{verbatim}
 
 \subsection*{Bottom-Up Parsers}
 
