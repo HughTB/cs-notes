@@ -1,0 +1,80 @@
+\lecture{Logic II - Quantified Statements}{17:00}{13/02/24}{Janka Chlebikova}
+
+\section*{Propositional Logic}
+
+Propositional logic only applies to simple statements where the only possible states are either true or false. A
+ statement such as ``Mr Bean is a Mathematical Professor'' (while obviously false) could conceivable be either true or
+ false. However, a statement such as ``They are a Mathematical Professor'' is not a proposition, as its value depends
+ upon the value of \textit{They}, making it a predicate.
+
+\section*{Predicate Logic}
+
+An atomic proposition is one where there is only one propositional variable, which can be either true or false. All
+ predicates are statements containing one or more variables. If the values from a given domain are assigned to all the
+ variables, the resulting statement is a proposition. To make a predicate into a proposition, you must replace all the
+ variables with a value.
+
+For example, the predicate $p : x \mathrm{\ is\ an\ integer\ less\ than\ } 80$ is not a proposition as the value of $x$
+ is unknown. If we replace $x$ with a value, for example an integer from the domain $\mathbb{Z}$ such as $10$ then we
+ can determine that $10$ is less than $80$ and therefore $p$ is a true proposition.
+
+A more formal example of this would be the predicate $T$ where $T(x,y,z) : x < y + z$ is not a proposition until you add
+ the qualifier that $T(x,y,z) : x < y + z \mathrm{\ where\ } x,y,z \in \mathbb{Z}$
+
+\section*{Quantifiers}
+
+A quantifier refers to quantities such as ``some'' or ``all'', which are used in statements such as ``$P$ is true
+ \textit{for some} value of $x$'' or ``$T$ is true \textit{for all} values of $y$''. There are two main quantifiers,
+ the ``universal quantifier'' (represented by $\forall$) and the ``existential quantifier'' (represented by $\exists$)
+
+\subsection*{Universal Quantifier ($\forall$)}
+
+For a predicate $P$ such as ``For every $x$ in the domain $\mathbb{Z}$, $P(x)$'', you could rewrite it using the
+ universal quantifier as $\forall x \in \mathbb{Z}, P(x)$. This means that for the predicate to be true, every value
+ in the domain, $\mathbb{Z}$ must have a corresponding, true proposition, $P(x)$. That also means that you only need one
+ counter-example to prove that the predicate is false.
+
+For example, the predicate $\forall x \in S, x^2 > x$ is true for the set $S = \{2,3,4,5,6\}$ because we can
+ exhaustively prove that for every value of $x$, $x^2$ is greater than or equal to $x$. $2^2 > 2$, $3^2 > 3$, $4^2 > 4$,
+ $5^2 > 5$, $6^2 > 6$. If the set $S$ was expanded to include $1$, then the predicate would be
+ false, as $(1)^2 = 1, 1 \ngtr 1$.
+
+\subsection*{Existential Quantifier ($\exists$)}
+
+For a predicate $P$ such as ``There exists an $x$ in the domain $\mathbb{Z}$ such that $P(x)$ is true'', you could
+ rewrite it using the existential quantifier as $\exists x \in \mathbb{Z}, P(x)$. This means that for the predicate to
+ be true, there needs to be at least one value of $x$ for which there is a corresponding, true proposition, $P(x)$. It
+ is much harder to disprove such a predicate, especially if the domain is infinite as in this case, and so it is usually
+ necessary to disprove it logically.
+
+For example, the predicate $\exists x \in \mathbb{Z}, x^2 > x$ is very easy to prove true, since we can find a single
+ value of $x$, lets say $2$, where $2^2 > 2$ is obviously true. It is also easy to disprove a statement such as
+ $\exists x \in \mathbb{Z} \mathrm{\ such\ that\ } x^2 < -10$, since we can logically say that there is no number for
+ which it's square is negative.
+
+\subsection*{Negations of Quantified Statements}
+
+The negation of a quantified statement seems obvious at first glance, but the answer is not just to negate the
+ proposition (e.g. ``All mathematicians wear glasses'' $\rightarrow$ ``No mathematicians wear glasses''), but instead to
+ give the statement matching the counter-example to that statement (e.g. ``All mathematicians wear glasses''
+ $\rightarrow$ ``There is at least one mathematician who does not wear glasses''). More formally, the negation of a
+ statement in the form ``$\forall x \in S, P(x)$'' is logically equivalent to a statement in the form 
+ ``$\exists x \in S, \neg P(x)$'', and the negation of a statement in the form ``$\exists x \in S, P(x)$'' is logically
+ equivalent to a statement in the form ``$\forall x \in S, \neg P(x)$''.
+
+\subsection*{Nested Quantifiers}
+
+Quantifiers can be nested, e.g. $\forall x \exists y$ or $\exists x \forall y$, which can be useful for reducing the
+ ambiguity of a predicate. For example, the predicate ``There is a student solving every exercise of the tutorials''
+ could either mean ``There is one student who solves every exercise of the tutorials'' or ``For any given exercise, 
+ there is a student who solves the exercise''. Obviously the person who wrote the statement had only one of these in
+ mind, and so it would be nice to explicitly define which of the two were intended.
+
+If we let $P(x, y)$ be the proposition ``Student $x$ solves the exercise $y$'', $S$ be the set of students and $E$ be
+ the set of all exercises, there are two possible options -
+\begin{itemize}
+  \item $\exists x \in S\ \forall y \in E$ such that $P(x, y)$ is true. This is like the previously mentioned possible
+   meaning, ``There is one student who solves every exercise of the tutorials''
+  \item $\forall y \in E\ \exists x \in S$ such that $P(x, y)$ is true. This is like the other possible meaning,
+   ``For any given exercise, there is a student who solves the exercise''
+\end{itemize}
