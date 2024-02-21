@@ -86,9 +86,9 @@ gradeStudents marks = [ (name, grade (name, mark)) | (name, mark) <- marks ]
 -- Ex 10
 duplicate :: String -> Int -> String
 duplicate str count
-  | count == 1 = str
-  | count > 1  = str ++ duplicate str (count - 1)
-  | otherwise  = error "Count must be greater than 0"
+  | count == 0 = []
+  | count > 0  = str ++ duplicate str (count - 1)
+  | otherwise  = error "Count cannot be less than 0"
 
 -- Ex 11
 divisors :: Int -> [Int]
