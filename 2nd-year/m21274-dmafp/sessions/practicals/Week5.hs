@@ -127,8 +127,16 @@ sorted (x:y:xs)
 
 -- Ex 13
 prefix :: [Int] -> [Int] -> Bool
-prefix _ [] = False
+prefix [] _          = True
+prefix _ []          = False
 prefix (x:[]) (y:ys) = x == y
 prefix (x:xs) (y:ys)
   | x == y    = prefix xs ys
   | otherwise = False
+
+-- Ex 14
+subSequence :: [Int] -> [Int] -> Bool
+subSequence _ [] = False
+subSequence x y
+  | prefix x y = True
+  | otherwise  = subSequence x (tail y)
