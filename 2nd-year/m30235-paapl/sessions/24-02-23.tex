@@ -1,0 +1,57 @@
+\lecture{LL(k) Parsers}{14:00}{23/02/24}{Jiacheng Tan}
+
+An LL(k) parser is a top-down, predictive parser. It's name means that it parses from (L)eft-to-right, (L)eft-most
+ derivation, with (k) tokens of look-ahead. They are also known as a table-driven predictive parser, since they use a
+ stack and a parsing table.
+
+An LL(1) parser parses the input left-to-right, and always using a left-most derivation. In this case, it uses one token
+ of lookahead to predict which production should be used. It also uses a stack to store the symbols of the right-hand-side
+ of productions, in right-to-left order, as that way the left-most symbol is always at the top of the stack. A parsing
+ table is also used to store the rules which the parser should use based upon the input token and which value is at the
+ top of the stack.
+
+\subsection*{Parse Tables}
+
+With the grammar
+\begin{verbatim}
+E  -> TE'
+E' -> +TE' | Epsilon
+T  -> FT'
+T' -> *FT' | Epsilon
+F  -> (E) | int
+\end{verbatim}
+the parse table might look as below
+\begin{table}[h]
+  \centering
+  \begin{tabular}{ c | c | c | c | c | c | c }
+    Top of Stack Input & \verb`int` & \verb`+` & \verb`*` & \verb`(` & \verb`)` & \verb`$` \\
+    \hline
+    $E$ & $E \rightarrow TE'$ & & & $E \rightarrow TE'$ & & \\
+    $E'$ & & $E' \rightarrow +TE'$ & & & $E' \rightarrow \epsilon$ & $E' \rightarrow \epsilon$ \\
+    $T$ & $T \rightarrow FT'$ & & & $T \rightarrow FT'$ & & \\
+    $T'$ & & $T' \rightarrow \epsilon$ & $T' \rightarrow *FT'$ & & $T' \rightarrow \epsilon $ & $T' \rightarrow \epsilon$ \\
+    $F$ & $F \rightarrow$ \verb`int` & & & $F \rightarrow (E)$ & & \\
+  \end{tabular}
+\end{table}
+
+With this parse table, it is quite easy to parse a sentence, as it is a matter of simply picking the rule from the
+ table, according to the current non-terminal (on the top of the stack) and the current input symbol and pushing the
+ right-hand side of the production back onto the stack. \verb`$` is selected if the end of the input is reached. The
+ parsing process begins with the start symbol ($E$) and it's right-hand side ($TE'$) is pushed onto the stack, and so
+ $T$ is the top of the stack. If the next token is \verb`int`, we would pick the rule $T \rightarrow FT'$, and so $FT'$
+ is pushed onto the stack. As such, the top of the stack is now $F$.
+
+This process is more generally written as
+\begin{itemize}
+  \item If $X$ and $w$ are both the end symbol, \verb`$`, stop and accept the input
+  \item if $X$ is a terminal, if $X = w$, pop $X$ off the stack and get the next token, otherwise halt and give a
+   descriptive error to the user
+  \item If $X$ is a non-terminal, if there is a production at position $[X, w]$, push the right-hand side onto the stack,
+   otherwise halt and give a descriptive error to the user
+\end{itemize}
+
+\subsection*{Parse Table Construction}
+
+It is easy to perform an LL(1) parse if the parse table is already available. To construct the table, you must compute
+ the first and follow sets of the non-terminals from the grammar. These are sets of terminal symbols. If these sets are
+ available, the construction of the table is a simple procedure which can be performed automatically.
