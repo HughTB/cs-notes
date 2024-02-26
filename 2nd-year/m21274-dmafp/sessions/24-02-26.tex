@@ -1,0 +1,83 @@
+\lecture{Higher Order Functions}{12:00}{26/02/24}{Matthew Poole}
+
+In most functional programming languages, it is possible to treat a function as a piece of data, passing it as a
+ variable into another function, or returning it from a function. Any function which takes another function as an
+ argument, or returns a function is known as a Higher Order Function. A simple example of a higher order function is one
+ which takes a function and an integer, and applies the function to the integer twice, once to the integer, and then
+ again to the result.
+\begin{verbatim}
+twice :: (Int -> Int) -> Int -> Int
+twice f x = f (f x)
+\end{verbatim}
+
+As you can see, the syntax is very easy and the type definition allows you to define the specific function signatures
+ that your higher order function can use.
+
+\section*{Function Composition}
+
+Haskell includes the function composition operator, \verb`.`, which is the equivalent of $\circ$ in maths. For example,
+ with the functions \verb`f` and \verb`g` the effect of $(f \circ g)(x)$ is given by \verb`(f . g) x = f (g x)`. The
+ output type of the first function must be the same as the input type of the second function, otherwise a type error
+ will occur.
+
+The composition operator also allows you to easily define functions in terms of other functions, for example the
+ \verb`twice` function could be rewritten as
+\begin{verbatim}
+twice :: (Int -> Int) -> Int -> Int
+twice f = f . f
+\end{verbatim}
+Any function defined only in terms of other functions is known as a function-level definition.
+
+\section*{Partial Applications}
+
+Another feature of many functional programming languages is the ability to partially apply functions. This can be
+ combined with function-level definitions in order to simplify the definition of very basic functions. For example, if
+ there is a \verb`multiply` function, which takes two integers and returns the product, we could define a \verb`double`
+ function as
+\begin{verbatim}
+double = multiply 2
+\end{verbatim}
+This is a much simpler way of defining the function, as the unnecessary variable is never defined, and Haskell just
+ applies the function \verb`multiply 2` to the variable.
+
+\section*{Higher Order Functions in the Prelude}
+
+\subsection*{Mapping}
+
+The \verb`map` function takes a function and a list as arguments, and applies the function to each element of the list.
+ It is defined as a recursive function, with the pattern \verb`map :: (a -> b) -> [a] -> [b]` such that
+\begin{verbatim}
+map :: (a -> b) -> [a] -> [b]
+map f []     = []
+map f (x:xs) = f x : map f xs
+\end{verbatim}
+This allows you to very quickly and simply apply a function to every element of a list, without writing your own list
+ comprehension each time you need to do it.
+
+\subsection*{Filtering}
+
+Another common one is filtering a list. The \verb`filter` function takes a `property' and a list as arguments, and
+ returns a list containing only the elements of the original list which match that `property'. The property is
+ effectively a function which returns a boolean value. The prelude definition is as follows
+\begin{verbatim}
+filter :: (a -> Bool) -> [a] -> [a]
+filter p [] = []
+filter p (x:xs)
+  | p x       = x : filter p xs
+  | otherwise = filter p xs
+\end{verbatim}
+Some examples of a property would be \verb`(>0)` or \verb`isDigit`, which would return all values greater than 0, and
+ all digits, if used in conjunction with \verb`filter`.
+
+\subsection*{Folding}
+
+The final common one is folding a list. This is essentially taking a list, and \textit{folding} all of the values into a
+ single value. This time, the function takes a function, list and a value to return for an empty list. The prelude
+ definition is as follows
+\begin{verbatim}
+foldr :: (a -> a -> a) -> a -> [a] -> a
+foldr f s []     = s
+foldr f s (x:xs) = f x (foldr f s xs)
+\end{verbatim}
+This could be used to add all of the values in a list, \verb`foldr (+) 0 [1,2,3] -> 6`, or to concatenate all of the
+ strings in a list, e.g. \verb`foldr (++) [] ["a","b","c"] -> "abc"`
