@@ -66,7 +66,7 @@ duplicateHead (x:xs) = x:x:xs
 -- Ex 3
 rotate :: [a] -> [a]
 rotate []       = []
-rotate (x:[])   = [x]
+rotate [x]   = [x]
 rotate (x:y:xs) = y:x:xs
 
 -- Ex 4
@@ -120,7 +120,7 @@ listMarks matchName ((name, mark):studentMarks)
 -- Ex 12
 sorted :: [Int] -> Bool
 sorted [] = True
-sorted (x:y:[]) = x <= y
+sorted [x] = True
 sorted (x:y:xs)
   | x <= y    = sorted (y:xs)
   | otherwise = False
@@ -129,7 +129,6 @@ sorted (x:y:xs)
 prefix :: [Int] -> [Int] -> Bool
 prefix [] _          = True
 prefix _ []          = False
-prefix (x:[]) (y:ys) = x == y
 prefix (x:xs) (y:ys)
   | x == y    = prefix xs ys
   | otherwise = False
