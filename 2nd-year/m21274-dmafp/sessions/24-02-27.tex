@@ -1,0 +1,124 @@
+\lecture{Methods of Proof}{17:00}{27/02/24}{Janka Chlebikova}
+
+A mathematical proof is a reasoned argument to convince someone of the truth of a hypothesis. More accurately, an
+ theorem, or argument, is a collection of hypotheses, or premises, followed by a statement known as the conclusion.
+ $(p_1 \wedge p_2 \wedge \dots \wedge p_n) \Rightarrow q$.
+
+There are several methods of proof which are used depending upon the hypothesis. These include direct proof, proof by
+ contradiction, proof by contrapositive and mathematical induction. There are many more methods of proof out there, but
+ these are the only methods that are covered by this module.
+
+\section*{Direct Proof}
+
+Theorems are often in the form $p \Rightarrow q$, and can be easily proved by supposing that $p$ is true, and working
+ to prove it as such. You start with one of the hypotheses and make a series of deductions until you reach a conclusion.
+ For example, to prove the theorem below, you start by assuming that the hypotheses are true, and then work from there
+ to reach a conclusion. If the conclusion is that the theorem is true, you have successfully proved the theorem.
+\begin{theorem}
+For all integers $n$ and $m$, if $m$ is odd and $n$ is even, then $n+m$ is odd.
+\end{theorem}
+
+\begin{proof}
+An integer, $n$, is even if and only if there exists an integer, $k$, such that $n = 2k$. Another integer, $m$ is odd if
+ and only if there exists an integer, $l$, such that $m = 2l + 1$.
+
+As such,
+\begin{align*}
+  n + m & = 2k + (2l + 1) \\
+  & = 2(k + l) + 1 
+\end{align*}
+$\therefore$ $n + m$ is odd.
+\end{proof}
+
+(QED stands for ``Quod Erat Demonstrandum'', or ``What was to be demonstrated'')
+
+\section*{Proof by Contradiction}
+
+Since the conclusion can only be either true or false, if you can prove that the theorem cannot possibly be false, you
+ have arrived at a contradiction, and therefore proved that it is true. For the theorem below, you start by taking the
+ inverse of the hypothesis, and attempt to prove it. Once you reach your contradiction, you can say that the theorem
+ must be true.
+\begin{theorem}
+For all $n \in \mathbb{N}$, if $n^2$ is even, then $n$ is even.
+\end{theorem}
+
+\begin{proof}
+Assume that $n$ is odd, but $n^2$ is even. Therefore, there exists some $k \in \mathbb{N}$ such that $n = 2k + 1$.
+
+As such,
+\begin{align*}
+  n^2 & = (2k + 1)^2 \\
+  & = 4k^2 + 2k + 2k + 1 \\
+  & = 4k^2 + 4k + 1 \\
+  & = 2(2k^2 + 2k) + 1
+\end{align*}
+This results in a contradiction, as $n^2$ must be odd since it is in the form $2k + 1$.\\
+$\therefore$ if $n^2$ is even then $n$ must be even.
+\end{proof}
+
+\section*{Proof by Contrapositive}
+
+Rather than proving $p \Rightarrow q$, you can instead attempt to prove the logically equivalent proposition,
+ $\neg q \Rightarrow \neg p$. You essentially use a direct proof of the contrapositive, and since it is logically
+ equivalent to the original hypothesis, you have also proved the theorem. The example for this proof is the same as the
+ proof by contradiction, e.g.
+\begin{theorem}
+For all $n \in \mathbb{N}$, if $n^2$ is even, then $n$ is even.
+\end{theorem}
+
+\begin{proof}
+Assume that $n$ is odd, and $n^2$ is also odd. Therefore, there exists some $k \in \mathbb{N}$ such that $n = 2k + 1$
+ and some $l \in \mathbb{N}$ such that $n^2 = 2l + 1$.
+
+As such,
+\begin{align*}
+  n^2 & = (2k + 1)^2 \\
+  & = 4k^2 + 2k + 2k + 1 \\
+  & = 4k^2 + 4k + 1 \\
+  & = 2(2k^2 + 2k) + 1
+\end{align*}
+Thus if $n$ is odd, $n^2$ is odd, and therefore the contrapositive theorem is true.\\
+$\therefore$ if $n^2$ is even, then $n$ must be even.
+\end{proof}
+
+\section*{Proof by Mathematical Induction}
+
+This is one of the most basic methods of proof, and is very useful for proving properties of natural numbers, or
+ proving that an equation holds for an infinite set, such at $\mathbb{N}$ or $\mathbb{Z}$. To prove a theorem, you need
+ the \textit{Basis Step} and the \textit{Inductive Step}. The basis step is a predicate that is defined for some integer
+ $n$, e.g. ``$P(a)$ us true for some integer, $a \in \mathbb{N}$'' and the inductive step is a statement, e.g. ``For all
+ integers $k \geq a$, if $P(a)$ is true, then $P(k + 1)$ is also true''. This suggests that $P(n)$ is true for all
+ $n \in \mathbb{N}$ where $n \geq a$.
+\begin{theorem}
+For any integer, $n \in \mathbb{N}$ where $n \geq 1$, the sum of the first $n$ natural numbers is
+ $S(n) = \frac{n(n+1)}{2}$.
+\end{theorem}
+In this case, the basis step would be ``For $n = 1$, $S(1) = 1 = \frac{1(1+1)}{2} = 1$'', and the inductive step would
+ be ``Assume that the sum, $S(n)$, of the first $n$ natural numbers is $\frac{n(n+1)}{2}$. We need to prove that this is
+ also true for the first $n+1$ natural numbers''
+
+\begin{proof}
+Assuming that
+\begin{equation*}
+S(n) = 1 + 2 + \dots + n = \frac{n(n+1)}{2}
+\end{equation*}
+\begin{align*}
+S(n+1) & = 1 + 2 + \dots + n + (n+1) \\
+& = S(n) + (n+1) \\
+& = \frac{n(n+1)}{2} + (n+1) \\
+& = \frac{n(n+1)}{2} + \frac{2(n+1)}{2} \\
+& = \frac{(n+1)(n+2)}{2}
+\end{align*}
+$\therefore$ assuming that the formula is true for $n$, the formula is also true for $n+1$.
+\end{proof}
+
+\section*{(Dis)proving a Universally Quantified Statement}
+
+To disprove a universally quantified statement, you need to find a counterexample for $\forall x \in D: P(x)$ such that
+ $\exists x \in D: \neg P(x)$. For example, the statement
+\begin{equation*}
+\forall n \in \mathbb{N}: (2^n + 1 \mathrm{\ is\ prime})
+\end{equation*}
+is obviously false. A counterexample for this would be $n = 3$, since $2^3 + 1 = 9$ which is not a prime number. Only a
+ single counterexample is required to disprove a universally quantified statement, which also means that you can prove
+ a universally quantified statement by contradiction or counterexample.
