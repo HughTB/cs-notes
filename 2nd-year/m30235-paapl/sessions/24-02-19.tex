@@ -43,7 +43,7 @@ Some programming languages cannot be fully described using only CFGs. For exampl
 Given some input source code, the goal of syntax analysis is to: find all syntax errors and produce a descriptive error
  for the user; and produce the parse tree for the program to be used in code generation. This process is completed by a
  syntax analyser, sometimes known as the parser. There are several algorithms which can be used for parsing, which fall
- into two categories.
+ into two categories - top-down and bottom-up parsers.
 
 \subsection*{Top-Down Parsers}
 
@@ -70,12 +70,6 @@ aaa{Epslion}B
 aaaB
 aaab
 \end{verbatim}
-
-\subsection*{Bottom-Up Parsers}
-
-Starting at the leaves of the parse tree, and progressing towards the root, giving a right-most derivation.
-
-\textbf{INSERT EXAMPLE HERE}
 
 \section*{More on Top-Down Parsers}
 

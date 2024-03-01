@@ -1,0 +1,71 @@
+\lecture{Bottom-Up Parsing}{14:00}{01/03/24}{Jiacheng Tan}
+
+Bottom-up parsing works (shockingly enough) in the opposite direction as top-down parsing. A bottom-up parser starts
+ with the string of terminals and works backwards to the start symbol, applying the productions in reverse as it goes.
+
+With the grammar
+\begin{itemize}
+  \item $S \rightarrow AB$
+  \item $A \rightarrow aA \mid \varepsilon$
+  \item $B \rightarrow b \mid bB$
+\end{itemize}
+A bottom-up parse of the string $aaab$ would look like
+\begin{itemize}
+  \item Starting with the right-most symbol, we can apply the production $B \rightarrow b \mid bB$ in reverse, to end up
+   with the string $aaaB$
+  \item Since neither $a$ nor $aB$ are the right-hand-side of a production, insert $\varepsilon$ to give the string
+   $aaa{\varepsilon}B$.
+  \item Replace $\varepsilon$ with $A$ to get $aaaAB$
+  \item Replace $aA$ with $A$ to get $aaAB$
+  \item Replace $aA$ with $A$ to get $aAB$
+  \item Replace $aA$ with $A$ to get $AB$
+  \item Replace $AB$ with $S$ to get the start symbol, and therefore a valid sentence
+\end{itemize}
+
+\section*{vs Top-Down}
+
+Bottom-up parsers are typically more powerful than top-down parsers. There are excellent generator tools, such as
+ \verb`yacc` that can build a parser from an input specification, as \verb`lex` does for scanners.
+
+\section*{Shift-Reduce Parsing}
+
+A shift-reduce parser takes a stream of tokens as an input and creates the list of productions used to build a parse
+ tree. It uses a stack to track the position in the parsing process and a parse table to determine the correct production
+ to use. Shift-reduce parsing is typically the most common and most powerful method of bottom-up parsing.
+
+One type of shift-reduce parser is an LR parser (Scans input from left-to-right, using a reversed right-most derivation)
+
+\section*{The Shift-Reduce Process}
+
+When parsing a string of tokens, $v$, the input is initialised to $v$ and the stack is empty. At each step, the parser
+ can take one of four actions at each step - shift, reduce, accept or error. The first step of the process is always
+ to shift the first token to the top of the stack.
+
+For this example, the grammar will be as follows
+\begin{itemize}
+  \item $S \rightarrow E$
+  \item $E \rightarrow T \mid E+T$
+  \item $T \rightarrow \mathrm{id} \mid (E)$
+\end{itemize}
+
+\subsection*{Shift}
+
+The token at the start of the input string is \textit{shifted} onto the top of the stack.
+
+\subsection*{Reduce}
+
+Suppose that the contents of the stack are $qw$ where $w$ is a string of terminal and non-terminal symbols, and $q$ may
+ be an empty string. If there is a production such that $A \rightarrow w$, the stack can be \textit{reduced} to $qA$.
+ This means that the production for $A$ is applied backwards, such that we replace the right-hand-side ($w$) with the
+ left-hand-side non-terminal ($A$). In this case, $w$ is known as a handle.
+
+\subsection*{Accept}
+
+If the entire contents of the stack has been reduced to the start symbol ($S$), and there are no remaining input tokens,
+ the input is a valid sentence in the parsers grammar. This means that the parser has ended in an acceptance state.
+
+\subsection*{Error}
+
+If it is not possible to Shift, Reduce or Accept, then the parser must Error. In this case, the sequence on the stack
+ cannot be reduced to the left-hand-side of any production, and any further shifting would be pointless as the input
+ cannot form a valid sentence in the parsers grammar.

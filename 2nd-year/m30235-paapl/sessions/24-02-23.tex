@@ -55,3 +55,35 @@ This process is more generally written as
 It is easy to perform an LL(1) parse if the parse table is already available. To construct the table, you must compute
  the first and follow sets of the non-terminals from the grammar. These are sets of terminal symbols. If these sets are
  available, the construction of the table is a simple procedure which can be performed automatically.
+
+\subsection*{First Sets}
+
+For the grammar
+\begin{itemize}
+  \item $E \rightarrow TE'$
+  \item $E' \rightarrow +TE' \mid \epsilon$
+  \item $T \rightarrow FT'$
+  \item $T' \rightarrow *FT' \mid \epsilon$
+  \item $F \rightarrow (E) \mid \mathrm{int}$
+\end{itemize}
+The first sets of its non-terminals are
+\begin{itemize}
+  \item First($E$) $=$ First($T$) $=$ First($F$) (Rules 1\&3) $= \{(, \mathrm{int})\}$ (Rule 5)
+  \item First($T'$) $= \{*, \epsilon\}$ (Rule 4)
+  \item First($E'$) $= \{+, \epsilon\}$ (Rule 2)
+\end{itemize}
+
+The first set of a non-terminal symbol, $A$, is the set of terminals which start the sequences of symbols which can be
+ derived from $A$. (Written as First($A$)). To calculate First($A$) where $A$ is in the form
+ $A \rightarrow X_1, X_2, \dots, x_n$, you must follow the process below
+\begin{itemize}
+  \item If $X_1$ is a terminal, add $X_1$ to First($A$), and that's it.
+  \item Otherwise, add First($X_1$) to First($A$), as any symbol which starts $X_1$ also starts $A$
+  \item If $X_1$ can go to $\epsilon$, e.g. it is nullable, add First($X_2$) to First($A$). Repeat this for $X_2$ until
+   you find the first non-nullable symbol.
+  \item If all of these are nullable, add $\epsilon$ to the first set.
+\end{itemize}
+
+\subsection*{Follow Sets}
+
+% Come back to this nonsense
