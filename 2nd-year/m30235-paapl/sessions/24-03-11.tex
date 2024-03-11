@@ -1,0 +1,141 @@
+\lecture{Scopes and Memory Allocation}{14:00}{11/03/24}{Jiacheng Tan}
+
+\section*{Variables}
+
+A variable is a place-holder for a run-time value. Each variable has multiple run-time attributes. These attributes
+ include:
+\begin{itemize}
+  \item Name - The name which is used in code to refer to the variable
+  \item Address - The memory address which stores the value of the variable
+  \item Value - The contents of the memory which corresponds to the variable
+  \item Type - The range of values the variable can store, and the operations which can be performed upon it
+  \item Lifetime - The time for which the variable is bound to the specific memory location
+  \item Scope - The area in code which the variable is accessible
+\end{itemize}
+
+\subsection*{Implicit vs Explicit Declaration}
+
+A variable is introduced into the scope using a declaration. This can be done implicitly or explicitly. An explicit
+ declaration is a statement in the source code which defines the type and name of a new variable, e.g.
+\begin{verbatim}
+C - int i;
+Pascal - i : integer
+\end{verbatim}
+
+An implicit declaration is a mechanism by which variables are automatically assigned a type based upon conventions of
+ the language, rather than declaring it manually. For example, in Fortran the type of a variable is defined by the first
+ character of the variable name. If the first character is I, J, K, L, M, or N then it is an integer, otherwise it is
+ real.
+ 
+Another form of implicit declaration is type inference. For example, if you define a \verb`late` variable in Dart, it
+ infers the type of the variable from the first value which is assigned to it, e.g.
+\begin{verbatim}
+late final variable;
+
+variable = "This is a string";
+\end{verbatim}
+In this case, the variable would be assigned the \verb`String` type.
+
+\subsection*{Binding}
+
+A binding is an association between an entity and attribute, such as between a variable and it's type, or a symbol and
+ the operation it corresponds to. Binding can take place at many different times, but is always referred to as the
+ \textit{binding time}. An example of this are the following C statements
+\begin{verbatim}
+1. int x;
+2. x = 1;
+3. x = x + 1;
+\end{verbatim}
+In this case,
+\begin{itemize}
+  \item The type of \verb`x` is bound at compile time, as C is a statically typed language
+  \item The range of values which \verb`x` can take is bound when the compiler is designed, as this is when they pick
+   the number of bits, and therefore maximum value that an integer can be
+  \item The operation of the \verb`+` operator is bound at compile time, as this is when the types of it's operands are
+   known
+  \item The value of \verb`x` is bound at run-time, since that is when the statement is executed
+\end{itemize}
+Binding can also take place at load time (when the variable is bound to a memory location) or link time (the variable
+ in one module is bound to another module)
+
+\subsection*{Static vs Dynamic Type Binding}
+
+A type binding can be either static or dynamic. It is static if it occurs before run-time, e.g. at compile time, and
+ remains unchanged throughout the execution of a program. Declarations always have type information, and so binding is
+ done at compile time. Languages with static type declaration are known as statically typed as, once set, the type cannot
+ change. This gives the advantage of type errors being detected at compile time, and using less memory for each variable,
+ but it is not very flexible and can lead to issues when user input is involved.
+
+A dynamic type binding occurs when the type is bound during execution, or if it is able to change at run-time. This is
+ the case in languages such as Python, JavaScript and PHP. These languages are known as dynamically typed, since the
+ type of any given variable is unknown until run-time and can change at any point. This has the advantage of being more
+ flexible (useful when user input is necessary) and allowing the developer to not need to know the type of a variable
+ when the program is written, but has a much higher overhead due to dynamic type checking, and makes compile-time type
+ error detection impossible.
+
+\subsection*{Strongly and Weakly Typed Languages}
+
+A language is known as strongly typed if \textbf{all} type errors can be detected by the compiler. In this case, a
+ language is also type safe, as it is impossible for the program to crash due to an invalid type. Some examples are
+ Java, Haskell and Ada. Some languages may seem to be strongly typed languages, such as Fortran or C, but actually aren't.
+ A strongly typed language can be either statically or dynamically typed.
+
+A weakly typed language is any language which is not strongly typed, such as JavaScript. Once again, a weakly typed
+ language can be either statically or dynamically typed.
+
+\section*{Scopes}
+
+A block is a section of code, which defines the local environment for any given statement. Blocks are usually denoted by
+ a start and end marker, such as in C, which uses \verb`{` and \verb`}`, but can also be denoted by indentation, if you
+ are a masochist and/ or sadist (cough cough Python). A block can contain variables local to said block, and has it's
+ own reference environment (the names and identifiers which are accessible to statements in the block).
+
+Most languages allow blocks to be nested within each other, but some may restrict the type of blocks which can nest. In
+ C and Java, methods can be nested within classes and other blocks, but not within other methods. In Python and Pascal,
+ it is possible to nest a method within a method.
+
+Since blocks contain variable definitions, the local reference environment for each statement must be determined, which
+ also allows you to determine the \textbf{scope} of identifiers. The scope determines where each identifier can be used,
+ and if an error should be thrown if there are multiple identifiers with the same name. In most languages, the scope of
+ an identifier is the block in which it is declared and, by extension, any nested blocks. There is also a scope known as
+ the global scope, which allows identifiers within it to be accessed anywhere within the program. These are known as
+ global identifiers, and are typically only used when they are absolutely necessary, to reduce the chance of overlapping
+ identifiers.
+
+\subsection*{Duplicated Identifiers}
+
+Most languages have a rule or set thereof to determine which declaration of an identifier takes precedence. In languages
+ such as Pascal, the local variable \textit{hides} any variables with a larger scope. In this case, it is said that
+ there is a hole in the scope of the hidden variable, as it's scope is everywhere aside from any blocks in which it is
+ hidden.
+
+Some languages just flat out refuse to allow any duplicated identifiers, as this reduces the confusion since it will
+ cause an error at compile time, rather than a mysterious run-time error.
+
+\subsection*{Static and Dynamic Scoping}
+
+In the previous example, the scope of variables is determined by their visibility, and therefore the scope depends upon
+ the lexical structure of the program, and the compiler can therefore determine the scope of all variables. This is
+ known as static or lexical scoping. On the other hand, with dynamic scoping, the reference environment depends upon the
+ sequence of sub-programs, rather than the layout of the nested blocks. This means that the scope of any given identifier
+ can only be determined at run-time.
+
+Dynamic scoping is typically less used than static scoping, as it is less reliable due to the unknown order of execution
+ and results in poor code readability. It is however, easier to implement using stacks and resolving a variable does not
+ require tracing the structure of the entire program.
+
+\subsection*{Lifetimes}
+
+The lifetime of a variable is the period of time for which the variable exists, and has a value that is only known at
+ the time of execution. The lifetime of a local variable is the execution of the method. Each recursive execution of a
+ method has its own copy of any local variables. The lifetime of a global variable is the execution of the entire program.
+
+This is related to the way that memory is allocated and deallocated. There are several basic mechanisms which a programming
+ language may use to allocate memory
+\begin{itemize}
+  \item Static allocation is when a fixed memory address is retained throughout the variables lifetime
+  \item Stack-based allocation is done on a last-in first-out basis, and is used for function calls, as the lifetime of
+   the variable is that of the function
+  \item Heap-based allocation is used for variables that are dynamically allocated. They often have no identifier, and
+   are therefore known as anonymous variables, and can only be referenced by pointers
+\end{itemize}
