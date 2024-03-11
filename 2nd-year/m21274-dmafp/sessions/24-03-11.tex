@@ -1,0 +1,72 @@
+\lecture{Algebraic Types}{12:00}{11/03/24}{Matthew Poole}
+
+As with most programming languages, it is possible to define your own data types in Haskell, known as algebraic types.
+ As shown previously, you can define simple datatypes using the \verb`type` keyword, e.g. \verb`type HouseNumber = Int`.
+ However, it would be hard to represent more complex structures, such as binary trees or graphs, using only simple data
+ types. Algebraic types allow you to represent arbitrary types. These are defined using the \verb`data` keyword, which
+ allows you to define a type, along with all of the values which are valid for that type. For example, if you wanted to
+ define a datatype to store every day of the week, you could do so with the following code\\
+ \verb `data Day = Mon | Tue | Wed | Thur | Fri | Sat | Sun`. In this case, the constructors are the data values, or
+ members of the type. This is known as an enumerated type. The boolean type could be defined as
+ \verb`data Bool = True | False`.
+
+\section*{Functions with Enumerated Types}
+
+The simplest way to define a function on an enumerated type is by using pattern matching. By default, there are no
+ actual operators, such as \verb`==` for the type. It is possible to define them manually, but this would be very
+ tedious, and there are easier ways of doing so.
+
+You can get Haskell to automatically define the \verb`==` operator by declaring that the type is a member of the
+ \verb`Eq` \textbf{type class}. We do this by adding \verb`deriving (Eq)` to the type declaration, such as
+\begin{verbatim}
+data Day =  Mon | Tue | Wed | Thur | Fri | Sat | Sun
+            deriving (Eq)
+\end{verbatim}
+This adds obvious implementations for \verb`==` and \verb`/=`. There are other type classes which automatically add
+ other useful operators, such as
+\begin{itemize}
+  \item \verb`Ord`, which defines the operators \verb`<`, \verb`<=`, \verb`>` and \verb`>=`
+  \item \verb`Show`, which defines a function \verb`show`, that converts values to strings
+  \item \verb`Read`, which defines a function \verb`read`, that converts strings back into values (e.g. parsing)
+\end{itemize}
+
+\section*{Product Types}
+
+A product type is an algebraic type with a constructor with two arguments. This was previously done by giving a type
+ name to a tuple, for example
+\begin{verbatim}
+type StudentMark = (String, Int)
+\end{verbatim}
+could be redefined as
+\begin{verbatim}
+data StudentMark = Student String Int
+\end{verbatim}
+where \verb`Student` is the name of the constructor. This allows you to define types in essentially the same way, but
+ with labels which allow you to tell more easily which type a given item is.
+
+\section*{Sum Types}
+
+You can combine enumerated and product types to create more complex types where each member can have different variables
+ of different types. For example, a shape type could be defined as
+\begin{verbatim}
+data Shape = Circle Float | Rectangle Float Float
+\end{verbatim}
+This would allow you to create two instance of a shape, such as \verb`Circle 9.0` and \verb`Rectangle 4.5 6.0`, both of
+ which could be used as the input to a function with the input type \verb`Shape`. For example, you could use pattern
+ matching to create an \verb`area` function which has a different definition for each variety of shape, i.e.
+\begin{verbatim}
+area :: Shape -> Float
+area (Circle r)       = pi * r * r
+area (Rectangle w h)  = w * h
+\end{verbatim}
+
+\section*{Recursive Types}
+
+Algebraic types can also be defined in terms of themselves. For example, if you wanted to represent a binary tree, you
+ could define each node as a type which is either null, or a node with a value, and left and right child. In the case of
+ Haskell, you would define it as a tree, which can either be null or a value and left and right subtree, i.e.
+\begin{verbatim}
+data Tree = Null | Node Int Tree Tree
+\end{verbatim}
+
+Most functions using a recursive type would use null as the base case, and a non-null type for the recursive case.
