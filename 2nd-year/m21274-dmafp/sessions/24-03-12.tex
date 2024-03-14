@@ -1,0 +1,125 @@
+\lecture{Graphs}{17:00}{12/03/24}{Janka Chlebikova}
+
+\section*{Graphs}
+
+A graph, $G$, is a pair $(V, E)$ of sets, $V$ being the set of vertices and $E$ being the set of edges. Each edge,
+ $e \in E$ is denoted either by a set of vertices, e.g. $\{v_1, v_2\}$ or in shorthand as $v_1v_2$, from the set $V$.
+ Each edge connects a distinct set of vertices from $V$. The vertices $v_1$ and $v_2$ are said to be incident with the
+ edge $v_1v_2$, and are adjacent to each other.
+
+\begin{minipage}[c]{0.3\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+        every node/.style={circle,thick,draw}
+      }
+  
+      \node[] (v5) {$v_5$};
+      \node[right of=v5, below of=v5] (v4) {$v_4$};
+      \node[left of=v5, below of=v5] (v3) {$v_3$};
+      \node[below of=v4, node distance=2.5cm] (v2) {$v_2$};
+      \node[below of=v3, node distance=2.5cm] (v1) {$v_1$};
+  
+      \draw (v1) edge[right] (v2)
+            (v1) edge[above] (v3)
+            (v2) edge[above] (v4)
+            (v3) edge[right] (v4)
+            (v3) edge[above] (v5)
+            (v4) edge[above] (v5);
+    \end{tikzpicture}
+    \caption{A graph with 5 vertices and 6 edges}
+    \label{fig:graph1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}{0.6\linewidth}
+In the case of the graph in figure \ref*{fig:graph1},\\
+$V = \{v_1, v_2, v_3, v_4, v_5\}$\\
+$E = \{\{v_1, v_2\}, \{v_1, v_3\}, \{v_2, v_4\}, \{v_3, v_4\}, \{v_3, v_5\}, \{v_4, v_5\}\}$, or\\
+$E = \{v_1v_2, v_1v_3, v_2v_4, v_3v_4, v_3v_5, v_4,v_5\}$
+\end{minipage}
+
+\subsection*{Multi/Pseudo-Graphs}
+
+A pesudograph, or multigraph, is a graph containing either an edge that connects a vertex to itself, or forms a `loop'
+ with two or more edges which connect the same two vertices together. These are not technically graphs, but will still
+ be used in this course as they have some properties which are important to understanding graphs as a whole.
+
+\subsection*{Vertices}
+
+There are several properties of vertices, but the one we are most interested in is the \textit{degree} of the vertex. In
+ the case of a graph, the degree of a vertex is the number of edges connected to it. This is denoted by $\mathrm{deg}(v_1)$,
+ and a vertex with a degree of $0$ is known as `isolated'.
+
+[Example]
+
+When $d_1, d_2, \dots, \d_n$ are the degrees of the vertices in a graph $G$ and $d_1 \leq d_2 \leq \ldots \leq d_n$, the
+ degree sequence of $G$ would be $(d_1, d_2, \dots, d_n)$.
+
+\subsection*{Euler Theorem}
+
+Euler's Theorem (sometimes known as the Handshaking lemma) states:
+\begin{center}
+  In any graph, $G = (V, E)$, the sum of all vertex-degrees is equal to twice the number of edges,\\
+  $\sum_{v \in V} \mathrm{deg\ } v = 2 \lvert E \rvert$
+\end{center}
+
+This has several consequences, namely
+\begin{itemize}
+  \item The sum of all vertex-degrees is an even number
+  \item Adding a single edge increases the degree of 2 vertices by $1$
+  \item The number of vertices with odd degrees must be even
+\end{itemize}
+
+\section*{Special Graphs}
+
+\subsection*{Complete Graphs}
+
+For any positive integer, $n \in \mathbb{N}$, the complete graph with $n$ vertices, denoted by $K_n$ is the graph in
+ which every pair of vertices are adjacent. More simply, every vertex is connected to every other vertex.
+
+[Examples]
+
+A complete graph with $n$ vertices has $\frac{n(n - 1)}{2}$ edges. This is because, as per Euler's theorem,
+ $2 \lvert E \rvert = (n - 1) + \ldots + (n - 1)$, with $(n - 1)$ repeated $n$ times. Therefore,
+ $2 \lvert E \rvert = n(n - 1)$ and finally $\lvert E \rvert = \frac{n(n - 1)}{2}$.
+
+\subsection*{Bipartite Graphs}
+
+A bipartite graph is one whose vertices can be partitioned into two disjoint sets, $V_1$ and $V_2$ in such a way that
+ every edge in $E$ joins a vertex in $V_1$ with a vertex in $V_2$. This means that there are no edges connecting any
+ vertices in the same set.
+
+A complete bipartite graph is one in which every vertex in $V_1$ is connected to every vertex in $V_2$. This is denoted
+ by $K_{m, n}$ for $\lvert V_1 \rvert = m$ and $\lvert V_2 \rvert = n$
+
+\section*{Subgraphs}
+
+A graph $H$ is a subgraph of graph $G$ if and only if the vertex and edge sets of $H$ are subsets of the vertex and edge
+ sets of $G$, respectively. The way that the graphs are drawn is irrelevant, since any given graph could be drawn in a
+ near infinite number of ways. The only thing that matters is that the structure of the graph is similar.
+
+[Examples]
+
+\section*{Isomorphic Graphs}
+
+There is not a terribly simple way of describing the concept of isomorphic graphs, but two graphs are isomorphic if it
+ is possible to re-label the vertices of one graph to create the structure of the second graph.
+
+[Examples]
+
+More formally, $G$ is isomorphic to $H$ if there is a bijective function such that $f: V(G) \rightarrow V(H)$, such that
+ if $u$ and $v$ are adjacent in $G$, then $f(u)$ and $f(v)$ are adjacent in $H$, and if they are not adjacent in $G$,
+ they are not adjacent in $H$ either.
+
+It is typically very difficult to prove if two graphs are isomorphic, and as such it is usually easier to prove by
+ contradiction. If $G$ and $H$ are isomorphic, then $G$ and $H$
+\begin{itemize}
+  \item have the same number of vertices
+  \item have the same number of edges
+  \item have the same degree sequence
+  \item are either both connected or not connected (a topic for the next lecture)
+\end{itemize}
+Therefore, if any of the above are not the case, you have proven that the graphs are not isomorphic.
