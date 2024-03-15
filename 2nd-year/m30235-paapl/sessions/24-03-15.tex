@@ -1,0 +1,86 @@
+\lecture{Elementary Data Types}{14:00}{15/03/24}{Jiacheng Tan}
+
+An elementary data type is one which has a fixed size in memory. Typically, languages have a few elementary data types,
+ such as numeric types (Integer, Floating Points, etc), Boolean, Character, etc. There are also usually ``enumerated''
+ types, which can take any of a set of values, which are usually represented internally as Integers.
+
+Most imperative languages also provide built-in operators for computing using these elementary data types. These
+ typically include arithmetic, relational and boolean operations, such as\\\verb`+ - * / == < <= > >= || &&`, etc.
+
+\section*{Enumerated Types}
+
+Enumerated types are \textit{ordinal} types, in which the possible values can be associated with the set of positive
+ integers. This means that they can be used to represent order, and that you can effectively `index' the values using
+ an integer.
+
+Some built-in types are enumerated, but they can also be user-defined. This is useful for storing information such as
+ the day of the week, month of the year, or season. For example, you could represent the seasons in C++ as follows
+\begin{verbatim}
+enum Season = {
+  spring,
+  summer,
+  autumn,
+  winter,
+};
+\end{verbatim}
+Then, a variable which has the type \verb`Season` could store any of the four seasons.
+
+Most languages also automatically define operators for enumerated types. These include basic functionality such as the
+ equality operator, but more complex functions like relational operators, which allow you to do things like checking if
+ the season is `greater' than \verb`summer`. You can usually also interact with the real data type behind the enumerated
+ values, which is typically an integer. This allows you to increment or decrement, as well as performing arithmetic with
+ your enumerated values.
+
+\section*{Pointer Types}
+
+Pointer (or reference) variables store a location in memory as their value. This allows them to point to a piece of data
+ in memory. Pointers are meant to work with memory locations, allowing for more efficient use of limited memory space.
+ As this is less of an issue nowadays, fewer and fewer languages allow you to access the raw memory locations, and is
+ typically limited to lower-level languages like C and C++.
+
+Memory is often dynamically allocated from the heap, and are known as heap-dynamic variables. Typically, they do not have
+ an identifier, and can therefore only be accessed by using a pointer to the memory address.
+
+Pointer \textit{dereferencing} is the act of accessing the value stored in the memory pointed to by a pointer. With the
+ dereferenced value, you can read the current value or overwrite a new one. This is useful, as it allows you to pass a
+ pointer to a memory location, and modify it in a function, without having to pass a value in and return the modified
+ value. This is especially useful in low-level languages which don't support compound data types.
+
+There is also a special \verb`null` pointer, which is usually stored as \verb`0`. This is used to signify that a pointer
+ does not point to any location, and is typically the value which pointers are initialised to.
+
+\subsection*{Dynamic Memory Allocation}
+
+Since a pointer is a reference to a location in memory, you can also use them to dynamically allocate space in memory for
+ values at runtime. This allows you to both store as many values as you need to, but also to store arbitrarily large
+ values in memory. For example, if you wanted to store a string, you might not know how long the string will be at
+ compile time. Therefore, you can dynamically allocate a space in memory which is large enough to store the string, and
+ then access it using a pointer.
+
+\subsection*{Memory Deallocation}
+
+Memory addresses need to be \textit{deallocated} when they are no longer needed, otherwise the program's memory space
+ would fill up over time, with unused values being stored unnecessarily. Deallocation can be done either implicitly or
+ explicitly. Assigning \verb`null` to a pointer removes the only way of accessing the allocated memory, which still
+ contains the last value which was assigned to it. The runtime environment can then `garbage collect' the memory address
+ and deallocate it so it can be used again. To deallocate memory explicitly, you call the \verb`free` function, with a
+ pointer to the address you wish to free. This will mark it as available for reuse. It is good practice to also set the
+ value of the pointer to \verb`null`, so that you don't have a \textit{dangling pointer}.
+
+\subsection*{Array Indices}
+
+In languages such as C, arrays are actually just pointers to a block of memory. For example, an array of 10 integers
+ would be stored in memory as a contiguous block of memory which is 10 times the size of an integer. Then, when indexing
+ the array, the specified index acts like an offset, adding to the pointer to the first element to get the address of
+ the value you're interested in. Since they are accessed via a pointer, it is also possible to dynamically allocate an
+ array of arbitrary length, useful for storing a list of input values.
+
+\subsection*{Dangling Pointers}
+
+A dangling pointer is one which points to a memory address which has already been deallocated. This is dangerous and liable
+ to cause the program to crash, as it may attempt to read from or write to the memory of another program. On Unix systems,
+ accessing a dangling pointer guarantees a crash as the kernel will notice the program attempting to read outside of
+ its assigned memory and kill it, giving a \verb`SEGMENTATION FAULT` error. On Windows systems, this could still cause a
+ crash as the program may write into another programs memory, or read an invalid value placed there by a different
+ program. Because of this, it's important to destroy the pointer when it is deallocated, typically by setting its value
+ to a \verb`null` pointer.
