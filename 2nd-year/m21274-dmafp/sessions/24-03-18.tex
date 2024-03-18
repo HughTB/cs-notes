@@ -1,0 +1,125 @@
+\lecture{Input/ Output}{12:00}{18/03/24}{Matthew Poole}
+
+Real-time input and output is important for any program which requires user-interaction. This is an issue for functional
+ programming languages, since they are typically immutable and therefore don't have great support for using unpredictable
+ values. Another problem is that functions are meant to have a property known as referential transparency. This means
+ that, given the same set of arguments, a function should always return the same value. This is a required property of
+ any pure functional language, and therefore and language with support for real-time input is an impure functional
+ language.
+
+A common approach used by functional languages, is to provide a set of `functions', along the lines of \verb`inputInt :: Int`,
+ which reads an integer from the standard input and returns the value. This approach breaks the rule of referential
+ transparency since the function returns a different value each time it is called, which is a side effect of reading
+ from the standard input.
+
+\section*{Haskell's I/O Approach}
+
+Haskell uses a method of I/O known as the \textit{monadic approach}, as it is based upon the mathematical concept of a
+ `monad'. The input/ output is viewed as a series of actions which happen in sequence. Haskell provides the generic type
+ \verb`IO a`, which represent I/O actions of type \verb`a`.
+
+A value of type \verb`IO a` is an action which, when executed, performs some input/ output and then returns a value of
+ type \verb`a`. It also provides a method for sequencing these actions, which allows them to be executed one after the
+ other in a specific order. Effectively, there is another very simple imperative programming language within Haskell
+ which is used for writing I/O programs. As such, a typical Haskell program consists of a set of function definitions
+ which abide by referential transparency and are purely functional, and a set of I/O programs. The I/O programs are able
+ to call the pure functions, as well as each other, but pure functions are only able to call other pure functions, and
+ never an impure I/O program. These programs are an even higher level of abstraction, as they are syntactic sugar for a
+ set of purely functional expressions.
+
+\subsection*{Prelude Functions}
+
+There are two built-in functions defined in the prelude for reading input. Namely: \verb`getLine :: IO String`, which
+ reads a line from the standard input, and returns a string; and \verb`getChar :: IO Char`, which reads a single character
+ from the standard input.
+
+The prelude also defines a method of writing to the standard output. There are three functions which are able to write
+ to the standard output: \verb`putStr` and \verb`putStrLn` which write a string and a string with a newline to the
+ standard output, respectively; and \verb`print`, which is a polymorphic function, which writes the value of any type
+ which extends \verb`Show` to the standard output.
+
+Since every function has to have a return type, Haskell provides the \textit{one-element} type called \verb`()`, which
+ contains a single value, also \verb`()`. All this really means is that the I/O program returns nothing of interest.
+ This is similar to the \verb`void` type that most imperative languages use to represent a function with no return value.
+ Haskell effectively gets this value for free, as it is simply a tuple with no elements.
+
+\subsection*{`do' Notation}
+
+As previously stated, an I/O program is a set of actions with a specific order. To write a program, you have to use the
+ \verb`do` keyword to specify that a function is an I/O program. For example, if you wanted to write a program which
+ displays a message asking the user to `Enter a string', gets a string of user input (but does nothing with it), then
+ displays a `done' message, you would define it as below:
+\begin{verbatim}
+readALine :: IO ()
+readALine = do
+  putStrLn "Enter a string"
+  getLine
+  putStrLn "Done"
+\end{verbatim}
+Notice that every line consists of an action of type \verb`IO a` for some common \verb`a`.
+
+Usually, you'll actually want to do something with the user input, and so you `capture' it into a named value (effectively
+ a variable) using \verb`<-`. This appears to be like an assignment operator as in imperative languages, but since this
+ is still Haskell, a named value is immutable, as everything else is. If we wanted to write a similar I/O program as
+ before, but this time, output the value the user entered, we can capture the value they enter, e.g.
+\begin{verbatim}
+readALine :: IO ()
+readALine = do
+  putStrLn "Enter a string"
+  line <- getLine
+  putStrLn ("You entered " ++ line)
+\end{verbatim}
+
+If you wanted to get an integer from user input, you would read a value and capture it, and then pass it into the
+ \verb`read` function for an integer, e.g. \verb`do str <- getLine` and then \verb`read str :: Int`. Now you have a
+ problem, since \verb`read` is a pure function, it cannot be called directly from an I/O program. To get around this,
+ Haskell defines a function \verb`return :: a -> IO a`, which does no I/O operations, but simply returns the value of
+ the argument you give it. Putting this all together, you could create an I/O program \verb`getInt` which reads an
+ integer from the standard input, as bellow
+\begin{verbatim}
+getInt :: IO Int
+getInt = do
+  str <- getLine
+  return (read str :: Int)
+\end{verbatim}
+
+\subsection*{File I/O}
+
+The prelude also defines the following functions which allow you to read from or write to files.
+\begin{itemize}
+  \item \verb`readFile :: String -> IO String`
+  \item \verb`writeFile :: String -> String -> IO ()`
+  \item \verb`appendFile :: String -> String -> IO ()`
+\end{itemize}
+For each function, the first argument is the path to the file, and for write and append, the second argument is the
+ string which should be written or appended to the file, respectively.
+
+\subsection*{Conditional Code}
+
+The conditionals \verb`if`, \verb`then` and \verb`else` can be used within a \verb`do` construct to allow for more
+ complex functions with flow control. Alternatively, you can move more of the logic to pure functions, allowing you to
+ use guards and pattern matching for more efficient and readable functions, and simply read in the value and then call
+ the pure function with that value.
+
+\subsection*{Local Definitions}
+
+As with pure functions, you can use local definitions (with the keyword \verb`let`) in I/O programs to reduce the number
+ of IO functions which need to be used. This is because you can replace an assignment with a local definition, e.g. replace
+ \verb`response <- return (even 2)` with \verb`let response = even 2`.
+
+\subsection*{Recursion}
+
+IO programs, like pure functions, can be recursive. The syntax is exactly the same with both, since you are simply
+ calling a function within a function, it just happens to be the same function you are already in.
+
+\section*{Haskell Programs}
+
+To create an actual program with Haskell, you have to define a main function, the entry point for the program. This is
+ similar to most imperative languages, but typically just immediately calls a pure function. The main function is defined
+ as
+\begin{verbatim}
+main :: IO [type]
+main = do
+  [do stuff]
+\end{verbatim}
+This allows you to run your code as an actual program, using the command \verb`runhaskell <filepath>`
