@@ -13,15 +13,14 @@ A graph, $G$, is a pair $(V, E)$ of sets, $V$ being the set of vertices and $E$ 
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v5) {$v_5$};
-      \node[right of=v5, below of=v5] (v4) {$v_4$};
-      \node[left of=v5, below of=v5] (v3) {$v_3$};
-      \node[below of=v4, node distance=2cm] (v2) {$v_2$};
-      \node[below of=v3, node distance=2cm] (v1) {$v_1$};
+      \node[vertex] (v5) {$v_5$};
+      \node[vertex, right of=v5, below of=v5] (v4) {$v_4$};
+      \node[vertex, left of=v5, below of=v5] (v3) {$v_3$};
+      \node[vertex, below of=v4, node distance=2cm] (v2) {$v_2$};
+      \node[vertex, below of=v3, node distance=2cm] (v1) {$v_1$};
   
       \draw (v1) edge[right] (v2)
             (v1) edge[above] (v3)
@@ -59,17 +58,16 @@ There are several properties of vertices, but the one we are most interested in 
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
 
-      \node[] (v2) {$v_2$};
-      \node[below of=v2] (v1) {$v_1$};
-      \node[right of=v2] (v3) {$v_3$};
-      \node[right of=v3] (v4) {$v_4$};
-      \node[below of=v4] (v5) {$v_5$};
-      \node[right of=v4, below of=v4] (v6) {$v_6$};
-      \node[right of=v6, above of=v6] (v7) {$v_7$};
+      \node[vertex] (v2) {$v_2$};
+      \node[vertex, below of=v2] (v1) {$v_1$};
+      \node[vertex, right of=v2] (v3) {$v_3$};
+      \node[vertex, right of=v3] (v4) {$v_4$};
+      \node[vertex, below of=v4] (v5) {$v_5$};
+      \node[vertex, right of=v4, below of=v4] (v6) {$v_6$};
+      \node[vertex, right of=v6, above of=v6] (v7) {$v_7$};
   
       \draw (v1) edge[bend right] (v2)
             (v1) edge[bend left] (v2)
@@ -128,11 +126,10 @@ For any positive integer, $n \in \mathbb{N}$, the complete graph with $n$ vertic
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
+      \node[vertex] (v1) {$v_1$};
     \end{tikzpicture}
     \caption{$K_1$}
     \label{fig:graphk1}
@@ -144,12 +141,11 @@ For any positive integer, $n \in \mathbb{N}$, the complete graph with $n$ vertic
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1] (v2) {$v_2$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
 
       \draw (v1) edge (v2);
     \end{tikzpicture}
@@ -163,13 +159,12 @@ For any positive integer, $n \in \mathbb{N}$, the complete graph with $n$ vertic
     \usetikzlibrary{graphs, positioning, calc}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1] (v2) {$v_2$};
-      \node[yshift=-0.5cm] (v3) [above=of $(v1)!0.5!(v2)$] {$v_3$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, yshift=-0.5cm] (v3) [above=of $(v1)!0.5!(v2)$] {$v_3$};
 
       \draw (v1) edge[] (v2)
             (v2) edge[] (v3)
@@ -185,14 +180,13 @@ For any positive integer, $n \in \mathbb{N}$, the complete graph with $n$ vertic
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1] (v2) {$v_2$};
-      \node[above of=v2] (v3) {$v_3$};
-      \node[above of=v1] (v4) {$v_4$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, above of=v2] (v3) {$v_3$};
+      \node[vertex, above of=v1] (v4) {$v_4$};
 
       \draw (v1) edge[] (v2)
             (v2) edge[] (v3)
@@ -224,15 +218,14 @@ A bipartite graph is one whose vertices can be partitioned into two disjoint set
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
 
-      \node[] (v1) {$v_1$};
-      \node[right of=v1] (v2) {$v_2$};
-      \node[above of=v1] (v3) {$v_3$};
-      \node[right of=v3] (v4) {$v_4$};
-      \node[right of=v4] (v5) {$v_5$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, above of=v1] (v3) {$v_3$};
+      \node[vertex, right of=v3] (v4) {$v_4$};
+      \node[vertex, right of=v4] (v5) {$v_5$};
 
       \draw (v1) edge[] (v3)
             (v1) edge[] (v4)
@@ -249,15 +242,14 @@ A bipartite graph is one whose vertices can be partitioned into two disjoint set
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1] (v2) {$v_2$};
-      \node[above of=v1] (v3) {$v_3$};
-      \node[right of=v3] (v4) {$v_4$};
-      \node[right of=v4] (v5) {$v_5$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, above of=v1] (v3) {$v_3$};
+      \node[vertex, right of=v3] (v4) {$v_4$};
+      \node[vertex, right of=v4] (v5) {$v_5$};
 
       \draw (v1) edge[] (v3)
             (v1) edge[] (v4)
@@ -286,15 +278,14 @@ A graph $H$ is a subgraph of graph $G$ if and only if the vertex and edge sets o
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1, below of=v1] (v2) {$v_2$};
-      \node[right of=v2, above of=v2] (v3) {$v_3$};
-      \node[right of=v1, above of=v1] (v4) {$v_4$};
-      \node[right of=v1] (v5) {$v_5$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1, below of=v1] (v2) {$v_2$};
+      \node[vertex, right of=v2, above of=v2] (v3) {$v_3$};
+      \node[vertex, right of=v1, above of=v1] (v4) {$v_4$};
+      \node[vertex, right of=v1] (v5) {$v_5$};
 
       \draw (v1) edge[] (v2)
             (v2) edge[] (v3)
@@ -313,14 +304,13 @@ A graph $H$ is a subgraph of graph $G$ if and only if the vertex and edge sets o
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1, below of=v1] (v2) {$v_2$};
-      \node[right of=v2, above of=v2] (v3) {$v_3$};
-      \node[right of=v1, above of=v1] (v4) {$v_4$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1, below of=v1] (v2) {$v_2$};
+      \node[vertex, right of=v2, above of=v2] (v3) {$v_3$};
+      \node[vertex, right of=v1, above of=v1] (v4) {$v_4$};
 
       \draw (v1) edge[] (v2)
             (v2) edge[] (v3)
@@ -337,15 +327,14 @@ A graph $H$ is a subgraph of graph $G$ if and only if the vertex and edge sets o
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1, below of=v1] (v2) {$v_2$};
-      \node[right of=v2, above of=v2] (v3) {$v_3$};
-      \node[right of=v1, above of=v1] (v4) {$v_4$};
-      \node[right of=v1] (v5) {$v_5$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1, below of=v1] (v2) {$v_2$};
+      \node[vertex, right of=v2, above of=v2] (v3) {$v_3$};
+      \node[vertex, right of=v1, above of=v1] (v4) {$v_4$};
+      \node[vertex, right of=v1] (v5) {$v_5$};
 
       \draw (v1) edge[] (v2)
             (v2) edge[] (v3)
@@ -373,14 +362,13 @@ There is not a terribly simple way of describing the concept of isomorphic graph
     \usetikzlibrary{graphs}
     \begin{tikzpicture}
       \tikzset{
-        node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+        node distance=1.5cm
       }
   
-      \node[] (v1) {$v_1$};
-      \node[right of=v1] (v2) {$v_2$};
-      \node[above of=v2] (v3) {$v_3$};
-      \node[above of=v1] (v4) {$v_4$};
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, above of=v2] (v3) {$v_3$};
+      \node[vertex, above of=v1] (v4) {$v_4$};
 
       \draw (v1) edge[] (v2)
             (v2) edge[] (v3)
@@ -398,13 +386,12 @@ There is not a terribly simple way of describing the concept of isomorphic graph
     \begin{tikzpicture}
       \tikzset{
         node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
       }
   
-      \node[] (u1) {$u_1$};
-      \node[right of=u1] (u2) {$u_2$};
-      \node[above of=u2] (u3) {$u_3$};
-      \node[above of=u1] (u4) {$u_4$};
+      \node[vertex] (u1) {$u_1$};
+      \node[vertex, right of=u1] (u2) {$u_2$};
+      \node[vertex, above of=u2] (u3) {$u_3$};
+      \node[vertex, above of=u1] (u4) {$u_4$};
 
       \draw (u1) edge[] (u2)
             (u2) edge[] (u4)
@@ -422,13 +409,12 @@ There is not a terribly simple way of describing the concept of isomorphic graph
     \begin{tikzpicture}
       \tikzset{
         node distance=1.5cm,
-        every node/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
       }
   
-      \node[] (w1) {$w_1$};
-      \node[right of=w1] (w2) {$w_2$};
-      \node[above of=w2] (w3) {$w_3$};
-      \node[above of=w1] (w4) {$w_4$};
+      \node[vertex] (w1) {$w_1$};
+      \node[vertex, right of=w1] (w2) {$w_2$};
+      \node[vertex, above of=w2] (w3) {$w_3$};
+      \node[vertex, above of=w1] (w4) {$w_4$};
 
       \draw (w1) edge[] (w2)
             (w2) edge[] (w4)

@@ -1,0 +1,412 @@
+\lecture{Walks, Trails and Paths}{17:00}{19/03/24}{Janka Chlebikova}
+
+\section*{Walks}
+
+A walk is a sequence of vertices and edges, starting and ending with a vertex. There are several notations which can be
+ used, a less formal one, such as $a$-$ab$-$b$-$bc$-$c$-$ca$-$a$, and the more formal one which I will stick to, being
+ $(a, b, c, a)$. The length of a walk is the number of edges traversed. A walk can traverse any given edge and number of
+ times, anywhere from $0$ to $\infty$. A walk can either be open or closed, depending upon if the walk ends at a
+ different vertex or at the starting vertex, respectively.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+      }
+  
+      \node[vertex] (ve) {$e$};
+      \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+      \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+      \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+      \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+      \node[vertex, left of=vb, above of=vb, xshift=-2cm] (va) {$a$};
+      \node[vertex, left of=vb, below of=vb, xshift=-2cm] (vd) {$d$};
+
+      \draw[line width=0.15cm, red!50]
+            (va) edge[] node[left] {$1$} (vd)
+            (va) edge[] node[above] {$2$} (vb)
+            (ve) edge[] node[right] {$3$} (vb)
+            (ve) edge[] node[above] {$4, 8$} (vd)
+            (vb) edge[] node[above] {$5$} (vd)
+            (vb) edge[] node[above] {$6$} (vc)
+            (ve) edge[] node[right] {$7$} (vc)
+            (vd) edge[] node[below] {$9$} (vf);
+
+      \draw (va) edge[] (vb)
+            (va) edge[] (vd)
+            (vb) edge[] (vd)
+            (vb) edge[] (vc)
+            (vd) edge[] (vf)
+            (ve) edge[] (vb)
+            (ve) edge[] (vc)
+            (ve) edge[] (vd)
+            (ve) edge[] (vf)
+            (ve) edge[] (vg)
+            (vf) edge[] (vg);
+    \end{tikzpicture}
+    \caption{An open walk of length 9 from $d$ to $f$}
+    \label{fig:walk1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}{0.45\linewidth}
+The walk shown in red in Figure \ref*{fig:walk1} is an open walk, and could be written either informally as
+$d$-$da$-$a$-$ab$-$b$-$be$-$e$-$ed$-$d$-$db$-$b$-$bc$-$c$-$ce$-$e$-$ed$-$d$-$df$-$f$, or formally as
+$(d, a, b, e, d, b, c, e, d, f)$.
+\end{minipage}
+
+\subsection*{Trails}
+
+A trail is a type of walk in which each edge is traversed at most once, and the edges are therefore distinct.
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=1.5cm,
+    }
+
+    \node[vertex] (ve) {$e$};
+    \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+    \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+    \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+    \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+    \node[vertex, left of=vb, above of=vb, xshift=-2cm] (va) {$a$};
+    \node[vertex, left of=vb, below of=vb, xshift=-2cm] (vd) {$d$};
+
+    \draw[line width=0.15cm, red!50]
+          (vd) edge[] node[left] {$1$} (va)
+          (va) edge[] node[above] {$2$} (vb)
+          (vb) edge[] node[right] {$3$} (ve)
+          (ve) edge[] node[above] {$4$} (vd)
+          (vd) edge[] node[below] {$5$} (vf);
+
+    \draw (va) edge[] (vb)
+          (va) edge[] (vd)
+          (vb) edge[] (vd)
+          (vb) edge[] (vc)
+          (vd) edge[] (vf)
+          (ve) edge[] (vb)
+          (ve) edge[] (vc)
+          (ve) edge[] (vd)
+          (ve) edge[] (vf)
+          (ve) edge[] (vg)
+          (vf) edge[] (vg);
+  \end{tikzpicture}
+  \caption{A trail of length 5 from $d$ to $f$}
+  \label{fig:trail1}
+\end{figure}
+
+\subsection*{Paths}
+
+A path is a type of walk in which each vertex is traversed at most once, and the vertices are therefore distinct.
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=1.5cm,
+    }
+
+    \node[vertex] (ve) {$e$};
+    \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+    \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+    \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+    \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+    \node[vertex, left of=vb, above of=vb, xshift=-2cm] (va) {$a$};
+    \node[vertex, left of=vb, below of=vb, xshift=-2cm] (vd) {$d$};
+
+    \draw[line width=0.15cm, red!50]
+          (vd) edge[] node[left] {$1$} (va)
+          (va) edge[] node[above] {$2$} (vb)
+          (vb) edge[] node[right] {$3$} (ve)
+          (ve) edge[] node[left] {$4$} (vf)
+          (vf) edge[] node[below] {$5$} (vg);
+
+    \draw (va) edge[] (vb)
+          (va) edge[] (vd)
+          (vb) edge[] (vd)
+          (vb) edge[] (vc)
+          (vd) edge[] (vf)
+          (ve) edge[] (vb)
+          (ve) edge[] (vc)
+          (ve) edge[] (vd)
+          (ve) edge[] (vf)
+          (ve) edge[] (vg)
+          (vf) edge[] (vg);
+  \end{tikzpicture}
+  \caption{A path of length 5 from $d$ to $g$}
+  \label{fig:path1}
+\end{figure}
+
+\subsection*{Circuits}
+
+A circuit is a closed walk which is also a trail (All edges are distinct).
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=1.5cm,
+    }
+
+    \node[vertex] (ve) {$e$};
+    \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+    \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+    \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+    \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+    \node[vertex, left of=vb, above of=vb, xshift=-2cm] (va) {$a$};
+    \node[vertex, left of=vb, below of=vb, xshift=-2cm] (vd) {$d$};
+
+    \draw[line width=0.15cm, red!50]
+          (vd) edge[] node[left] {$1$} (va)
+          (va) edge[] node[above] {$2$} (vb)
+          (vb) edge[] node[right] {$3, 4$} (ve)
+          (vb) edge[] node[above] {$5$} (vd);
+
+    \draw (va) edge[] (vb)
+          (va) edge[] (vd)
+          (vb) edge[] (vd)
+          (vb) edge[] (vc)
+          (vd) edge[] (vf)
+          (ve) edge[] (vb)
+          (ve) edge[] (vc)
+          (ve) edge[] (vd)
+          (ve) edge[] (vf)
+          (ve) edge[] (vg)
+          (vf) edge[] (vg);
+  \end{tikzpicture}
+  \caption{A circuit of length 5 from $d$ to $d$}
+  \label{fig:circuit1}
+\end{figure}
+
+\subsection*{Cycles}
+
+A cycle is a closed walk which is also a path (All vertices are distinct)
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=1.5cm,
+    }
+
+    \node[vertex] (ve) {$e$};
+    \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+    \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+    \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+    \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+    \node[vertex, left of=vb, above of=vb, xshift=-2cm] (va) {$a$};
+    \node[vertex, left of=vb, below of=vb, xshift=-2cm] (vd) {$d$};
+
+    \draw[line width=0.15cm, red!50]
+          (vd) edge[] node[left] {$1$} (va)
+          (va) edge[] node[above] {$2$} (vb)
+          (vb) edge[] node[right] {$3$} (ve)
+          (ve) edge[] node[left] {$4$} (vf)
+          (vf) edge[] node[below] {$5$} (vd);
+
+    \draw (va) edge[] (vb)
+          (va) edge[] (vd)
+          (vb) edge[] (vd)
+          (vb) edge[] (vc)
+          (vd) edge[] (vf)
+          (ve) edge[] (vb)
+          (ve) edge[] (vc)
+          (ve) edge[] (vd)
+          (ve) edge[] (vf)
+          (ve) edge[] (vg)
+          (vf) edge[] (vg);
+  \end{tikzpicture}
+  \caption{A cycle of length 5 from $d$ to $d$}
+  \label{fig:cycle1}
+\end{figure}
+
+\subsection*{Connected Graphs \& Bridges}
+
+A graph is connected if there is a path between any given pair of vertices, otherwise it is disconnected.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, right of=v2] (v3) {$v_3$};
+      \node[vertex, below of=v3] (v4) {$v_4$};
+      \node[vertex, below of=v2] (v5) {$v_5$};
+      \node[vertex, below of=v1] (v6) {$v_6$};
+
+      \draw (v1) edge[] (v2)
+            (v1) edge[] (v6)
+            (v2) edge[] (v3)
+            (v2) edge[] (v5)
+            (v3) edge[] (v4)
+            (v4) edge[] (v5)
+            (v5) edge[] (v6);
+    \end{tikzpicture}
+    \caption{A connected graph with 6 vertices}
+    \label{fig:congraph1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, right of=v2] (v3) {$v_3$};
+      \node[vertex, below of=v3] (v4) {$v_4$};
+      \node[vertex, below of=v2] (v5) {$v_5$};
+      \node[vertex, below of=v1] (v6) {$v_6$};
+
+      \draw (v1) edge[] (v2)
+            (v1) edge[] (v6)
+            (v2) edge[] (v5)
+            (v3) edge[] (v4)
+            (v5) edge[] (v6);
+    \end{tikzpicture}
+    \caption{A disconnected graph with 6 vertices}
+    \label{fig:discongraph1}
+  \end{figure}
+\end{minipage}
+
+A bridge is any edge within a connected graph which, if removed, would case the graph to become disconnected.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, right of=v2] (v3) {$v_3$};
+      \node[vertex, below of=v3] (v4) {$v_4$};
+      \node[vertex, below of=v2] (v5) {$v_5$};
+      \node[vertex, below of=v1] (v6) {$v_6$};
+
+      \draw (v1) edge[] (v2)
+            (v1) edge[] (v6)
+            (v2) edge[] (v5)
+            (v2) edge[line width=0.15cm, red!50] (v3)
+            (v2) edge[] (v3)
+            (v3) edge[] (v4)
+            (v5) edge[] (v6);
+    \end{tikzpicture}
+    \caption{A connected graph with 6 vertices and 2 bridges}
+    \label{fig:bridgegraph1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+The graph shown in Figure \ref*{fig:bridgegraph1} is a connected graph with a bridge. The edge $v_2v_3$ (highlighted in
+ red) is a bridge as if it were removed there would be no path between the vertices $v_1, v_2, v_5$ and $v_6$ and the
+ vertices $v_3$ and $v_4$. The edge between $v_3$ and $v_4$ is also an edge, as if it were removed there would be no
+ path to $v_4$.
+\end{minipage}
+
+A graph can have multiple bridges, as there could be several sections which are only connected by a single edge, or as
+ in the example in Figure \ref*{fig:bridgegraph1}, there could be a single node which is only connected to the rest of
+ the graph by a single edge.
+
+\section*{Eulerian Graphs}
+
+A Eulerian graph is one in which there is a circuit which contains every edge. This would be a closed walk where every
+ edge is traversed exactly once. An easy way to tell if a graph is Eulerian, is if you are able to draw it without
+ lifting your pencil off the paper. It also means that the degree of every vertex must be even. In this case, it is
+ necessary and sufficient, so all you need to prove that a graph is Eulerian is to show that the degrees of all vertices
+ is even.
+
+\subsection*{Fleury's Algorithm}
+
+There is an efficient algorithm known as Fleury's Algorithm, which allows you to find an Eulerian circuit within an
+ Eulerian graph. It is as follows:
+\begin{enumerate}[start=0]
+  \item Select a starting vertex
+  \item\label{item:fle1} Select an edge to traverse, only select a bridge if there are no other edges
+  \item\label{item:fle2} Remove the traversed edge, and any vertices with a degree of 0
+  \item Repeat steps \ref*{item:fle1}-\ref*{item:fle2} until all edges have been traversed, and you should end at the starting vertex
+\end{enumerate}
+
+Since it does not matter which vertex you start from, or the order in which you traverse edges, there can be several
+ Eulerian circuits in each Eulerian graph.
+
+\subsection*{Semi-Eulerian Graphs}
+
+A connected graph with exactly two vertices of an odd degree is known as a semi-Eulerian graph and contains at least one
+ open Eulerian trail, which includes every edge. These trails necessarily start and end at each of the vertices with an
+ odd degree.
+
+\section*{Hamiltonian Graphs}
+
+A graph is Hamiltonian if it has a cycle which contains every vertex exactly once, and is a closed path. Unlike Eulerian
+ graphs, there is no known generalisation to determine if a graph is Hamiltonian or not. There are several algorithms
+ which are able to construct a Hamiltonian cycle on a Hamiltonian graph, but unfortunately none of them run in a reasonable
+ length of time, and most run in exponential time, with some even running in factorial time.
+
+\section*{Adjacency Matrices}
+
+Another method for representing a graph is with an \textit{Adjacency Matrix}. For a graph $G$ with $n$ vertices, $v_1, v_2, \dots, v_n$,
+ the adjacency matrix of $G$ is the matrix $A = n \times n$, whose $(i,j)$ entry is $a_{i j}$ where $1 \leq i \leq n$. For
+ each $a_{i j}$ in $A$,
+ $a_{i j} = \begin{cases}0 & \mathrm{\ if\ } v_iv_j \mathrm{\ is\ not\ an\ edge}\\ 1 & \mathrm{\ if\ } v_iv_j \mathrm{\ is\ an\ edge}\end{cases}$
+
+\begin{minipage}[c]{0.35\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, below of=v1] (v3) {$v_3$};
+      \node[vertex, below of=v2] (v4) {$v_4$};
+
+      \draw (v1) edge[] (v2)
+            (v1) edge[] (v3)
+            (v2) edge[] (v4)
+            (v3) edge[] (v4);
+    \end{tikzpicture}
+    \caption{The graph, $G$, with 4 vertices and edges.}
+    \label{fig:adjgraph1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.55\linewidth}
+For the graph $G$, as in Figure \ref*{fig:adjgraph1}, the adjacency matrix would be $A = \begin{bmatrix}
+0 & 1 & 1 & 0\\
+1 & 0 & 0 & 1\\
+1 & 0 & 0 & 1\\
+0 & 1 & 1 & 0
+\end{bmatrix}$
+\end{minipage}
+
+The diagonal entries for a graph, e.g. $a_{i i}$, are always $0$ for a proper graph, since a vertex is never connected
+ to itself, which may not be the case for a pesudograph. The adjacency matrix is also always symmetrical along this line
+ for an undirected graph, since the edge $v_iv_j$ is the same as the edge $v_jv_i$. The degree of $v_i$ is the number of
+ $1$'s in column $i$ of $A$.
+
+If you take the square of $A$, $A^2$, the entry $(i, i)$ is the degree of $v_i$. $(i, j)$ is the number of different
+ walks of length $2$ between $v_i$ and $v_j$. This is the case for any power of $A$, and so it can be generalised as
+ for any $k \geq 1$, $(i, j)$ of $A^k$ is the number of walks of length $k$ between $v_i$ and $v_j$.

@@ -149,9 +149,16 @@
 % Use the tikz package for diagrams
 \usepackage{tikz}
 
+\tikzset{
+  vertex/.style={circle,thick,draw,inner sep=0pt,minimum size=6.5mm}
+}
+
 % Use the amsthm package for mathematical proofs
 \usepackage{amsthm}
 \renewcommand\qedsymbol{QED.}
 
 % Use the float package for nicer graphs
 \usepackage{float}
+
+% Use the enumitem package for numbered lists not starting at 1
+\usepackage{enumitem}
