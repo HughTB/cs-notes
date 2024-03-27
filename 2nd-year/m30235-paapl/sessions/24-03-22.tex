@@ -1,0 +1,84 @@
+\lecture{Compound Data Types}{14:00}{22/03/24}{Jiacheng Tan}
+
+A compound (or structured) data type is one which is made up of simpler types. This includes types such as arrays,
+ strings, records, structs and maps.
+
+\section*{Arrays}
+
+Arrays or lists are the most common compound data type and are found in most programming languages. In general, an array
+ has several attributes, namely
+\begin{itemize}
+  \item The type of its elements (This is also the compound type)
+  \item The type of its indices (This is usually integers, but it is possible to use an enumerated type in some languages)
+  \item The number of elements in the array
+\end{itemize}
+
+Different languages define each of these attributes in different ways. For example, some languages like Dart have
+ dynamically sized and allocated arrays, which allows you to increase or decrease the size of the array at runtime, but
+ others, such as C or C++, have statically sized and allocated arrays. This means that the size of the array is determined
+ at compile time, and cannot change at runtime. Different languages might also use a different starting index for their
+ arrays. For example, C uses 0-indexed arrays, but higher level languages such as Lua use 1-indexed arrays.
+
+\subsection*{Dynamic Arrays}
+
+There are two methods of creating dynamic arrays - stack-dynamic and heap-dynamic arrays. A stack-dynamic array has its
+ size dynamically set, and the storage is allocated at runtime. They live on the stack, and the size of the array is
+ fixed after it's created. Heap-dynamic arrays live on the heap and are able to dynamically change size at runtime.
+
+\subsection*{Heterogeneous Arrays}
+
+A heterogeneous array is one in which the type of the elements is not necessarily the same. This is only supported by a
+ few high-level languages: Perl, Python and JavaScript. A heterogeneous array can also be the element of another
+ heterogeneous array, which allows for some very funky stuff.
+
+\subsection*{Rectangular \& Jagged Arrays}
+
+A rectangular array is a multi-dimensional array in which each row has the same number of elements and each column has
+ the same number of elements.
+
+A jagged array is a multi-dimensional array in which each row has a varying number of elements, columns don't really
+ exist as they would be impossible to align meaningfully. This is simply an array of arrays. Supported by C, C++ and Java.
+
+\section*{Strings}
+
+In the vast majority of languages, a string is an array or list of characters. More literally in some languages, such as
+ C/C++ and Haskell, but in higher-level languages, it is usually a built-in data type which hides its true type behind
+ a `fake' type. These languages also tend to have a set of logical operations such as finding the length of a string,
+ and functions such as concatenation.
+
+\section*{Records}
+
+A record is a compound data type which is composed of a number of named elements. These are useful for storing information
+ about an object, such as a Person or Student, while encapsulating them into one pseudo-type.
+
+\subsection*{Variant Records}
+
+Records are typically very inflexible, and may be memory-inefficient since all of the values of a record have a fixed
+ size and set of fields. For example, if you wanted to store a student record, you would need to store a name, registration
+ number, information about their course, and a year of entry and graduation. This means that even if the student has not
+ graduated, you still need to store a null value for their year of graduation. Pascal has a \textit{variant record},
+ which allows you to store a value for one element, if and only if another element has a specific value. In the case of
+ a student record, you could store a boolean value for their graduation status, and then only store a graduation date if
+ the status is true.
+
+\subsection*{Unions}
+
+C \& C++ have a type known as a Union rather than variant records. Unions are designed to store data of multiple types
+ in the same memory space. When you define a union, you specify the types that should be stored for that value, but then
+ you have to set the type and reference it as such elsewhere in the code. This allows you to store values for different
+ purposes without wasting memory. You can have only one of the values stored at a time, since they would use the same
+ space in memory. The main difference between this and a variant record is that the two values stored in a union are not
+ related in any way, and it is possible to ignore the precedent set elsewhere in the code, which can cause issues.
+
+\subsection*{Structs}
+
+Languages such as C, C++, C\# and Rust all have a similar concept to a record, known as a \textit{struct}. These perform
+ a similar function to records, but can also include member functions. A member function does not directly access the
+ data in the struct (unlike a class), but is used to group a function with the data type it operates on.
+
+\subsection*{Classes}
+
+Structurally, classes and structs are very similar, but a class has a constructor (a function which is called when the
+ class is instantiated), and methods rather than member functions. A method is able to directly access the data stored
+ in the class, and is therefore able to act as a getter/setter. Another difference is that in most languages, member
+ functions in structs are public by default, but methods in classes are private by default.
