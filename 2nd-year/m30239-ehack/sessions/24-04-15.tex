@@ -1,0 +1,71 @@
+\lecture{Web Application Attacks}{09:00}{15/04/24}{Tobi Fajana}
+
+\section*{Web Applications}
+
+A web server is either software or hardware whose sole purpose is to respond to HTTP requests with requested content,
+ for example HTML web pages or JSON API content. Some web servers also support server-side scripting languages, such as
+ PHP.
+ 
+There are multiple options for web server software, but the most common two on the internet are Apache and Nginx. Both
+ are still updated, and support most modern features, but by nature of being significantly older, Apache is much more
+ prone to security issues. It is very important to know what server you are trying to exploit, as they are very different
+ and have different vulnerabilities.
+
+\subsection*{Attacks}
+
+Attacks can occur either on the client-side or server-side, which can cause different issues for the server's owner. For
+ example, a client-side attack may steal credentials or other sensitive information from the client, without the server
+ even knowing, but a server-side attack is usually more devastating since it would most likely have direct access to the
+ database which the application uses to store all of it's information.
+
+\subsection*{Finding Attack Vectors}
+
+There are several methods for finding attack vectors, namely
+\begin{itemize}
+  \item Fuzzing
+  \item Encoding
+  \item Encryption
+  \item etc
+\end{itemize}
+
+\section*{SQL Injection}
+
+One example of a server-side attack is an SQL injection attack, which works by tricking the database into executing
+ unintended commands, or accessing unintended data using a normal query. The usual attack vector for an SQL injection is
+ anywhere that user-input is used as part of a query, for example a search box or registration form.
+
+\subsection*{Types of SQL Injection}
+
+There are three main types of SQL injection, namely
+\begin{itemize}
+  \item In-Band SQL Injection - Data is returned through the same channel (page, input box, etc) that is used to inject
+   the SQL code. This type of injection usually exploits issues with very simple queries, or by exploiting unions or
+   errors in the way the query is written
+  \item Inferential SQL Injection - Data is not returned at all through the web application, and so it is not possible
+   to see the results of the attack'
+  \item Out-of-Band SQL Injection - Data is returned through a different channel to the injection channel, for example
+   through an email or notification
+\end{itemize}
+
+Another method of SQL injection is with a Union-based injection, which uses the \verb`UNION` keyword to append another
+ query onto the end of the intended query. This is quite easy to defend against, but can be very powerful if it is
+ possible to exploit.
+
+\subsection*{Time-blind SQL Injection}
+
+One method of exploiting a blind injection point is to use a time-delay or sleep function in the query, such that if the
+ data you are expecting is in the database, the server will take longer to respond. For example, if you want to check if
+ a user with the name `administrator' exists in the database, we could use the following query
+ \verb`IF (SELECT user FROM users WHERE username='admin' AND SLEEP(10)) --`. In this case, if there is a user with the
+ username `administrator', the server will delay by 10 seconds before responding to the request.
+
+\section*{Defending Against Injection}
+
+There are several methods to prevent injection attacks, for example
+\begin{itemize}
+  \item Validate, filter and sanitize every input before executing
+  \item Using parametrized queries to prevent escaping quotations
+  \item Using server-side input validation
+  \item Using permissions to limit the scope of each users access to the database
+  \item Web Application Firewalls
+\end{itemize}
