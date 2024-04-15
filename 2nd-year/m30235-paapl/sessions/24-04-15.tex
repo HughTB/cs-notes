@@ -1,0 +1,181 @@
+\lecture{Expressions and Assignments}{14:00}{15/04/24}{Jiacheng Tan}
+
+\section*{Expressions}
+
+An expression is a combination of values, variables, operators and/ or function calls. Expressions can be used to evaluate
+ mathematical values, move data around and more.
+
+The main types of expressions are
+\begin{itemize}
+  \item Arithmetic
+  \item Relational
+  \item Boolean
+  \item Assignment
+\end{itemize}
+
+These expressions can then be used and chained together to create various algorithms and programs. To be able to correctly
+ evaluate expressions, you must know the rules of precedence and the rules of associativity of operators.
+
+\subsection*{Rules of Precedence}
+
+The rules of precedence determine the order in which operations should be evaluated in an expression. The typical order
+ is along the lines of
+\begin{enumerate}
+  \item Parentheses
+  \item The unary operators \verb`++` and \verb`--`
+  \item The unary operators \verb`+` and \verb `-`
+  \item The binary operators \verb`*` and \verb`/`
+  \item the binary operators \verb`+` and \verb`-`
+\end{enumerate}
+
+\subsection*{Rules of Associativity}
+
+The rules of associativity determines how operators with the same precedence are grouped together, if they have been
+ left in an ambiguous state with no parentheses. For example, the expression \verb`3 / 5 * 0` is ambiguous as \verb`/`
+ and \verb`*` have the same precedence. Therefore, the order of operations is determined using the associativity of each
+ operator.
+
+Any given operator may be
+\begin{itemize}
+  \item Associative - The operations can be grouped in any order, e.g. \verb`a * b * c` could be \verb`(a * b) * c`
+   or \verb`a * (b * c)`
+  \item Left-associative - The operators must be grouped together from left-to-right
+  \item Right-associative - The operators must be grouped together from right-to-left
+\end{itemize}
+
+Most mathematical operators inherently have associativity, such as subtraction and division being left-associative and
+ addition and multiplication being associative.
+
+Many programming languages include a table of operator precedence and associativity in their documentation, but in
+ general, most operators are left-associative apart from the assignment operator, which is necessarily right-associative.
+
+\subsection*{Operator Overloading}
+
+When a language uses the same operator for more than one purpose, it is \textit{overloading} the operator. For example,
+ in Dart \verb`+` is used for adding \verb`int`s and \verb`float`s, but is also the operator for string concatenation.
+ This means that the function of the operator is determined by the semantics of the language, as they determine which
+ variant of the operator should be used. Some languages, such as C++ and C\# allow user-defined operator overloads, which
+ can be used to improve the readability of user-defined classes and data types.
+
+\subsection*{Side Effects}
+
+An expression is said to have a \textit{side effect} if as well as returning a value, it also modifies a variable or
+ changes the flow control of the program. The four main causes of side effects are
+\begin{itemize}
+  \item Assignment operators
+  \item Increment/ Decrement operators
+  \item Function calls
+  \item Method invocation
+\end{itemize}
+
+\subsection*{Assignment as an Expression}
+
+In some languages, the assignment operator (\verb`=`) is treated the same as any other binary operator, and as such
+ still returns a value. However, it also has the side effect of changing the value of the left operand. For example, the
+ expression \verb`x = y + 1` both returns the value \verb`y + 1`, and changes the value of \verb`x` to be \verb`y + 1`.
+
+This has the advantage of allowing you to do things like \verb`x = y = z + 1`, but also has issues. For example, if you
+ were to use an if statement with the condition \verb`x=y`, you might be trying to use it as an assignment and be treating
+ the returned integer as a boolean value, which is perfectly valid, or you might have missed the second \verb`=` to use
+ the relational operator \verb`==`. This mistake is impossible to detect by the compiler, but may occasionally be detected
+ by the IDE or Linter as a logic error.
+
+\subsection*{Compound Assignment Operators}
+
+A compound assignment operator is one which combines an assignment with some form of arithmetic operator. This includes
+ operators such as \verb`+=` and \verb`-=`, which add and subtract the right operand from the current value of the left
+ operand, but also assign the new value to the left operand.
+
+\subsection*{Unary Assignment Operators}
+
+Some languages also include unary assignment operators, which both perform some arithmetic and assign that value to the
+ only operand. This is operators such as \verb`++` and \verb`--`, which increment and decrement the value respectively.
+ The order of assignment and increment is important, as \verb`++count` and \verb`count++` have two different meanings.
+ In C, \verb`sum = ++count` would increment \verb`count` by one, then assign it to \verb`sum` (pre-increment), but
+ \verb`sum = count++` would assign \verb`count` to \verb`sum` and then increment \verb`count` by one (post-increment).
+
+\subsection*{Type Conversions}
+
+Different languages follow different approaches when it comes to the compatibility of different types, when used in an
+ expression. For example, some languages such as Dart require you to \textit{explicitly} convert the types using a built-
+in function, but some languages such as JavaScript allow you to \textit{cast} values between types. There are also some
+ languages which allow casting for some types, but require explicit type conversion for others.
+
+Casting is type conversion which is explicitly requested by the code, but which does not make use of a function. For
+ example, in C you can cast an unsigned integer to a signed integer using
+\begin{verbatim}
+  uint a = 10;
+  int b;
+  b = (int)a;
+\end{verbatim}
+
+Type coercion is when casting is done implicitly by the compiler. This means that the compiler checks the compatibility
+ of the types of the left and right operand, and automatically casts them if they are compatible. This is used heavily
+ in scripting languages such as JavaScript and Python.
+
+\subsection*{Arithmetic Type Conversions}
+
+There are two types of type conversion - widening and narrowing. A widening conversion is one in which an object is
+ converted to another type which can store all values of the original type, and more. One example of this is casting
+ an integer to a long integer (32-bit integer to 64-bit integer). This type of conversion is completely safe and used
+ all the time. A narrowing conversion is one in which the new type can store only a subset of the values the original
+ type could store. An example of this is converting an integer to an unsigned integer. This type of conversion is unsafe
+ since an overflow or other issue could occur if the programmer is not careful. Typically, compilers will only coerce
+ types when it is safe to do so, e.g. a widening conversion.
+
+\section*{Notations}
+
+There are several different ways of writing any given expression, which are known as different notations. The notation
+ used in mathematics and most programming languages is known as \textit{Infix Notation}, but the issue with it is that
+ it's inherently ambiguous, at least when not used in conjunction with the rules of associativity and precedence.
+ Given the inherent issues with infix notation, several other notations have been developed.
+
+\subsection*{Prefix Notation}
+
+With prefix notation, operators appear before the operands. For example, the expression \verb`a + b - c * d` would be
+ written as \verb`-+ab*cd`. It is evaluated from left-to-right by combining the operator with the two operands in front
+ of it, meaning that is inherently unambiguous. When evaluating the previous expression, you would evaluate the operators
+ in the following order
+\begin{verbatim}
+  -+ab*cd
+  -(+ab)*cd
+  -(+ab)(*cd)
+  (-(+ab)(*cd))
+\end{verbatim}
+Below is the same expression, but using numbers to make it easier to see the order. (Numbers are shown in brackets for
+ ease of reading)
+\begin{verbatim}
+  -+(7)(9)*(2)(5)
+  -(16)*(2)(5)
+  -(16)(10)
+  (6)
+\end{verbatim}
+This is the same expression, but with \verb`a = 7`, \verb`b = 9`, \verb`c = 2` and \verb`d = 5`
+
+\subsection*{Postfix Notation}
+
+With postfix notation, operators appear after their operands. For example, the expression \verb`a + b - c * d` would be
+ written as either \verb`ab+cd*-` \textit{or} \verb`abcd*-+`. (I'm not sure about that second one so I'll just use the
+ first here on out). It is also evaluated left-to-right, but by combining two operands with the operator after them.
+ This notation is also inherently unambiguous, but is harder to convert to since there are several valid options. To
+ evaluate the previous expression, you would do the following
+\begin{verbatim}
+  ab+cd*-
+  (ab+)cd*-
+  (ab+)(cd*)-
+  ((ab+)(cd*)-)
+\end{verbatim}
+Once again, below is the same expression but using the numbers \verb`a = 7`, \verb`b = 9`, \verb`c = 2` and \verb`d = 5`
+\begin{verbatim}
+  (7)(9)+(2)(5)*-
+  (16)(2)(5)*-
+  (16)(10)-
+  (6)
+\end{verbatim}
+
+\subsection*{Cambridge Prefix Notation}
+
+Cambridge prefix notation (or just Cambridge notation) is a variant of Prefix notation which introduces parentheses. This
+ has the advantage of allowing operators like \verb`+` and \verb`-` to be n-ary, e.g. \verb`a + b + c` would be written
+ as \verb`++abc` in standard prefix notation, but as \verb`(+abc)` in Cambridge notation.
+
