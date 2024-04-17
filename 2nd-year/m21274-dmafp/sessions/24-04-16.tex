@@ -1,0 +1,254 @@
+\lecture{Trees}{17:00}{16/04/24}{Janka Chlebikova}
+
+A tree is a subclass of graph which is connected, but has no cycles (known as acyclic). Alternatively, you could say
+ that there is exactly one path between any two nodes in the graph. One basic property of such trees is that if the tree
+ contains more than one vertex, it must contain a vertex of degree one. Said vertex is known as a leaf, or terminal vertex.
+
+It is very easy to identify if a graph is a tree, even without drawing it. This is because a graph with $n$ vertices is
+ a tree if and only if it has $n - 1$ edges. If the graph is unconnected, you can automatically discount it from being a
+ tree, since it has to be a connected graph.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+      }
+
+      \node[vertex] (ve) {$e$};
+      \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+      \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+      \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+      \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+      \node[vertex, left of=vb, above of=vb, xshift=-1cm] (va) {$a$};
+      \node[vertex, left of=vb, below of=vb, xshift=-1cm] (vd) {$d$};
+
+      \draw (va) edge[] (vb)
+            (va) edge[] (vd)
+            (vb) edge[] (vd)
+            (vb) edge[] (vc)
+            (vd) edge[] (vf)
+            (ve) edge[] (vb)
+            (ve) edge[] (vc)
+            (ve) edge[] (vd)
+            (ve) edge[] (vf)
+            (ve) edge[] (vg)
+            (vf) edge[] (vg);
+
+    \end{tikzpicture}
+    \caption{A graph, $G$}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+      }
+
+      \node[vertex] (ve) {$e$};
+      \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+      \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+      \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+      \node[vertex, left of=vb, above of=vb, xshift=-1cm] (va) {$a$};
+      \node[vertex, left of=vb, below of=vb, xshift=-1cm] (vd) {$d$};
+
+      \draw (va) edge[] (vb)
+            (va) edge[] (vd)
+            (vb) edge[] (vc)
+            (vd) edge[] (vf)
+            (ve) edge[] (vb);
+    \end{tikzpicture}
+    \caption{A tree, $T$ of graph $G$}
+  \end{figure}
+\end{minipage}
+
+\section*{Spanning Trees}
+
+A spanning tree $H$, of the graph $G$, is a subgraph of $G$ which contains every vertex in $G$, and is a tree. Any given
+ graph can have multiple spanning trees, each of which is considered different if they are made up of different edges
+ of $G$.
+
+\subsection*{Finding a Spanning Tree}
+
+It is very easy to find a spanning tree of any given graph, $G$, by using the following method:
+\begin{enumerate}[start=0]
+  \item Check if $G$ contains any cycles. If not, $G$ is itself a spanning tree of itself
+  \item\label{item:spt1} Delete any single edge in $G$ that forms part of a cycle
+  \item Repeat step \ref*{item:spt1} until there are no edges which form part of a cycle. This means that you have found
+   a connected subgraph of $G$ with no cycles, and therefore a spanning tree of $G$
+\end{enumerate}
+
+Another method is to use a depth-first search, which is useful if you need to implement this in code. The method is as
+ follows:
+\begin{enumerate}[start=0]
+  \item Start at any vertex, and give it a label
+  \item\label{item:dfs1} Move to any unlabelled adjacent vertex
+  \item\label{item:dfs2} Label the vertex
+  \item Repeat steps \ref*{item:dfs1}-\ref*{item:dfs2} until there are no adjacent unlabelled vertices
+  \item Backtrack to the first vertex with any adjacent unlabelled vertices, then go back to step \ref*{item:dfs1}. If
+   you reach the starting node without finding any adjacent unlabelled vertices, you have found a spanning tree
+\end{enumerate}
+If you also keep track of the edges you used to traverse the graph, you have a list of vertices and edges which make up
+ a spanning tree of the graph.
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=1.5cm,
+    }
+
+    \node[vertex] (ve) {$e$};
+    \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+    \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+    \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+    \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+    \node[vertex, left of=vb, above of=vb, xshift=-1cm] (va) {$a$};
+    \node[vertex, left of=vb, below of=vb, xshift=-1cm] (vd) {$d$};
+
+    \draw[line width=0.15cm, red!50]
+          (va) edge[] (vb)
+          (vb) edge[] (vd)
+          (vb) edge[] (vc)
+          (vb) edge[] (ve)
+          (vd) edge[] (vf)
+          (ve) edge[] (vg);
+
+    \draw (va) edge[] (vb)
+          (va) edge[] (vd)
+          (vb) edge[] (vd)
+          (vb) edge[] (vc)
+          (vd) edge[] (vf)
+          (ve) edge[] (vb)
+          (ve) edge[] (vc)
+          (ve) edge[] (vd)
+          (ve) edge[] (vf)
+          (ve) edge[] (vg)
+          (vf) edge[] (vg);
+
+  \end{tikzpicture}
+  \caption{$G$, with a spanning tree, $T$, overlaid in red}
+\end{figure}
+
+\section*{Minimum Spanning Trees}
+
+If you now consider a weighted graph, it is obvious that some spanning trees have a lower total weight for all of their
+ edges. The tree with the lowest of these is known as the minimum spanning tree. This is useful for optimising problems
+ such as finding the most efficient path between locations, or the lowest cost way to connect users to a telephone
+ system. While it is possible to use the previous methods to create a spanning tree in a weighted graph, it almost
+ certainly will not be the minimum spanning tree.
+
+For this purpose, there are two known efficient algorithms for finding (one of) the minimum spanning tree(s), namely
+ Kruskal's Algorithm and Prim's Algorithm.
+
+\subsection*{Kruskal's Algorithm}
+
+For a graph with $n$ vertices,
+\begin{enumerate}
+  \item `Fill in' the edge with the lowest weight
+  \item\label{item:kru1} Add the next lowest weight edge, if adding this won't create a circuit
+  \item Repeat step \ref*{item:kru1} until you have $n - 1$ edges
+\end{enumerate}
+This will result in (one of) the minimum spanning tree(s)
+
+Kruskal's algorithm is known as a `Greedy Algorithm' since it makes decisions based upon what is best at that step, with
+ no regard for the future implications.
+
+\subsection*{Prim's Algorithm}
+
+To construct a tree, $T$ of graph $G$,
+\begin{enumerate}[start=0]
+  \item Start with any vertex
+  \item\label{item:pri1} Add the edge of lowest weight which is adjacent to $T$ and connects vertices in $T$ with those
+   not in $T$
+  \item Repeat step \ref*{item:pri1} until all vertices are in $T$
+\end{enumerate}
+
+\begin{minipage}[t][][t]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+      }
+  
+      \node[vertex] (ve) {$e$};
+      \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+      \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+      \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+      \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+      \node[vertex, left of=vb, above of=vb, xshift=-1cm] (va) {$a$};
+      \node[vertex, left of=vb, below of=vb, xshift=-1cm] (vd) {$d$};
+  
+      \draw (va) edge[] node[above] {$7$} (vb)
+            (va) edge[] node[left] {$5$} (vd)
+            (vb) edge[] node[below] {$9$} (vd)
+            (vb) edge[] node[below] {$8$} (vc)
+            (vd) edge[] node[below] {$6$} (vf)
+            (ve) edge[] node[right] {$7$} (vb)
+            (ve) edge[] node[right] {$5$} (vc)
+            (ve) edge[] node[below] {$7$} (vd)
+            (ve) edge[] node[below] {$8$} (vf)
+            (ve) edge[] node[right] {$9$} (vg)
+            (vf) edge[] node[below] {$11$} (vg);
+  
+    \end{tikzpicture}
+    \caption{The weighted graph, $G_2$\\\ }
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[t][][t]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+      }
+  
+      \node[vertex] (ve) {$e$};
+      \node[vertex, left of=ve, above of=ve] (vb) {$b$};
+      \node[vertex, right of=ve, above of=ve] (vc) {$c$};
+      \node[vertex, left of=ve, below of=ve] (vf) {$f$};
+      \node[vertex, right of=ve, below of=ve] (vg) {$g$};
+      \node[vertex, left of=vb, above of=vb, xshift=-1cm] (va) {$a$};
+      \node[vertex, left of=vb, below of=vb, xshift=-1cm] (vd) {$d$};
+  
+      \draw[line width=0.15cm, red!50]
+            (va) edge[] (vd)
+            (vc) edge[] (ve)
+            (va) edge[] (vb)
+            (vb) edge[] (ve)
+            (vd) edge[] (vf)
+            (ve) edge[] (vg);
+  
+      \draw (va) edge[] node[above] {$7$} (vb)
+            (va) edge[] node[left] {$5$} (vd)
+            (vb) edge[] node[below] {$9$} (vd)
+            (vb) edge[] node[below] {$8$} (vc)
+            (vd) edge[] node[below] {$6$} (vf)
+            (ve) edge[] node[right] {$7$} (vb)
+            (ve) edge[] node[right] {$5$} (vc)
+            (ve) edge[] node[below] {$7$} (vd)
+            (ve) edge[] node[below] {$8$} (vf)
+            (ve) edge[] node[right] {$9$} (vg)
+            (vf) edge[] node[below] {$11$} (vg);
+  
+    \end{tikzpicture}
+    \caption{$G_2$, with the minimum spanning tree generated by Kruskal's Algorithm, $T_2$, total weight 39}
+  \end{figure}
+\end{minipage}
+
+\section*{Rooted Trees}
+
+A tree is a rooted tree if one of it's vertices is specified as the \textit{root}. Each vertex in a tree has zero or more 
+ \textit{children} (adjacent vertices moving away from the root), and each vertex (other than the root) has a
+ \textit{parent}, which is the vertex above it, in relation to the root. If two vertices have the same parent, they are
+ known as \textit{siblings}. In the case of $T_2$, we could say that $a$ is the root, $c$ and $g$ share the parent, $e$,
+ and as such are siblings.
