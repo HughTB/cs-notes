@@ -1,0 +1,134 @@
+\lecture{Control Structures}{14:00}{19/04/24}{Jiacheng Tan}
+
+The flow control or execution sequence allows you to implement complex algorithms, and can be examined on several levels,
+ namely
+\begin{itemize}
+  \item Within expressions (i.e. rules of Associativity and Precedence)
+  \item At the statement level
+  \item At the program unit level
+\end{itemize}
+
+Statements which enable the program to select between different execution paths are known as \textit{control statements}.
+ This includes conditionals such as if and case blocks, as well as while loops.
+
+In previous years, unconditional branching statements like \verb`break` and \verb`goto` were the only options for
+ controlling the flow of execution, but these led to poor readability and maintainability. Since then, it was realised
+ that such unconditional branching statements are actually unnecessary, as long as other mechanisms such as functions
+ and procedures are available.
+
+\section*{Structured Programming Theorem}
+
+The \textit{Structured Programming Theorem} states that all algorithms that can be expressed using a flowchart can also
+ be implemented in programming languages with two basic control statements -- selection and pre-test logical loops. This
+ also means that these control statements are necessary for any imperative programming language. In most programming
+ languages, there are several variations of each type of control statement.
+
+\section*{Selection Statements}
+
+\textit{Selection statements} pick between two or more execution paths in a program. These typically fall under one of
+ the two sub-types, two-way selection statements or multiple-selection statements.
+
+\subsection*{Two-Way Selection}
+
+This mainly consists of basic selection statements such as \verb`if-then-else` blocks. The general syntax of a two-way
+ selection is as follows--
+\begin{verbatim}
+if {control expression}
+then {execution path}
+else {execution path}
+\end{verbatim}
+In this case, the control expression could be any expression which evaluates to a boolean type, since there are only two
+ possible execution paths. Each of the execution paths could be as simple or complex as needed, and are typically
+ enclosed within parenthesis (in sane languages) or within an indented block in python.
+
+Most languages also support nesting selectors, which is made easier in cases which use parenthesis. In cases which don't,
+ it is typically assumed that an \verb`else` matches to the nearest previous \verb`if` statement.
+
+The vast majority of languages also support a short-hand \verb`if` statement, which in most C-derived languages, is
+ written as follows:
+\begin{verbatim}
+({control expression}) ? {execution path} : {execution path};
+\end{verbatim}
+This is usually only used when assigning a value to a variable based upon a condition, but could theoretically be used
+ anywhere the conventional notation is used.
+
+\subsection*{Multiple-Selection}
+
+A \textit{multiple-selection} allows the selection of any number of execution paths based upon the value of the control
+ expression. These usually take the form of a \verb`switch-case` block, as shown below--
+\begin{verbatim}
+switch {control expression}
+  case {value1} {execution path}
+  case {value2} {execution path}
+  ...
+  default {execution path}
+\end{verbatim}
+The control expression can typically take any of many types, but they are typically a number, character, string or
+ enumerated type.
+
+Most languages use the \textit{fall-through} behaviour once reaching the end of a cases execution path. This means that
+ they fall-through to the next case and execute that path as well. This is useful since it allows you to specify multiple
+ values which use the same branch, but might not always be desired. In these cases, you can end the execution path with
+ a \verb`break` statement, which immediately skips to the end of the switch block.
+
+\section*{Pre-Test Logical Loops}
+
+A pre-test logical loop is a mechanism for repeatedly executing a statement based upon a simple condition. There are
+ typically two types of loop, \verb`for` loops and \verb`while` loops, which are controlled by a counter and logic
+ statement respectively.
+
+\subsection*{For Loops}
+
+A for loop typically takes the following form--
+\begin{verbatim}
+for ({expression 1}; {expression 2}; {expression 3})
+  loop {execution path}
+\end{verbatim}
+With this syntax, the first expression is for initialisation and is only evaluated once, before the loop begins. The
+ second expression is the loop control, and is evaluated before each execution of the loop. It must take a boolean value,
+ and determines if the loop should execute again or terminate. The final expression is for stepping, and is executed
+ after every execution of the loop body.
+
+\subsection*{Logically Controlled Loops}
+
+There are two sub-types of logically controlled loops, typically known as \verb`while` and \verb`do-while` loops. These
+ pre-test and post-test the control expression, respectively. This means that a \verb`do-while` loop will always execute
+ \textit{at least} once, and a \verb`while` loop may not execute at all. They typically take the following forms--
+\begin{verbatim}
+while {control expression}
+  loop {execution path}
+\end{verbatim}
+and
+\begin{verbatim}
+do
+  loop {execution path}
+while {control expression}
+\end{verbatim}
+respectively.
+
+Any \verb`for` loop can be re-written as a while loop, with an external and manually incremented counter.
+
+\section*{Unconditional Branching}
+
+Any statement which changes the flow of execution without a condition is \textit{branching unconditionally}. These usually
+ include \verb`break`, \verb`continue` and \verb`return`. Within the previously discussed looping structures,
+\begin{itemize}
+  \item \verb`break` unconditionally exits the loop immediately
+  \item \verb`continue` unconditionally skips the remainder of the current iteration, but allows the loop to continue
+  \item \verb`return` terminates the current function or method call and immediately returns a value to the caller
+\end{itemize}
+
+In some languages, such as Java, a break or continue can be either labelled or unlabelled.
+
+\subsection*{Unlabelled \& Labelled Breaks}
+
+An unlabelled break terminates the innermost nested switch, for, while or do-while structure. On the other hand, a
+ labelled break terminates a correspondingly labelled structure, as listed before. Execution then jumps to the statement
+ immediately after the labelled structure, and continues as usual. This may be useful when searching through a two-
+dimensional structure.
+
+\subsection*{Unlabelled \& Labelled Continues}
+
+Similarly, an unlabelled continue terminates the current iteration of the innermost nested for, while or do-while loop,
+ and evaluates the control expression before continuing normal execution. A labelled continue, on the other hand, skips
+ the current iteration of the correspondingly labelled loop.
