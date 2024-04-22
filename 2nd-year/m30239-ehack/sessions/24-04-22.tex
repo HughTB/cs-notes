@@ -1,0 +1,32 @@
+\lecture{Binary Exploitation}{09:00}{22/04/24}{Tobi Fajana}
+
+If you have permission to read the binary of a program, it is usually possible to extract some of the text which was
+ compiled in. This is because \verb`cat` will simply write out the binary to the terminal, and any strings would still
+ be encoded as they were before the program was compiled. This means that any code that compares user input to a string
+ could accidentally be insecure.
+
+When you \verb`cat` a binary, it will often also output the binary information added to the file by the compiler. This
+ often includes information such as which compiler was used, what OS it was compiled by, etc.
+
+While the program is running, it is also sometimes possible to view the stack and heap of the application, which will
+ often include sensitive information, such as a string that is being compared against, or the result of some arithmetic
+ being done in the background.
+
+\section*{Buffer Overflow}
+
+With the techniques discussed previously, it may be possible to determine the length of a buffer used by the program to
+ store user-input. This allows you to determine how long your input needs to be to overflow the buffer, which would then
+ crash the program. On some platforms, this can also be used to overwrite the program code and cause unintended code to
+ run in place of the program. This typically affects availability, but depending upon the memory layout of the program,
+ it could possibly affect the integrity or confidentiality of some data.
+
+\subsection*{Defending Against Buffer Overflow}
+
+There are several methods for protecting against buffer overflows, such as
+\begin{itemize}
+  \item Address Space Layout Randomization (ASLR)
+  \item Data Execution Protection
+  \item Structured Exception Handling
+  \item Patch devices/ software
+  \item Validate Data
+\end{itemize}
