@@ -1,0 +1,78 @@
+\lecture{Functional Programming in Python}{12:00}{22/04/24}{Matthew Poole}
+
+Most modern imperative programming languages include a subset of functional programming concepts, but these are usually
+ limited to certain environments. For example, Python includes list comprehensions, lambda expressions and higher-order
+ functions, some very important functional programming concepts.
+
+\section*{Functions are Data}
+
+In Python, any function definition creates a new variable, which acts as a pointer to the function. This is useful, as
+ it allows you to define new functions based upon existing ones, but it also means that it is possible to accidentally
+ cause variable hiding by using the same name for a function and variable. It is possible to assign variables to the
+ value of a function-valued variable, which then acts as a pointer to that function, but it is also possible to assign
+ a different value to the function-valued variable, causing that function to be lost.
+
+\subsection*{List Comprehensions}
+
+List comprehension in Python is very similar to Haskell, as they create new lists from the values of an old list, and a
+ function. For example, \verb`[i*2 for i in list1]` would return a new list containing each value from \verb`list1`
+ multiplied by 2. You can also add a test at the end, using the \verb`if` keyword, e.g.\\\verb`[i*2 for i in list1 if i>2]`.
+
+\subsection*{...Using Tuples}
+
+In Python, a tuple is effectively an immutable list, which typically contains only a few values. This also works in a
+ similar way to Haskell, in that you must define the `pattern' which a tuple follows, before you can take any values
+ from it.
+
+\subsection*{Lambda Expressions}
+
+As in Haskell, Python includes anonymous functions known as \textit{lambda expressions}. A simple example of this would
+ be \verb`lambda x : x * 10`, which represents a function which multiplies its argument by 10. Higher-order functions
+ can also be used as an argument for a lambda expression, allowing you to return a function from a function.
+
+\subsection*{Higher-Order Functions}
+
+Python includes built-in functions such as \verb`map`, \verb`filter` and \verb`reduce`, which take a function and an
+ list and apply the function to each element of the list. The \verb`map` and \verb`filter` functions are the same as
+ those in Haskell, and the \verb`reduce` function acts very similarly to the \verb`foldr` function. The \verb`reduce`
+ function can also take a third argument, which becomes the starting value for the application of the function to the
+ first element in the list.
+
+\subsection*{Other Benefits}
+
+Another benefit of higher-order functions is that any local variables used in a returned function continue to exist,
+ even if the function they were defined in has already exited. This allows you to define static variables for a function
+ without having to make them global. A returned function which uses this is known as a \textit{closure}.
+
+\section*{Recursion}
+
+It is usually said that a recursive function is easier to read than an equivalent iterative function, but the argument
+ could be made that recursive functions are almost always slower than their iterative equivalent. This is often caused
+ by repeatedly computing intermediate results, which can be solved using higher-order functions and a dictionary. This
+ is often called \textit{Memorization}.
+
+\subsection*{Dictionaries}
+
+In Python, a dictionary is an unordered collection of data, whose values are accessed via a key. Dictionary literals are
+ defined as a sequence of \verb`key:value` pairs between braces, e.g. \verb`{"eggs": 2, "cheese: 1}`. The \verb`in`
+ operator gives an easy way to test if a dictionary contains any given key.
+
+\subsection*{Memorization}
+
+A general purpose memorization function is used, which is passed the function to be optimised, and returns a new
+ function, which we can use to overwrite the old function-valued variable, creating a runtime-optimised function. An
+ example of this optimisation function is below--
+\begin{verbatim}
+def memorize(f):
+  cache = {}
+  def g(arg):
+    if arg in cache:
+      return cache[arg]
+    else:
+      cache[arg] = f(arg)
+      return cache[arg]
+  
+  return g
+\end{verbatim}
+You would then define a function, e.g. \verb`def fibonacci`, and then assign the function-valued variable to the optimised
+ function, e.g. \verb`fibonacci = memorize(fibonacci)`.
