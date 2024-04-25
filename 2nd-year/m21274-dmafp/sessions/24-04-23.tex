@@ -1,0 +1,307 @@
+\lecture{Networks and Digraphs}{17:00}{16/04/24}{Janka Chlebikova}
+
+A directed graph (digraph) is a subtype of graph in which each edge has a specified direction. In a digraph, edges are
+ known as arcs and must have a direction, and optionally a weight. Whereas an edge in an undirected graph can be
+ represented in one of two ways (either $v_1v_2$ or $v_2v_1$), each arc in a digraph can only be represented by one pair
+ since it represents the direction of the graph as well. As a regular graph, a digraph is represented by two sets, $V$
+ and $E$. An example of a digraph is below.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=1.5cm,
+      }
+
+      \node[vertex] (v1) {$v_1$};
+      \node[vertex, right of=v1] (v2) {$v_2$};
+      \node[vertex, below of=v1] (v3) {$v_3$};
+
+      \path[->] (v1) edge[] (v2)
+            (v1) edge[] (v3)
+            (v2) edge[] (v3);
+    \end{tikzpicture}
+    \caption{A digraph, $G_d$}
+    \label{fig:digraph1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  For the digraph $G_d$, as in Figure \ref*{fig:digraph1},\\
+  $V = \{v_1, v_2, v_3\}$, and\\
+  $E = \{v_1v_2, v_1v_3, v_2v_3\}$.
+\end{minipage}
+
+In this module, we will continue to assume that digraphs with loops are impossible.
+
+Each vertex in a digraph has an \textit{indegree} and \textit{outdegree}, being the number of arcs directed into and out
+ of the vertex, respectively. The adjacency matrix for a digraph is similar to that of an undirected graph, but is not
+ necessarily symmetrical. This means that an arc exists between $v_1$ and $v_2$ if and only if the value in the adjacency
+ matrix is one at the position $a_{1,2}$. This also means that there may not be an arc connecting $v_2$ and $v_1$. The
+ outdegree of a vertex is represented by the sum of the values in the row $i$ and the indegree is the sum of values in
+ the column $i$. $(i, j)$ of $A^k$ is the number of walks of length $k$ from $i$ to $j$, respecting the direction of the
+ arcs.
+
+\section*{Networks}
+
+Digraphs are useful for representing \textit{networks}, which can be a model for any sort of physical network. This
+ includes transport networks, gas networks, computer networks, etc. In each case, the objective is to find a
+ \textit{maximum flow}.
+
+The arcs of a digraph can represent anything, but in this case, they will represent the pipes in an oil pipeline, and
+ the direction of each arc shows the direction which oil can flow.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+
+      \node[vertex] (vs) {$S$};
+      \node[vertex, above of=vs, right of=vs] (va) {$A$};
+      \node[vertex, below of=vs, right of=vs] (vb) {$B$};
+      \node[vertex, right of=va] (vc) {$C$};
+      \node[vertex, right of=vb] (vd) {$D$};
+      \node[vertex, right of=vd, above of=vd] (vt) {$T$};
+
+      \path[->] (vs) edge[] node[left] {$10$} (va)
+                (vs) edge[] node[left] {$11$} (vb)
+                (va) edge[] node[above] {$12$} (vc)
+                (va) edge[] node[left, pos=0.3] {$4$} (vd)
+                (vb) edge[] node[right, pos=0.7] {$8$} (vc)
+                (vb) edge[] node[below] {$2$} (vd)
+                (vc) edge[] node[right] {$11$} (vt)
+                (vd) edge[] node[right] {$14$} (vt);
+    \end{tikzpicture}
+    \caption{The oil pipeline}
+    \label{fig:network1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  Oil is unloaded at $S$, the dock, and is pumped through the network to storage tanks $T$. $S$ is known as the \textit{source}
+   and $T$ the \textit{sink}. The weight on each arc is its \textit{capacity}.
+\end{minipage}
+
+\subsection*{Flows}
+
+A flow in a network is the amount of `commodity' which flows through the network in a unit time. The flow enters the
+ network at the source, and flows towards the sink. No arc can receive more flow than its capacity, and no commodity can
+ be lost along the way, so the flow into each vertex is the same as the flow out. Each arc, $e$ is assigned a flow $f(e)$,
+ and for each arc, $f(e) \leq c(e)$.
+
+Formally, a source is any vertex with no incoming arcs, and a sink is any vertex with no outgoing arcs. And a flow
+ assigns each arc, $e$ a number which satisfies the following conditions
+\begin{itemize}
+  \item Feasibility condition -- $0 \leq f(e) \leq c(e)$ for all $e \in E$
+  \item Conservation of flow -- $\sum_{v \in V}^{} f(uv) = \sum_{v \in V}^{} f(vu) \mathrm{\ for\ all\ } u \in V - \{S, T\}$
+\end{itemize}
+
+In any given network, the maximum flow is any flow which has the maximum value ($\sum_{v \in V} f(Sv)$, the sum of all
+ outgoing arcs from $S$).
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=2cm,
+    }
+
+    \node[vertex] (vs) {$S$};
+    \node[vertex, above of=vs, right of=vs] (va) {$A$};
+    \node[vertex, below of=vs, right of=vs] (vb) {$B$};
+    \node[vertex, right of=va] (vc) {$C$};
+    \node[vertex, right of=vb] (vd) {$D$};
+    \node[vertex, right of=vd, above of=vd] (vt) {$T$};
+
+    \draw[line width=0.15cm, red!50]
+              (vs) edge[] (va)
+              (va) edge[] (vd)
+              (vd) edge[] (vt);
+
+    \path[->] (vs) edge[] node[left] {$2, 10$} (va)
+              (vs) edge[] node[left] {$0, 11$} (vb)
+              (va) edge[] node[above] {$0, 12$} (vc)
+              (va) edge[] node[left, pos=0.3] {$2, 4$} (vd)
+              (vb) edge[] node[right, pos=0.7] {$0, 8$} (vc)
+              (vb) edge[] node[below] {$0, 2$} (vd)
+              (vc) edge[] node[right] {$0, 11$} (vt)
+              (vd) edge[] node[right] {$2, 14$} (vt);
+  \end{tikzpicture}
+  \caption{A flow of value 2 through the pipeline}
+  \label{fig:flow1}
+\end{figure}
+
+\subsection*{Finding a Maximum Flow}
+
+There is a simple method to find a maximum flow--
+\begin{enumerate}
+  \item Locate a path, $P$ from the source $S$ to the sink $T$
+  \item Define the flow for each vertex as $f(e) = \begin{cases}0 & \mathrm{\ if\ } e \in P\\ 1 & \mathrm{\ if\ } e \notin P\end{cases}$
+  \item Increment the flow of each arc by one until the capacity of any edge is reached
+  \item Find another path from $S$ to $T$ and attempt to increment the edges again
+\end{enumerate}
+
+This method will result in \textit{a} maximum flow, but not necessarily \textit{the} maximum flow, so there are possible
+ improvements to be made.
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=2cm,
+    }
+
+    \node[vertex] (vs) {$S$};
+    \node[vertex, above of=vs, right of=vs] (va) {$A$};
+    \node[vertex, below of=vs, right of=vs] (vb) {$B$};
+    \node[vertex, right of=va] (vc) {$C$};
+    \node[vertex, right of=vb] (vd) {$D$};
+    \node[vertex, right of=vd, above of=vd] (vt) {$T$};
+
+    \draw[line width=0.15cm, red!50]
+              (vs) edge[] (va)
+              (vs) edge[] (vb)
+              (va) edge[] (vc)
+              (vb) edge[] (vc)
+              (vb) edge[] (vd)
+              (vc) edge[] (vt)
+              (vd) edge[] (vt);
+
+    \path[->] (vs) edge[] node[left] {$10, 10$} (va)
+              (vs) edge[] node[left] {$3, 11$} (vb)
+              (va) edge[] node[above] {$10, 12$} (vc)
+              (va) edge[] node[left, pos=0.3] {$0, 4$} (vd)
+              (vb) edge[] node[right, pos=0.7] {$1, 8$} (vc)
+              (vb) edge[] node[below] {$2, 2$} (vd)
+              (vc) edge[] node[right] {$11, 11$} (vt)
+              (vd) edge[] node[right] {$2, 14$} (vt);
+  \end{tikzpicture}
+  \caption{A flow of value 13 through the pipeline, created with the above method}
+  \label{fig:flow2}
+\end{figure}
+
+Consider a path, $P$ from $S$ to $T$, in the underlying undirected graph, then each edge is either
+\begin{itemize}
+  \item A forward arc, which follows the direction of $P$, otherwise
+  \item A backward arc
+\end{itemize}
+Now consider a path from $S$ to $T$ in which
+\begin{itemize}
+  \item All forward arcs are unsaturated
+  \item All backward arcs are carrying a non-zero flow
+\end{itemize}
+
+To improve this flow, we can try to use a \textit{flow augmenting path}. To do this--
+\begin{enumerate}
+  \item Start with any flow
+  \item\label{item:fa1} Search for a flow flow augmenting path, $P$. If no path exists, this is already the maximum flow
+  \item Change the flow through the path by $\Delta$, where $\Delta$ is the minimum over the values
+  \begin{itemize}
+    \item $\{f(e) \mid e \mathrm{\ is\ a\ backward\ arc\ in\ } P\}$, and
+    \item $\{c(e) - f(e) \mid e \mathrm{\ is\ a\ forward\ arc\ in\ } P\}$
+  \end{itemize}
+  \item Specifically, change the flow of each arc by
+  \begin{itemize}
+    \item $+\Delta$ for each forward arc, $e$
+    \item $-\Delta$ for each backward arc, $e$
+  \end{itemize}
+  \item Go back to step \ref*{item:fa1}
+\end{enumerate}
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex] (vs) {$S$};
+      \node[vertex, above of=vs, right of=vs] (va) {$A$};
+      \node[vertex, below of=vs, right of=vs] (vb) {$B$};
+      \node[vertex, right of=va] (vc) {$C$};
+      \node[vertex, right of=vb] (vd) {$D$};
+      \node[vertex, right of=vd, above of=vd] (vt) {$T$};
+  
+      \draw[line width=0.15cm, red!50]
+                (vs) edge[] (va)
+                (vb) edge[] (vd)
+                (vc) edge[] (vt);
+
+      \draw[line width=0.15cm, myPurple!50]
+                (vs) edge[] (vb)
+                (vb) edge[] (vc)
+                (vc) edge[] (va)
+                (va) edge[] (vd)
+                (vd) edge[] (vt);
+  
+      \path[->] (vs) edge[] node[left] {$10, 10$} (va)
+                (vs) edge[] node[left] {$3 + \Delta, 11$} (vb)
+                (va) edge[] node[above] {$10 - \Delta, 12$} (vc)
+                (va) edge[] node[left, pos=0.3] {$0 + \Delta, 4$} (vd)
+                (vb) edge[] node[right, pos=0.7] {$1 + \Delta, 8$} (vc)
+                (vb) edge[] node[below] {$2, 2$} (vd)
+                (vc) edge[] node[right] {$11, 11$} (vt)
+                (vd) edge[] node[right] {$2 + \Delta, 14$} (vt);
+    \end{tikzpicture}
+    \caption{An augmenting flow, shown with $\Delta$ where the value needs to be changed}
+    \label{fig:flow3}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  In the network in figure \ref*{fig:flow3}, it is possible to improve the flow using a flow-augmenting path. To improve
+  the flow, we must use the above method, and find the value of $\Delta$. The values which we must take a minimum over
+  are $\{8, 7, 10, 4, 12\}$, so the value of $\Delta$ in this case is $4$. Below is a graph with the flows adjusted by
+  $\Delta$.
+\end{minipage}
+
+\begin{figure}[H]
+  \centering
+  \usetikzlibrary{graphs}
+  \begin{tikzpicture}
+    \tikzset{
+      node distance=2cm,
+    }
+
+    \node[vertex] (vs) {$S$};
+    \node[vertex, above of=vs, right of=vs] (va) {$A$};
+    \node[vertex, below of=vs, right of=vs] (vb) {$B$};
+    \node[vertex, right of=va] (vc) {$C$};
+    \node[vertex, right of=vb] (vd) {$D$};
+    \node[vertex, right of=vd, above of=vd] (vt) {$T$};
+
+    \draw[line width=0.15cm, red!50]
+              (vs) edge[] (va)
+              (vs) edge[] (vb)
+              (va) edge[] (vc)
+              (va) edge[] (vd)
+              (vb) edge[] (vc)
+              (vb) edge[] (vd)
+              (vc) edge[] (vt)
+              (vd) edge[] (vt);
+
+    \path[->] (vs) edge[] node[left] {$10, 10$} (va)
+              (vs) edge[] node[left] {$7, 11$} (vb)
+              (va) edge[] node[above] {$6, 12$} (vc)
+              (va) edge[] node[left, pos=0.3] {$4, 4$} (vd)
+              (vb) edge[] node[right, pos=0.7] {$5, 8$} (vc)
+              (vb) edge[] node[below] {$2, 2$} (vd)
+              (vc) edge[] node[right] {$11, 11$} (vt)
+              (vd) edge[] node[right] {$6, 14$} (vt);
+  \end{tikzpicture}
+  \caption{The adjusted flow, with new value of 17}
+  \label{fig:flow4}
+\end{figure}
+
+To find a flow-augmenting path, you must perform an exhaustive search of all paths from $S$ to $T$. If there is more
+ than one flow-augmenting path, it is irrelevant which order they are applied in, as they will always produce the same
+ result.
+
+In a directed graph, the maximum flow is equal to the value of a minimum graph.

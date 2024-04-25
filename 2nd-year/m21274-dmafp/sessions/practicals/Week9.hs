@@ -20,11 +20,11 @@ formatDiary ((Entry title date content reviewed):xs)
   = "Title: " ++ title ++ "\n" ++ content ++ "\n" ++ (if reviewed then "Reviewed" else "Not reviewed") ++ ", added on " ++ (show date) ++ "\n\n" ++ (formatDiary xs)
 
 -- ====== Imperative Code ======
-getEntry :: [Entry] -> IO ()
+getEntry :: [Entry] -> IO (Entry)
 getEntry = do
   putStr "Enter the title: "
   title <- getLine
-  putStr "Enter the date as ISO8601 string (e.g. 2020-02-29): "
+  putStr "Enter the date as ISO8601 date (e.g. 2020-02-29): "
   date <- getLine
   putStr (title ++ " " ++ date)
 
