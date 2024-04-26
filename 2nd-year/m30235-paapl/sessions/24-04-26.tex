@@ -1,0 +1,105 @@
+\lecture{Functions and Parameter Passing}{14:00}{26/04/24}{Jiacheng Tan}
+
+A \textit{subprogram} is a fundamental part of program flow control, and are present in almost every language. Decomposing
+ a problem in to sub-problems makes it much easier to handle, as the complexity of any given part is much lower.
+ Subprograms go by many names, but are usually called a \textit{function}, \textit{procedure} or \textit{subprogram}. It
+ is any piece of code which is identified by a name, and has its own local reference space. There is usually some
+ facility to exchange data with the other code using parameters. Procedures and functions are both types of subprogram,
+ where a function returns a value, and a procedure does not.
+
+\section*{Abstraction}
+
+Subprograms provide one of the two fundamental abstractions in programming languages
+\begin{itemize}
+  \item Process control abstraction -- Allows details of procedures to be hidden, and only exposes the interface and not
+   the implementation
+  \item Data abstraction -- Allows the use of sophisticated data types without needing to know their implementation, only
+   the interface
+\end{itemize}
+
+\section*{Function Declarations \& Definitions}
+
+The \textit{definition} of a function refers to the actual implementation of the function. This includes both the header
+ or interface, as well as the body of the function, the actual code that runs. The header consists of the name, return
+ type, and parameter profile of the function. The parameter profile of a function is the number, order and types of
+ parameters, as well as their names in languages which support named parameters.
+ 
+The \textit{declaration} of a function (sometimes known as the prototype) is the header of the function on its own. This
+ is used in languages like C and C++ to expose functions to other files in the program. If a function needs to be used
+ in another file, it's declaration is placed in a header file, which is then included in other files. This allows the
+ header of the function to be exposed, without exposing the implementation as well.
+
+\subsection*{Parameters and Return Values}
+
+A \textit{formal parameter} is a dummy variable in the function header, which can then be referred to by the implementation
+ of the function. The \textit{actual parameters} are then filled in at runtime, and is usually either the value or
+ address which the caller used. Functions are able to report results by returning a value, typically of a type which was
+ specified in the declaration of the function. When a return statement is called, the value is passed back to the caller,
+ and execution resumes at the caller.
+
+\subsection*{Parameter Binding}
+
+Actual parameters can be bound to the formal parameters in one of two ways -- by position or by keyword/ name. When bound
+ by position, the values are bound in the order that they appear in the function call, which is safe and easy. When bound
+ by keyword, the names of the formal parameters are specified manually in the function call, and the order they appear
+ is entirely irrelevant. This means that it is impossible for a programmer to accidentally put the wrong values into the
+ parameters, but it does mean that they have to remember the names of the formal parameters.
+
+\section*{Parameter Passing}
+
+There are several ways in which a parameter can be passed into a function. These determine how the values are sent to the
+ function, and if it is possible for the function to modify them. The relationship between the actual and formal
+ parameters can be one of three models
+\begin{itemize}
+  \item In (Put) Mode -- Formal parameters receive data from the actual parameters, aka pass by value
+  \item Out (Put) Mode -- Formal parameters transmit data to the actual parameters, aka pass by result
+  \item Inout Mode -- Both occur, can be implemented either using both pass by value and result, or by passing the reference
+\end{itemize}
+
+The vast majority of languages support passing values by value, result or both and default to passing by value. Only
+ some languages support passing values by reference, and most are low level, such as C or C++.
+
+\subsection*{Pass by Value}
+
+The value of the actual parameter is used to initialise the corresponding formal parameter, at the time of function call.
+ During the execution of the function, the local variable uses the value passed to it, and can be modified, but is then
+ destroyed when the function returns.
+
+This is very simple and fast for sending elementary data types, and is the default in many languages, such as C, C++ \&
+ Java. It does have the downside of needing to use more memory, as the value is stored twice, and needing to move data
+ in memory, which can be expensive, depending upon the type of the variable.
+
+\subsection*{Pass by Result}
+
+The value is transmitted to the variable when control returns to the caller, and no value is sent from the caller to The
+ function. During execution of the function, the formal parameter acts as a local variable within the function, and
+ their values are copied to the real parameters when control returns to the caller.
+
+This is also simple, but does have quite a few limitations and downsides. Each of the parameters must be a variable, and
+ the order which the values are copied back to the actual parameters does matter. This is a bigger issue in languages
+ which have multiple implementations, such as C\#.
+
+\subsection*{Pass by Value and Result}
+
+Sometimes known as pass-by-copy, this is a combination of the two previous methods. When the function is called, the
+ values of the actual parameters are stored in the formal parameters using pass-by-value, and at the end of the function
+ call, the values of the formal parameters are copied back to the actual variables.
+
+This facilitates bi-directional data exchange, but does have the disadvantage of needing to copy the data twice, and
+ store two copies of it the whole time.
+
+\subsection*{Pass by Reference}
+
+Rather than passing the values, a pointer to the address in memory is used instead. This is sometimes known as pass-by-
+sharing. The formal parameters and actual parameters are simply treated as two pointers to the same address in memory,
+ which can be written to by both the caller and the function.
+ 
+This also allows bi-directional data exchange, but without having to make multiple copies of the data. This makes it much
+ more efficient, and more convenient than passing by value and result, but could be seen as insecure, as it gives the
+ function direct access to the memory space.
+
+\section*{Local Reference Space}
+
+When a function is called, a new \textit{local reference space} is created, which contains all of the local variables
+ and actual parameters. In most languages, local variables are created on the stack, as stack-dynamic variables, but if
+ the variable is labelled as static, it must be assigned statically.
