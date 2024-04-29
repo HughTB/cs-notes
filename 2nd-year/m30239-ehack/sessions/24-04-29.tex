@@ -1,0 +1,68 @@
+\lecture{Windows AD \& Password Attacks}{09:00}{29/04/24}{Tobi Fajana}
+
+\section*{Active Directory}
+
+Active Directory (AD) is a hierarchical structure which stores information about objects on the network. Each object
+ could be a user, computer, printer, file share, group of users, etc. It provides centralised management for users and
+ computers, which makes it easier for administrators to manage, and users to use as they can log in on any computer.
+
+An Active Directory domain is made up of several services
+\begin{itemize}
+  \item Domain Services
+  \item Lightweight Domain Services (\& Lightweight Directory Access Protocol)
+  \item Certificate Services
+  \item Active Directory Federation Services
+  \item Rights Management Services
+\end{itemize}
+
+\subsection*{Security Identifiers}
+
+A security identifier (SID) is a unique value which is used to identify a so-called `security principal' (e.g. security
+ group) within Windows. The last 4 digits of an SID are the `Relative ID', and the most important is \verb`0500`, as
+ this is the relative ID of an administrator account.
+
+When attacking an AD network, the first thing you should do is \textit{enumerate} all of the devices on the network, and
+ gather their SIDs. This allows you to find the Domain Controller on the network, and if you can gain control of that,
+ you have effective control over the entire AD network.
+
+\subsection*{Domain Services}
+
+Active Directory Domain Services (ADDS) uses a hierarchical structure consisting of domains, trees and forests. A domain
+ is a group of objects, such as users and computers, which share the same AD Database. A tree is a group of one or more
+ domains, and a forest is a group of multiple trees. A forest consists of shared catalogues, schemas, application
+ information and domain configurations. A schema defines an object's class and attributes within a forest.
+
+\subsection*{Domain Controller}
+
+The domain controller of an AD network is simply the server running ADDS. There can be many domain controllers on a
+ network, but only one can be the primary controller at a time. This allows you to have complete fail-over if one of the
+ servers were to fail. It also allows some basic load balancing in larger domains, but since one of the controllers is
+ always primary, any secondary servers must be in constant communication with the primary.
+
+\section*{Password Attacks}
+
+There are several methods of obtaining passwords, but the easiest will always be social engineering, to get people to
+ willingly hand over their passwords. Second to that, you can brute-force or crack a password.
+
+\subsection*{Password Guessing}
+
+While this is the simplest method, it is not fool-proof. This is because while it is a very simple method, it has many
+ downsides--
+\begin{itemize}
+  \item Easy to detect
+  \item Takes a long time
+  \item Uses lots of bandwidth
+  \item Could be blocked at either end
+\end{itemize}
+
+\subsection*{Sniffing}
+
+It is possible to `sniff' packets as they move across a network. This typically only works if the passwords are sent in
+ plaintext, so not for any websites which use HTTPS, which is basically all of them at this point, since browsers now
+ enforce secure connections. It also requires direct access to the network, which may be easy if the target is using
+ unprotected wifi, but may be difficult if it is a physical network in a secure building.
+
+\subsection*{Malware}
+
+If malware could be installed to the targets device, it is possible to use a \textit{keylogger}, which records all of
+ the keypresses made on a computer, which may include them inputting passwords.
