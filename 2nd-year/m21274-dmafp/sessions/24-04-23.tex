@@ -1,4 +1,4 @@
-\lecture{Networks and Digraphs}{17:00}{16/04/24}{Janka Chlebikova}
+\lecture{Networks and Digraphs}{17:00}{23/04/24}{Janka Chlebikova}
 
 A directed graph (digraph) is a subtype of graph in which each edge has a specified direction. In a digraph, edges are
  known as arcs and must have a direction, and optionally a weight. Whereas an edge in an undirected graph can be
@@ -304,4 +304,95 @@ To find a flow-augmenting path, you must perform an exhaustive search of all pat
  than one flow-augmenting path, it is irrelevant which order they are applied in, as they will always produce the same
  result.
 
-In a directed graph, the maximum flow is equal to the value of a minimum graph.
+In a directed graph, the maximum flow is equal to the value of a minimum cut.
+
+\section*{(S, T)-cut}
+
+An $(S, T)$-cut is a partition, $\{S_c, T_c\}$, of $V$ such that $S \in S_c$ and $T \in T_c$. The capacity of a cut,
+ $\{S_c, T_c\}$, is the sum of all capacities of all arcs from $S_c$ to $T_c$. A minimum cut is the cut of the smallest
+ possible capacity.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex] (vs) {$S$};
+      \node[vertex, above of=vs, right of=vs] (va) {$A$};
+      \node[vertex, below of=vs, right of=vs] (vb) {$B$};
+      \node[vertex, right of=va] (vc) {$C$};
+      \node[vertex, right of=vb] (vd) {$D$};
+      \node[vertex, right of=vd, above of=vd] (vt) {$T$};
+  
+      \path[->] (vs) edge[] node[left] {$10, 10$} (va)
+                (vs) edge[] node[left] {$3, 11$} (vb)
+                (va) edge[] node[above] {$10, 12$} (vc)
+                (va) edge[] node[left, pos=0.3] {$0, 4$} (vd)
+                (vb) edge[] node[right, pos=0.7] {$1, 8$} (vc)
+                (vb) edge[] node[below] {$2, 2$} (vd)
+                (vc) edge[] node[right] {$11, 11$} (vt)
+                (vd) edge[] node[right] {$2, 14$} (vt);
+    \end{tikzpicture}
+    \caption{A network, $G_1$}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+For the network $G_1$, there are many possible cuts, for example:\\
+  $S_c = \{S, A, B\}$, $T_c = \{C, D, T\}$,\\
+  $S_c = \{S, A\}$, $T_c = \{B, C, D, T\}$,\\
+  $S_c = \{S\}$, $T_c = \{A, B, C, D, T\}$, etc.
+\end{minipage}
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=2cm,
+      }
+  
+      \node[vertex, red] (vs) {$S$};
+      \node[vertex, above of=vs, right of=vs, red] (va) {$A$};
+      \node[vertex, below of=vs, right of=vs, myPurple] (vb) {$B$};
+      \node[vertex, right of=va, red] (vc) {$C$};
+      \node[vertex, right of=vb, myPurple] (vd) {$D$};
+      \node[vertex, right of=vd, above of=vd, myPurple] (vt) {$T$};
+  
+      \draw[line width=0.15cm, red!50]
+                (vs) edge[] (vb)
+                (va) edge[] (vd)
+                (vc) edge[] (vt);
+
+      \draw[line width=0.15cm, myPurple!50]
+                (vb) edge[] (vc);
+
+      \path[->] (vs) edge[] node[left] {$?, 10$} (va)
+                (vs) edge[] node[left] {$?, 11$} (vb)
+                (va) edge[] node[above] {$?, 12$} (vc)
+                (va) edge[] node[left, pos=0.3] {$?, 4$} (vd)
+                (vb) edge[] node[right, pos=0.7] {$?, 8$} (vc)
+                (vb) edge[] node[below] {$?, 2$} (vd)
+                (vc) edge[] node[right] {$?, 11$} (vt)
+                (vd) edge[] node[right] {$?, 14$} (vt);
+    \end{tikzpicture}
+    \caption{A network, $G_2$}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  In the network $G_2$, there is an $(S, T)$-cut where \textcolor{red}{$S_c = \{S, A, C\}$} and
+   \textcolor{myPurple}{$T_c = \{B, D, T\}$}. The capacity of this cut can be calculated as such--
+   $\mathrm{cap}(S_c, T_c) = c(SB) + c(AD) + c(CT) = 11 + 4 + 11 = 26$. The arc $BC$ is ignored, as it points from $T_c$
+   to $S_c$.
+\end{minipage}
+
+In a directed graph, the value of a maximum flow is equal to the value of a minimum $(S, T)$-cut.
+\begin{itemize}
+  \item Value of \textit{any} flow $\leq$ capacity of \textit{any} $(S, T)$-cut
+  \item Value of any \textit{maximum} flow $\leq$ capacity of \textit{any} $(S, T)$-cut
+  \item Value of any \textit{maximum} flow $\leq$ capacity of any \textit{minimum} $(S, T)$-cut
+\end{itemize}

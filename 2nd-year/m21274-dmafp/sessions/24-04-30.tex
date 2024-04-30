@@ -1,0 +1,181 @@
+\lecture{Connectivity and Cuts}{17:00}{30/04/24}{Janka Chlebikova}
+
+A graph, $G$, is connected if there is a path in $G$ between any given pair of vertices, and disconnected otherwise.
+ An edge in a connected graph is a bridge if deleting it would create a disconnected graph. In a connected graph without
+ a bridge, deleting any edge will create a connected subgraph. This is a useful property, as it means that at least one
+ edge in the graph can disappear, while the graph remains connected. It is especially useful for practical applications,
+ such as a telecom network, where you want the network to be reliable, and for all customers to remain connected, even
+ if a link goes down.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=3cm,
+      }
+
+      \node[vertex] (va) {$v_a$};
+      \node[vertex, right of=va] (vb) {$v_b$};
+      \node[vertex, below of=vb] (vc) {$v_c$};
+      \node[vertex, below of=va] (vd) {$v_d$};
+      \node[vertex, node distance=1.5cm, below of=va, xshift=0.75cm] (ve) {$v_e$};
+      \node[vertex, node distance=1.5cm, below of=vb, xshift=-0.75cm] (vf) {$v_f$};
+
+      \draw (va) edge[] (vb)
+            (vb) edge[] (vc)
+            (vc) edge[] (vd)
+            (vd) edge[] (va)
+            (va) edge[] (ve)
+            (ve) edge[] (vf)
+            (vf) edge[] (vc);
+    \end{tikzpicture}
+    \caption{A connected graph, $G_1$}
+    \label{fig:telecom1}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=3cm,
+      }
+
+      \node[vertex] (va) {$v_a$};
+      \node[vertex, right of=va] (vb) {$v_b$};
+      \node[vertex, below of=vb] (vc) {$v_c$};
+      \node[vertex, below of=va] (vd) {$v_d$};
+      \node[vertex, node distance=1.5cm, below of=va, xshift=0.75cm] (ve) {$v_e$};
+      \node[vertex, node distance=1.5cm, below of=vb, xshift=-0.75cm] (vf) {$v_f$};
+
+      \draw (va) edge[] (vb)
+            (vb) edge[] (vc)
+            (vc) edge[] (vd)
+            (vd) edge[] (va)
+            (va) edge[] (ve)
+            (ve) edge[] (vf);
+    \end{tikzpicture}
+    \caption{A connected subgraph of $G_1$}
+    \label{fig:telecom2}
+  \end{figure}
+\end{minipage}
+
+If we were to consider each edge as a telephone line, and each vertex as an exchange, we could see that deleting one
+ vertex would also create a connected subgraph, but any more could be an issue.
+
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=3cm,
+      }
+
+      \node[vertex] (va) {$v_a$};
+      \node[vertex, right of=va] (vb) {$v_b$};
+      \node[vertex, below of=vb] (vc) {$v_c$};
+      \node[vertex, below of=va] (vd) {$v_d$};
+      \node[vertex, node distance=1.5cm, below of=va, xshift=0.75cm] (ve) {$v_e$};
+      \node[vertex, node distance=1.5cm, below of=vb, xshift=-0.75cm] (vf) {$v_f$};
+
+      \draw (va) edge[] (vb)
+            (vb) edge[] (vc)
+            (vc) edge[] (vd)
+            (vd) edge[] (va)
+            (va) edge[] (ve)
+            (ve) edge[] (vf)
+            (vf) edge[] (vc);
+    \end{tikzpicture}
+    \caption{A connected graph, $G_2$}
+    \label{fig:telecom3}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}[c]{0.45\linewidth}
+  \begin{figure}[H]
+    \centering
+    \usetikzlibrary{graphs}
+    \begin{tikzpicture}
+      \tikzset{
+        node distance=3cm,
+      }
+
+      \node[vertex] (va) {$v_a$};
+      \node[vertex, right of=va] (vb) {$v_b$};
+      \node[vertex, below of=vb] (vc) {$v_c$};
+      \node[vertex, below of=va] (vd) {$v_d$};
+      \node[vertex, node distance=1.5cm, below of=va, xshift=0.75cm] (ve) {$v_e$};
+
+      \draw (va) edge[] (vb)
+            (vb) edge[] (vc)
+            (vc) edge[] (vd)
+            (vd) edge[] (va)
+            (va) edge[] (ve);
+    \end{tikzpicture}
+    \caption{A connected subgraph of $G_2$}
+    \label{fig:telecom4}
+  \end{figure}
+\end{minipage}
+
+\section*{Types of Connectivity}
+
+As you can see, there are two different types of connectivity, demonstrated by the two examples above. These are
+ edge-connectivity (links fail) and vertex-connectivity (exchanges fail).
+
+\subsection*{Edge-Connectivity}
+
+The edge-connectivity, $\lambda(G)$ of a
+ connected graph $G$, is the smallest number of edges whose removal could cause $G$ to become unconnected. For example,
+ the graph in Figure \ref*{fig:telecom1} has an edge-connectivity ($\lambda(G_1)$) of $2$. If you remove any single edge,
+ the graph remains connected, but there exist two edges such that if they are removed, $G_1$ would become disconnected.
+ Therefore, $\lambda(G_1) = 2$.
+
+Formally, a graph $G$ has an edge connectivity of $\lambda(G)$ if
+\begin{itemize}
+  \item There exist $\lambda(G)$ edges such that their removal disconnects $G$, and
+  \item Removal of any $\lambda(G) - 1$ edges does not disconnect $G$
+\end{itemize}
+
+\subsubsection*{Edge Cuts}
+
+An edge cut of a graph is a set of edges whose removal would cause the graph to become unconnected. There are many edge
+ cuts for any given graph, and not all of the edge cuts have the same number of edges. The edge-connectivity of a graph
+ is simply the size of the smallest edge cut of the graph.
+
+A graph, $G$, is $k$-edge-connected when $\lambda(G) \geq k$. This means it remains connected when fewer than $k$ edges
+ are removed.
+
+\subsection*{Vertex-Connectivity}
+
+The vertex-connectivity, $\kappa(G)$ of a connected graph $G$, is the smallest number of vertices whose removal could
+ cause $G$ to become unconnected. When a vertex is removed, any adjacent edges are also removed. For example, the graph
+ in Figure \ref*{fig:telecom3} has a vertex-connectivity ($\kappa(G_2)$) of $2$. If you remove any single vertex, the
+ graph remains connected, but there exists two vertices such that if they are removed, $G_2$ would become disconnected.
+ Therefore, $\kappa(G_2) = 2$.
+
+\subsubsection*{Vertex Cuts}
+
+A vertex cut of a graph is a set of vertices whose removal would cause the graph to become unconnected. There are many
+ vertex cuts for any given graph, and not all of the vertex cuts have the same number of vertices. The vertex-connectivity
+ of a graph is simply the size of the smallest vertex cut of the graph. This breaks for a complete graph, since the graph
+ cannot be disconnected by removing vertices. Technically, the vertex-connectivity of a complete graph $K_n$ is $n - 1$.
+
+A graph, $G$, is $k$-vertex-connected when $\kappa(G) \geq k$. This means it remains connected when fewer than $k$ vertices
+ are removed.
+
+\subsection*{Connectivity Upper Bounds}
+
+There are upper bounds on both $\lambda(G)$ and $\kappa(G)$. To calculate them, we can use the following theorem--
+\begin{equation*}
+  \kappa(G) \leq \lambda(G) \leq \delta(G) \leq \frac{2 \lvert E \rvert}{\lvert V \rvert}
+\end{equation*}
+Given that $2 \lvert V \rvert$ is the sum of all vertex degrees, $\frac{2 \lvert E \rvert}{\lvert V \rvert}$ is the
+ mean of all vertex degrees.
+
+A graph for which $\kappa(G) = \lambda(G) = \delta(G) = \frac{2 \lvert E \rvert}{\lvert V \rvert}$ has the max vertex-
+ and edge-connectivity possible for any graph with $\lvert V \rvert$ vertices and $\lvert E \rvert$ edges. Such a graph
+ is said to have optimal connectivity. All graphs with optimal connectivity are \textit{regular graphs} (a graph in
+ which every vertex has the same degree) but not all regular graphs have optimal connectivity.
