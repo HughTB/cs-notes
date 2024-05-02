@@ -1,0 +1,41 @@
+\lecture{ADTs and Concurrency}{14:00}{26/04/24}{Jiacheng Tan}
+
+\section*{Abstraction}
+
+\textit{Abstraction} means separating the interface of a thing from the details of its implementation, such that the
+ programmer only needs to know how to use it, but not how it does its job. This improves readability, maintainability,
+ re-usability and security of software and libraries.
+
+Modern languages typically provide two types of abstraction-- data abstraction and process/ control abstraction.
+
+\subsection*{Data Abstraction}
+
+\textit{Data Abstraction} enforces a clear separation between the abstract properties of a data type, and the concrete
+ details of its implementation. The abstract properties are visible to \textit{client code} (any code which makes use of
+ the abstracted item) which makes use of the data type. This includes information about methods which can be used to
+ manipulate the data, and how items are arranged on a stack. The concrete details of the implementation are kept entirely
+ private, and can change version-to-version without affecting any client code.
+
+Data abstraction is achieved in most languages by defining an Abstract Data Type (ADT)-- user defined data types which
+ consist of a set of data, and a set of operations which can be performed upon the data. ADTs are often used to implement
+ a data structure, which acts as a representation of the data and provides implementations for the operations which are
+ allowed on the data. This includes some structures included in languages, such as lists, dictionaries, and more.
+
+\subsection*{ADT Interfaces}
+
+An \textit{interface} is a method of interaction between two parties-- the implementer of the ADT, and the user of the ADT.
+ The implementer is responsible for the code which performs the operations in a correct and efficient way, and the user
+ is responsible only for the code which interacts with the interface of the ADT. The interface defines the representation
+ of the ADT which the user will actually interact with, but abstracts away the implementation details.
+
+When implementing a new ADT, you must select a number of \textit{core operations} which users will need to interact with
+ your data type. The standard set of operations which almost all ADTs need are: a method to add an item; remove an item;
+ find or retrieve an item. There are also some operations which some ADTs will not need, but are typically implemented
+ anyway, such as checking empty/ fullness, retrieving a subset, etc.
+
+Another thing to consider when implementing a new ADT is how you will actually store the data. For example, you need to
+ select an \textit{internal storage container}, which is used to actually hold the items in the data structure. Users
+ should not need to know or be able to interfere with the internal representation of the data. If users actually need to
+ interact with the data, \textit{accessors} and \textit{mutators} should be used.
+
+{PAGE 13}
