@@ -38,4 +38,80 @@ Another thing to consider when implementing a new ADT is how you will actually s
  should not need to know or be able to interfere with the internal representation of the data. If users actually need to
  interact with the data, \textit{accessors} and \textit{mutators} should be used.
 
-{PAGE 13}
+\section*{Concurrency}
+
+There are several levels of \textit{concurrency}, but each of them involve multiple actions occurring at once.
+\begin{itemize}
+  \item Machine Instruction level -- Via processor design
+  \item Statement level -- Statements in high-level languages which support parallelisation
+  \item Subprogram level -- A single program has multiple subprograms running at the same time
+  \item Program level -- Multiple programmings running at the same time, or one program running on several computers on
+   a network
+\end{itemize}
+
+Each of these levels has a different name. When multiple programs are running on a single computer, it is known as
+ multitasking, but when a single program runs across several computers, it is known as a distributed program. If a program
+ runs multiple subprograms on one computer, it is known as a concurrent/ parallel program, and is said to be multi-threaded.
+
+\subsection*{Subprogram Concurrency}
+
+A task, process or thread of a program is a `unit' that can be executed in parallel with other units. They differ from
+ ordinary subprograms, in that
+\begin{itemize}
+  \item A thread may be started implicitly
+  \item When a thread starts or stops execution, the rest of the program is not necessarily suspended
+  \item When a thread finishes execution, control does not have to return to the caller
+\end{itemize}
+
+A thread is disjoint if it does not communicate with, or affect the execution of, any other threads in the program.
+ Otherwise, it is a joined thread and needs to be synchronised. Inter-thread communication is necessary for joint threads,
+ because threads may need exclusive access to a resource, or they may need to exchange information with another thread.
+ Unsynchronised, but joined threads can lead to race conditions, or deadlocks.
+
+A race condition occurs when the result of the execution of a set of threads depends upon the execution order of two or
+ more threads. A deadlock occurs when two or more threads are waiting for the other thread to finish, while holding
+ a resource or resources that the other thread(s) need(s), and therefore none of the threads ever finish execution.
+
+\section*{Synchronisation}
+
+To prevent race conditions and deadlocks, the order of execution of the tasks must be controlled, and so the threads must
+ synchronise with each other. This requires communication between the threads, which can be provided by-- shared non-local
+ variables, message passing, or special data types such as semaphores or monitors. Synchronisation can be \textit{cooperative}
+ or \textit{competitive}, depending upon the type of resources which must be shared.
+
+\subsection*{Cooperative Synchronisation}
+
+\textit{Cooperative Synchronisation} ensures that two or more threads work cooperatively to avoid a deadlock. One thread
+ must wait for the other to finish using the resource before the other(s) can proceed. Usually, there is more than one
+ unit of resource to be shared. This model can be shown by the producer-consumer problem, where one thread produces
+ something that the other thread consumes.
+
+An example
+\begin{itemize}
+  \item Thread A produces information, which Thread B consumes
+  \item They share a buffer, which can only be used by a single thread at a time
+  \item Both threads must access the buffer, but can do so in a cooperative way--
+  \begin{itemize}
+    \item Thread A requires that the buffer is not full before it writes to it, otherwise it must wait
+    \item Thread B requires the buffer is not empty before it can read from it, otherwise it must wait
+  \end{itemize}
+  \item As long as both threads follow their respective rule, there will never be a deadlock
+\end{itemize}
+
+\subsection*{Competitive Synchronisation}
+
+\textit{Competitive Synchronisation} ensures that a thread has exclusive access to a resource, which avoids race
+ conditions. This usually involves a single unit of resource, such as a single integer, possibly representing the money
+ in a bank account. By ensuring that only one thread has access to the resource, it is impossible for one thread to read
+ from the value as another writes to it, avoiding a race condition.
+
+\subsection*{Implementation}
+
+Both cooperative and competitive synchronisation can be implemented using a special data structure, either a semaphore
+ or monitor. (For semaphores refer to OSINT).
+
+A monitor is an object which encapsulates the shared resource and guarantees that, at any point in time, at most one
+ thread has access to the resource. This is the monitor's mutual exclusion property. Monitors are typically used to
+ implement competitive synchronisation. This can be achieved by using a so-called \textit{private lock}. The lock, which
+ is initially unlocked, is locked at the start of each method call for the resource, and is unlocked when the method
+ returns execution to the caller. Monitors are used by languages such as Java, C\#, Python, Pascal, Ada, etc.
