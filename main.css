@@ -1,0 +1,142 @@
+/* The delightful font import: */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Sans:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&family=IBM+Plex+Serif:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;1,100;1,200;1,300;1,400;1,500;1,600;1,700&display=swap');
+
+html {
+  --bg-light: #FFFFFF;
+  --bg-dark: #121212;
+  --fg-light: #000000;
+  --fg-dark: #FFFFFF;
+}
+
+@media (prefers-color-scheme: light) {
+  html {
+    --foreground: var(--fb-light);
+    --background: var(--bg-light);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    --foreground: var(--fg-dark);
+    --background: var(--bg-dark);
+  }
+}
+
+@media (orientation: landscape) {
+  .max-65 {
+    max-width: 65%;
+    padding: 0 17.5%;
+  }
+
+  .max-50 {
+    max-width: 50%;
+    padding: 0 25%;
+  }
+}
+
+@media (orientation: portrait) {
+  .max-65, .max-50 {
+    padding: 0 2%;
+  }
+}
+
+.center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+body {
+  color: var(--foreground);
+  background-color: var(--background);
+
+  padding: 0;
+  margin: 0;
+
+  font-family: 'IBM Plex Sans', sans-serif;
+}
+
+#main {
+  min-height: calc(100vh - 2.5rem);
+}
+
+footer {
+  color: var(--on-accent);
+  background-color: var(--accent);
+
+  padding: 0;
+  margin: 0;
+  height: 2.5rem;
+}
+
+footer p {
+  margin: 0.5rem;
+}
+
+.top-pane {
+  color: var(--on-accent);
+  background-color: var(--accent);
+
+  padding: 3rem;
+  margin: 0;
+}
+
+.top-pane h1 {
+  font-size: 4rem;
+  margin: 0;
+}
+
+.top-pane p {
+  font-size: 1.5rem;
+}
+
+.top-pane a, footer a {
+  color: var(--on-accent);
+  text-align: center;
+  text-decoration-color: var(--on-accent);
+}
+
+.socials {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  font-size: 1.3rem;
+}
+
+.socials a i {
+  padding: 0 0.25em 0 0;
+}
+
+.project h1 {
+  border-bottom: 0.15rem solid var(--accent);
+}
+
+.project h1 a {
+  text-decoration: underline;
+  text-decoration-color: var(--foreground);
+  text-decoration-thickness: 0.025em;
+}
+
+.last {
+  border-top: 0.15rem solid var(--accent);
+}
+
+h1 {
+  margin: 0.5em 0 0.25em;
+  font-size: 2rem;
+}
+
+p {
+  text-align: justify;
+  font-size: 1.1rem;
+}
+
+a {
+  color: var(--foreground);
+  text-decoration: underline;
+  text-decoration-color: var(--accent);
+  text-decoration-thickness: 0.1em;
+}
+
+li {
+  list-style-type: none;
+}

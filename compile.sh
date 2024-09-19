@@ -31,4 +31,20 @@ cd $ROOT_DIR/2nd-year/m30819-setap/
 echo "Compiling m30819-setap"
 $TEX_ENGINE m30819.tex
 
+cd $ROOT_DIR/3rd-year/m21276-theoc/
+echo "Compiling m21276-theoc"
+$TEX_ENGINE m21276.tex
+
+cd $ROOT_DIR/3rd-year/m21279-adnet/
+echo "Compiling m21279-adnet"
+$TEX_ENGINE m21279.tex
+
+cd $ROOT_DIR/3rd-year/m30225-disas/
+echo "Compiling m30225-disas"
+$TEX_ENGINE m30225.tex
+
+cd $ROOT_DIR/3rd-year/m30226-intot/
+echo "Compiling m30226-intot"
+$TEX_ENGINE m30226.tex
+
 cd $ROOT_DIR
