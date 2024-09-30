@@ -1,0 +1,130 @@
+\lecture{Introduction}{11:00}{30/09/24}{Asim Ali}
+
+\section*{Admin}
+
+\begin{itemize}
+  \item Lectures given by Dr Asim Ali
+  \item Office - BK 2.20
+  \begin{itemize}
+    \item Monday 1300-1400
+    \item Thursday 1100-1200
+  \end{itemize}
+  \item 2 hour lecture every week (PK 2.01)
+  \item 1 hour seminar every week (AG 1.03)
+\end{itemize}
+
+The module information is available at the URL below:\\
+\url{https://course-module-catalog.port.ac.uk/#/moduleDetail/M21279/2024\%2F25}
+
+\section*{Assessments}
+
+This module is assessed by one exam and one piece of coursework as below
+\begin{itemize}
+  \item 60\%, 90 minute Exam covering LO1,2,3\&4 - TB1 assessment period (January)
+  \item 40\%, Group coursework covering LO5 - 2-4 members \textit{or} individual (but not recommended)
+  \begin{itemize}
+    \item 5 pages maximum
+    \item Template provided
+    \item Previous samples provided
+  \end{itemize}
+\end{itemize}
+
+
+
+\lecture{Signal Encoding}{11:30}{30/09/24}{Asim Ali}
+
+\section*{Signals}
+
+(In this context) Signals are typically electromagnetic waves that carry information using some method of encoding.
+ This means that the `shape' of the signal is changed to represent information. There are three main types of signal--
+
+\begin{itemize}
+  \item Analogue Signals, which vary continuously and smoothly over time
+  \item Digital Signals, which have only 2 levels and change near instantly
+  \item Discrete Signals, which have 2 or more levels and change near instantly
+\end{itemize}
+
+When information is transmitted, it is often converted between many different signals before it reaches the destination.
+ For example, if you have ADSL internet, your computer sends the data as a digital signal to the modem, which is then
+ converted to an analogue signal before it is transmitted across a POTS network (Plain Old Telephone System), then the
+ receiver's modem converts it back to a digital signal before it is sent on to the receiver.
+
+\subsection*{Digital Signal Encoding}
+
+There are many methods of encoding a digital signal, but some of the most common are--
+
+\begin{itemize}
+  \item Non-return to Zero Level (NRZ-L)
+  \begin{itemize}
+    \item 0 -- High voltage level
+    \item 1 -- Low voltage level
+  \end{itemize}
+  \item Non-return to Zero Inverted (NRZ-I)
+  \begin{itemize}
+    \item 0 -- No transition (high-low or low-high voltage level) on clock pulse
+    \item 1 -- Transition on clock pulse
+  \end{itemize}
+  \item Bipolar-AMI
+  \begin{itemize}
+    \item 0 -- Zero voltage
+    \item 1 -- Alternating positive or negative voltage level 
+  \end{itemize}
+  \item Manchester
+  \begin{itemize}
+    \item 0 -- Transition from high-low voltage level in the middle of the clock interval
+    \item 1 -- Transition from low-high voltage level
+  \end{itemize}
+  \item Differential Manchester
+  \begin{itemize}
+    \item 0 -- Transition (high-low or low-high voltage level) on clock pulse
+    \item 1 -- No transition on clock pulse
+    \item Always transitions in the middle of the clock interval  
+  \end{itemize}
+  \item MLT-3 (Multi-level Transmit 3)
+  \begin{itemize}
+    \item 0 -- Remain at the same voltage level
+    \item 1 -- Transition to the next voltage level
+    \item Uses 3 voltage levels, named $+1$,$0$\&$-1$ but can be any arbitrary voltages
+  \end{itemize}
+\end{itemize}
+
+In this context, the high and low voltage levels can be whatever you like, but are typically either a positive and
+ negative voltage of the same magnitude, or are a positive voltage and zero. The most common voltages used for
+ signalling are $3.3$, $5$ and $12$ volts. In the case of Bipolar-AMI, the 3 voltage levels can be arbitrary, and don't
+ have to be, for example $+5$, $0$ and $-5$ volts.
+
+\Huge{Need to come up with a way of making diagrams for this} 
+
+\section*{Carrier Waves and Modulation}
+
+A carrier wave is a continuous waveform that, on it's own, carries no information. This carrier wave is then modified
+ by another signal to convey information. This modification can be of it's amplitude, frequency, phase, or a combination
+ of all 3. This is known as modulation, hence the names AM (Amplitude Modulation) and FM (Frequency Modulation) for the
+ two types of analogue radio.
+
+\subsection*{Digital-to-Analogue Encoding}
+
+There are several methods of encoding a digital signal on an analogue transmission medium. In the case of sending
+ digital data over a POTS network, the signal is encoded onto a carrier wave in the range of $300$-$3400$Hz using a
+ MoDem (Modulator-Demodulator). The main methods of encoding are--
+
+\begin{itemize}
+  \item Amplitude-shift keying (ASK)
+  \item Frequency-shift keying (FSK)
+  \begin{itemize}
+    \item Binary FSK (BFSK)
+    \item Multiple FSK (MFSK)
+  \end{itemize}
+  \item Phase-shift keying (PSK)
+  \begin{itemize}
+    \item Binary PSK
+    \item Differential PSK (DPSK)
+    \item Multiple-level PSK
+  \end{itemize}
+  \item Quadratic AM (Combination of ASK and PSK)
+\end{itemize}
+
+The sender and receiver may use different frequencies as to allow full-duplex data transmission on the same physical
+ medium or radio channel. Full-duplex meaning full-speed transmission in both directions simultaneously.
+
+\Huge{Once again, need a way to make diagrams of this}
