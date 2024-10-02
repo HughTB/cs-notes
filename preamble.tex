@@ -129,7 +129,8 @@
 \usepackage[dvipsnames]{xcolor}
 
 % \definecolor{myPurple}{RGB}{134, 53, 227} % Old purple
-\definecolor{myPurple}{RGB}{112, 41, 99} % New purple
+\definecolor{myPurple}{HTML}{702963} % New purple
+\definecolor{complGreen}{HTML}{297036}
 
 \usepackage{tcolorbox}
 \tcbuselibrary{theorems}
@@ -138,6 +139,12 @@
   sharp corners,
   colback=myPurple!10,
   colframe=myPurple!80!black,
+}{def}
+
+\newtcbtheorem{example}{Example}{
+  sharp corners,
+  colback=complGreen!10,
+  colframe=complGreen!80!black,
 }{def}
 
 % Use the amsmath package so normal text can be used within math blocks

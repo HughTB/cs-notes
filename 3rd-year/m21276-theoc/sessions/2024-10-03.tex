@@ -28,5 +28,186 @@ With the alphabet $A$, we could have strings such as `$cat$', `$dog$', `$antidis
    in most spoken languages.
 \end{definition*}
 
-If we have an alphabet, $A$, then $A*$ denotes the infinite set of all strings made up of symbols in $A$ -- including
- $\Lambda$.
+If we have an alphabet, $\Sigma$, then $\Sigma^*$ denotes the infinite set of all strings made up of symbols in $\Sigma$
+ -- including $\Lambda$. Therefore, a language over $\Sigma$ is any subset of $\Sigma^*$.
+
+\begin{example*}{}{}
+  If $\Sigma = \{a, b\}$, then $\Sigma^* = \{\Lambda, a, b, aa, ab, ba, bb, \ldots\}$\\
+  There are many languages which could be defined over this alphabet, but a few simple one are
+  \begin{itemize}
+    \item $\emptyset$ (The empty set)
+    \item $\{\Lambda\}$ (The set containing an empty string)
+    \item $\{a\}$ (The set containing $a$)
+    \item The infinite set $\Sigma^* = \{\Lambda, a, aa, aaa, \ldots\}$
+  \end{itemize}
+\end{example*}
+
+\section*{Combining Languages}
+
+There are three common ways of combining two languages to create a new language -- union, intersection and product.
+
+\subsection*{Union and Intersection}
+
+Since languages are sets of strings, they can be combined as you usually would for any other set with the usual operations,
+ union and intersection.
+
+\begin{example*}{}{}
+  If $L = \{aa, bb, cc\}$ and $M = \{cc, dd, ee\}$, then\\
+  $L \cap M = \{cc\}$, and\\
+  $L \cup M = \{aa, bb, cc, dd, ee\}$
+\end{example*}
+
+\subsection*{Product}
+
+To combine two languages $L$ and $M$, we form the set of all \textbf{concatenations} of strings in $L$ with strings In
+ $M$. This is known as the \textbf{product} of the two languages.
+
+\begin{definition*}{}{}
+  To \textbf{Concatenate} two strings is to juxtapose them such that a new string is made by appending the second string
+   to the end of the first.
+\end{definition*}
+
+\begin{example*}{}{}
+  If we concatenate the strings $ab$ and $ba$, the result would be $abba$.\\
+  This can be represented using the function $\mathrm{cat}$, such as $\mathrm{cat}(ab, ba) = abba$
+\end{example*}
+
+With this definition of concatenation, we can say that the product of two languages, $L$ and $M$ would be $L \cdot M$,
+ where $L \cdot M = \{\mathrm{cat}(s, t) : s \in L\ \mathrm{and}\ t \in M\}$
+
+\begin{example*}{}{}
+  If $L = \{a, b, c\}$ and $M = \{c, d, e\}$, then the product of the two languages, $L \cdot M$, is the language\\
+  $L \cdot M = \{ac, ad, ae, bc, bd, be, cc, cd, ce\}$
+\end{example*}
+
+\section*{Further on Products}
+
+It is simple to see that for any language, $L$, the following simple properties are true:
+\begin{gather*}
+  L \cdot \{\Lambda\} = \{\Lambda\} \cdot L = L\\
+  L \cdot \emptyset = \emptyset \cdot L = \emptyset
+\end{gather*}
+
+\subsection*{Commutativity}
+
+Aside from the above properties, the product of any two languages is \textbf{not} commutative, and therefore
+\begin{equation*}
+  L \cdot M \neq M \cdot L
+\end{equation*}
+
+\begin{example*}{}{}
+  If $L = \{a, b\}$ and $M = \{b, c\}$, then the product $L \cdot M$ is the language
+  \begin{equation*}
+    L \cdot M = \{ab, ac, bb, bc\}
+  \end{equation*}
+  but the product $M \cdot L$ is the language
+  \begin{equation*}
+    M \cdot L = \{ba, bb, ca, cb\}
+  \end{equation*}
+  which are clearly not the same language, as the only common string is $bb$
+\end{example*}
+
+\subsection*{Associativity}
+
+However, the product of any two languages is associative. This means that if we had any three languages, $L$, $M$ and
+ $N$, then
+\begin{equation*}
+  L \cdot (M \cdot N) = (L \cdot M) \cdot N
+\end{equation*}
+
+\begin{example*}{}{}
+  If we have the three languages $L = \{a, b\}$, $M = \{b, c\}$ and $N = \{c, d\}$, then
+  \begin{align*}
+    L \cdot (M \cdot N) &= L \cdot \{bc, bd, cc, cd\}\\
+    &= \{abc, abd, acc, acd, bbc, bbd, bcc, bcd\}
+  \end{align*}
+  which is the same as
+  \begin{align*}
+    (L \cdot M) \cdot N &= \{ab, ac, bb, bc\} \cdot N\\
+    &= \{abc, abd, acc, acd, bbc, bbd, bcc, bcd\}
+  \end{align*}
+\end{example*}
+
+\section*{Powers of Languages}
+
+If we have the language $L$, then the product $L \cdot L$ of the language is denoted by $L^2$. The product $L^n$ for
+ every $n \in \mathbb{N}$ is defined as
+\begin{align*}
+  L^0 &= \{\Lambda\}\\
+  L^n &= L \cdot L^{n-1}, \mathrm{if} n > 0
+\end{align*}
+
+\begin{example*}{}{}
+  If $L = \{a, b\}$ then the first few powers of L are
+  \begin{align*}
+    L^0 &= \{\Lambda\}\\
+    L^1 &= L = \{a, b\}\\
+    L^2 &= L \cdot L = \{aa, ab, ba, bb\}\\
+    L^3 &= L \cdot L^2 = \{aaa, aab, aba, abb, baa, bab, bba, bbb\}
+  \end{align*}
+\end{example*}
+
+\section*{The Closure of a Language}
+
+If $L$ is a language over $\Sigma$, then the \textbf{closure} of $L$ is the language denoted by $L^*$, and the
+ \textbf{positive closure} is language denoted by $L^+$.
+
+\begin{definition*}{}{}
+  The \textbf{Closure} of the language $L$, $L^*$ is defined as
+  \begin{equation*}
+    L^* = L^0 \cup L^1 \cup L^2 \cup L^3 \cup \ldots
+  \end{equation*}
+  and so, if $L = \{a\}$ then
+  \begin{align*}
+    L^* &= \{\Lambda\} \cup \{a\} \cup \{aa\} \cup \{aaa\} \cup \ldots\\
+    &= \{\Lambda, a, aa, aaa, \ldots\}
+  \end{align*}
+\end{definition*}
+
+\begin{definition*}{}{}
+  The \textbf{Positive Closure} the language $L$, $L^+$ is defined as
+  \begin{equation*}
+    L^+ = L^1 \cup L^2 \cup L^3 \cup L^4 \cup \ldots
+  \end{equation*}
+  and so, if $L = \{a\}$ then
+  \begin{align*}
+    L^+ &= \{a\} \cup \{aa\} \cup \{aaa\} \cup \{aaaa\} \cup \ldots\\
+    &= \{a, aa, aaa, aaaa, \ldots\}
+  \end{align*}
+\end{definition*}
+
+It then follows that $L^* = L^+ \cup \{\Lambda\}$, but it's not necessarily true that $L^+ = L^* - \{\Lambda\}$.
+
+\begin{example*}{}{}
+  If our alphabet is $\Sigma = \{a\}$ and our language is $L = \{\Lambda, a\}$, then
+  \begin{equation*}
+    L^+ = L^*
+  \end{equation*}
+\end{example*}
+
+\subsection*{Properties of Closures}
+
+Based upon these definitions, you can derive some interesting properties of closures.
+
+\begin{example*}
+  If $L$ and $M$ are languages over the alphabet $\Sigma$, then
+  \begin{gather*}
+    \{\Lambda\}^* = \emptyset^* = \{\Lambda\}\\
+    L^* = L^* \cdot L^* = (L^*)^*\\
+    \Lambda \in L \mathrm{\ if\ and\ only\ if\ } L^+ = L^*\\
+    (L^* \cdot M^*)^* = (L^* \cup M^*)^* = (L \cup M)^*\\
+    L \cdot (M \cdot L)^* = (L \cdot M)^* \cdot L
+  \end{gather*}
+
+  \textit{These will be explored more during the tutorial session for this week}
+\end{example*}
+
+\section*{The Closure of an Alphabet}
+
+Going back to the definition of $\Sigma^*$ of the alphabet $\Sigma$, it lines up perfectly with the definition of a
+ closure such that $\Sigma^*$ is the set of all strings over $\Sigma$. This means that there is a nice way to represent
+ $\Sigma^*$ as follows
+\begin{equation*}
+  \Sigma^* = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \Sigma^3 \cup \ldots
+\end{equation*}
+From this, we can also see that $\Sigma^k$ denotes the set of all strings over $\Sigma$ whose length is $k$.
