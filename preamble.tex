@@ -92,14 +92,13 @@
 \usepackage{titlesec}
 
 \titleformat{\chapter}[display]
-  {\normalfont\bfseries}{}{0pt}{\Huge}
+  {\normalfont\bfseries\Huge}{}{0pt}{}
+\titlespacing*{\chapter}{0pt}{-30pt}{0pt}
 
 % Command to create a chapter for each type of session
 % Title Time Date Lecturer Session-Type
 \newcommand{\session}[5]{
   \chapter{#5 - #1}
-
-  \vspace{-45pt}
 
   \hrule
 
@@ -111,7 +110,7 @@
     \end{tabular}
   \end{center}
 
-  \vspace{-20pt}
+  \vspace{0pt}
 }
 
 \newcommand{\lecture}[4]{
@@ -131,6 +130,15 @@
 
 % \definecolor{myPurple}{RGB}{134, 53, 227} % Old purple
 \definecolor{myPurple}{RGB}{112, 41, 99} % New purple
+
+\usepackage{tcolorbox}
+\tcbuselibrary{theorems}
+
+\newtcbtheorem{definition}{Definition}{
+  sharp corners,
+  colback=myPurple!10,
+  colframe=myPurple!80!black,
+}{def}
 
 % Use the amsmath package so normal text can be used within math blocks
 \usepackage{amsmath}
