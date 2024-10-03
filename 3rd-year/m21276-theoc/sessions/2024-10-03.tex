@@ -211,3 +211,324 @@ Going back to the definition of $\Sigma^*$ of the alphabet $\Sigma$, it lines up
   \Sigma^* = \Sigma^0 \cup \Sigma^1 \cup \Sigma^2 \cup \Sigma^3 \cup \ldots
 \end{equation*}
 From this, we can also see that $\Sigma^k$ denotes the set of all strings over $\Sigma$ whose length is $k$.
+
+\lecture{A2: Grammars}{13:00}{03/10/24}{Janka Chlebikova}
+
+As discussed previously, you can define a language over an alphabet as a set of arbitrary strings that are considered
+ `valid', but you can also define a language using a \textbf{grammar}.
+
+\begin{definition*}{}{}
+  A \textbf{Grammar} is a set of rules used to define a language over an alphabet, by specifying the structure of valid
+   strings in said language.
+\end{definition*}
+
+To describe the grammar of a language, two sets of symbols (alphabets) are required, terminals and non-terminals
+
+\begin{definition*}{}{}
+  \textbf{Terminal} symbols are those from which the actual strings which make up a language are derived, like the
+   symbols discussed previously for a manually specified language. In the case of a spoken language, these would usually
+   be lowercase letters, such as the latin alphabet used in English.
+\end{definition*}
+
+\begin{definition*}{}{}
+  \textbf{Non-Terminal} symbols are `temporary' symbols (fully disjoint from the set of terminal symbols) used to define
+   the grammar's replacement rules. These must all be replaced by terminals before a production can be considered a
+   valid string in the language. These are usually represented by uppercase letters, or letters from an alphabet other
+   than that of the language.
+\end{definition*}
+
+\section*{Productions}
+
+Further to this, a grammar for the language $L$ over $\Sigma$ would typically consist of a set of productions (grammar
+ rules) which allow you to produce the set of strings which make up $L$.
+
+\begin{definition*}{}{}
+  A \textbf{Production} is a rule which allows you to produce a string for a language. They are typically in the form
+  \begin{equation*}
+    \alpha \rightarrow \beta
+  \end{equation*}
+  where $\alpha$ is a string of symbols from the set of terminals ($\Sigma$) and $\beta$ is a string of symbols from the
+   set of non-terminals.
+\end{definition*}
+
+You can read these rules in several ways -- $\alpha \rightarrow \beta$ could be read as;
+\begin{itemize}
+  \item replace $\alpha$ by $\beta$
+  \item $\alpha$ produces $\beta$
+  \item $\alpha$ rewrites as $\beta$
+  \item $\alpha$ reduces to $\beta$
+\end{itemize}
+
+\section*{A Formal Definition}
+
+Formally, a grammar is defined by the following properties
+\begin{enumerate}
+  \item An alphabet $T$ of terminal symbols (This is the same as the alphabet of the language defined by this grammar)
+  \item An alphabet $N$ of non-terminal symbols
+  \item A specific non-terminal symbol known as the \textbf{start symbol}, which is often $S$
+  \item A finite set of productions in the form $\alpha \rightarrow \beta$ where $\alpha$ and $\beta$ are strings over
+   the alphabet $N \cup T$
+\end{enumerate}
+
+Every grammar must have the special non-terminal symbol known as a start symbol, and it must also have at least one
+ production in which the left side consists of only the start symbol.
+
+\begin{example*}{}{}
+  Let $G$ be a grammar defined by
+  \begin{itemize}
+    \item The set of terminals $T = \{a, b\}$
+    \item A single non-terminal being the start symbol $S$
+    \item The set of productions
+    \begin{equation*}
+      S \rightarrow \Lambda,\ S \rightarrow aSb
+    \end{equation*}
+     or for shorthand,
+    \begin{equation*}
+      S \rightarrow \Lambda \mid aSb
+    \end{equation*}
+  \end{itemize}
+  To get the full set of strings which are valid for this grammar, we need to perform a \textbf{derivation}
+\end{example*}
+
+\subsection*{Derivations}
+
+Starting from any production where the left side consists of only the start symbol, we can go through a step by step
+ process to generate all strings belonging to the language described by a grammar.
+
+\begin{example*}{}{}
+  Using the grammar $G$ from the previous example, we could start with either of the two productions, since they both
+   have only the start symbol $S$ on the left-hand side. This means that the first step of our process would give us
+   $\Lambda$ and $aSb$.
+\end{example*}
+
+In this example, the string $aSb$ is a \textbf{sentential form} of the terminals $\{a, b\}$ and non-terminal $S$. From
+ this point, to extend or generate any other strings, we need to perform a derivation.
+
+\begin{definition*}{}{}
+  If $x$ and $y$ are sentential forms, and $\alpha \rightarrow \beta$ is a production, then to replace $\alpha$ by
+   $\beta$ in $x \alpha y$ is to \textbf{Derive} a new string. This is denoted by writing
+  \begin{equation*}
+    x \alpha y \Rightarrow x \beta y
+  \end{equation*}
+\end{definition*}
+
+\begin{example*}{}{}
+  Going back to the grammar $G$ again, since it contains the production $S \rightarrow aSb$, we could take our first
+   step to generate the string $aSb$, then we can go another step further and derive $aaSbb$ from $aSb$, which means
+  \begin{equation*}
+    aSb \Rightarrow aaSbb
+  \end{equation*}
+  Since we can use this production again and again, we could derive that
+  \begin{equation*}
+    S \Rightarrow aSb \Rightarrow aaSbb \Rightarrow aaaSbbb \Rightarrow \ldots
+  \end{equation*}
+\end{example*}
+
+To represent this multi-step process, we have the following symbols to show how the derivation was constructed
+\begin{itemize}
+  \item $\Rightarrow$ derives in a single step
+  \item $\Rightarrow^+$ derives in one or more steps
+  \item $\Rightarrow^*$ derives in zero or more steps
+\end{itemize}
+
+\begin{example*}{}{}
+  Using the grammar $G$, we can show multiple derivations using these new symbols
+  \begin{gather*}
+    S \Rightarrow \Lambda, S \Rightarrow aSb, \therefore S \Rightarrow^* ab\\
+    S \Rightarrow^* aaabbb\\
+    S \Rightarrow^* aaaaaaSbbbbbb
+  \end{gather*}
+\end{example*}
+
+\section*{What is $L(G)$?}
+
+\begin{definition*}{}{}
+  If $G$ is a grammar with the start symbol $S$ and the set of terminals $T$, then the language generated by $G$ is
+   the set
+  \begin{equation*}
+    L(G) = \{s \mid s \in T^* \mathrm{\ and\ } S \Rightarrow^+ s\}
+  \end{equation*}
+  That is to say that it's the set of all strings containing only terminal symbols which can be derived from the start
+   symbol with one or more steps.
+\end{definition*}
+
+\begin{example*}{}{}
+  With the grammar $G$,
+  \begin{equation*}
+    L(G) = \{\Lambda, ab, aabb, aaabbb, aaaabbbb, \ldots\}
+  \end{equation*}
+\end{example*}
+
+\section*{Infinite Languages}
+
+Within an infinite language, there is no limit on the length of strings, and therefore also no limit on the number of
+ steps needed to derive a string. If the grammar of a language has $n$ productions, then any derivation with $> n + 1$
+ steps must use at least one production twice. Therefore, if a language is infinite, then a production or sequence of
+ productions must be used repeatedly to construct the derivations of the grammar.
+
+\begin{example*}{}{}
+  The infinite language $\{a^n b \mid n \geq 0\}$ can be described by a grammar with the production $S \rightarrow b \mid aS$.
+   To derive the string $a^n b$, you would apply the production $S \rightarrow aS$ $n$ times over and then finish the
+   derivation with the production $S \rightarrow b$.
+\end{example*}
+
+With the production $S \rightarrow aS$, we can also say that ``If $S$ derives $w$, then it also derives $aw$''
+
+\section*{Recursion and Indirect Recursion}
+
+\begin{definition*}{}{}
+  A production is \textbf{Recursive} if its entire left side is contained within the right side.
+\end{definition*}
+\begin{example*}{}{}
+  The production $S \rightarrow aSb$ is recursive, since the sentential form it produces contains itself.
+\end{example*}
+
+\begin{definition*}{}{}
+  A production is \textbf{Indirectly Recursive} if it is possible to derive a sentential form in two or more steps which
+   contains the entire left side of the production.
+\end{definition*}
+\begin{example*}{}{}
+  If a grammar contains the rules $S \rightarrow b \mid aA$ and $A \rightarrow c \mid bS$, then both productions are
+   indirectly recursive, since
+  \begin{gather*}
+    S \Rightarrow aA \Rightarrow abS\\
+    A \Rightarrow bS \Rightarrow baA
+  \end{gather*}
+\end{example*}
+
+\subsection*{Recursive Grammars}
+
+\begin{definition*}{}{}
+  A grammar is \textbf{Recursive} if it contains either a recursive or indirectly recursive production.\ \textit{In order
+   for a grammar to be infinite, it must first be recursive.}
+\end{definition*}
+
+\section*{Constructing Grammars}
+
+We've seen previously how to derive a language from the definition of a grammar, but we also need to be able to construct
+ a grammar to produce a language. It is often very difficult and sometimes impossible to write down a grammar for a
+ given language, and there are often multiple grammars which form the exact same language.
+
+\subsection*{Finite Languages}
+
+In the case of a finite language, it is always possible to find a grammar which produces the language. This is because
+ it is possible to simply make a grammar which contains a production for every string of the language, where
+ $S \rightarrow w$ for every string $w$ in the language.
+
+\begin{example*}{}{}
+  The finite language $\{a, b, c, abc\}$ over the alphabet $\{a, b, c\}$ can be described by the grammar
+  \begin{equation*}
+    S \rightarrow a | b | c | abc
+  \end{equation*}
+\end{example*}
+
+\subsection*{Infinite Languages}
+
+However, in the case of an infinite language, there is no universal method that will always produce a valid grammar.
+ This means it is much harder to find a valid grammar, and often requires \textbf{combining grammars}.
+
+\begin{example*}{}{}
+  A simple example of an infinite language would be $\{\Lambda, a, aa, aaa, \ldots\}$ which we can also write in the
+   form $\{a^n : n \in \mathbb{N}\}$. We can then see that one grammar which describes this language is as follows;
+  \begin{itemize}
+    \item The set of terminals, $T = \{a\}$
+    \item The non-terminal start symbol, $S$
+    \item The productions $S \rightarrow \Lambda, S \rightarrow aS$
+  \end{itemize}
+\end{example*}
+
+\section*{Combining Grammars}
+
+Suppose we have two languages, $L$ and $M$ for which there are known grammars. There are a few simple rules we can use
+ to create the grammars which describe the languages $L \cup M$, $L \cdot M$ and $L^*$.
+
+To create this `composite' grammar, we can describe $L$ and $M$ with disjoint sets of non-terminals. If we have the
+ start symbols of $L$ and $M$ as $A$ and $B$ respectively, i.e. $L : A \rightarrow \ldots$, $M : B \rightarrow \ldots$,
+ we can then combine these as productions in another grammar to create the language.
+
+\subsection*{Unions}
+
+If we need to produce the union of two languages, $L \cup M$, we start with the two productions $S \rightarrow A \mid B$,
+ followed by the productions which make up $L$ and $M$, using $A$ and $B$ as their respective start symbols.
+
+\begin{example*}{}{}
+  If we wanted to write the grammar that produces the language
+  \begin{equation*}
+    K = \{\Lambda, a, b, aa, bb, aaa, bbb, \ldots, a^n, b^n\}
+  \end{equation*}
+  we can realise that $K$ is the union of two different languages,
+  \begin{align*}
+    L &= \{a^n \mid n \in \mathbb{N}\}\\
+    M &= \{b^n \mid n \in \mathbb{N}\}
+  \end{align*}
+  and so we can write a grammar for $K$ as
+  \begin{itemize}
+    \item $S \rightarrow A \mid B$ (Union rule)
+    \item $A \rightarrow \Lambda \mid aA$ ($L$s grammar)
+    \item $B \rightarrow \Lambda \mid bB$ ($M$s grammar)
+  \end{itemize}
+\end{example*}
+
+\subsection*{Products}
+
+Similarly, if we need to produce the the product of two languages, $L \cdot M$, we start with the production
+ $S \rightarrow AB$, followed by the productions which make up $L$ and $M$, using $A$ and $B$ as their respective start
+ symbols.
+
+\begin{example*}{}{}
+  If we wanted to write the grammar that produces the language
+  \begin{equation*}
+    K = \{\Lambda, a, b, aa, ab, aaa, bb, \ldots\}
+  \end{equation*}
+  we can realise that $K$ is the product of the two languages,
+  \begin{align*}
+    L &= \{a^n \mid n \in \mathbb{N}\}\\
+    M &= \{b^n \mid n \in \mathbb{N}\}
+  \end{align*}
+  and so we can write a grammar for $K$ as
+  \begin{itemize}
+    \item $S \rightarrow AB$ (Product rule)
+    \item $A \rightarrow \Lambda \mid aA$ ($L$s grammar)
+    \item $B \rightarrow \Lambda \mid bB$ ($M$s grammar)
+  \end{itemize}
+\end{example*}
+
+\subsection*{Closures}
+
+And finally, if we need to produce the closure of a language, $L^*$, we start with the production $S \rightarrow AS \mid \Lambda$
+ followed by the productions which make up $L$, using $A$ as its start symbol.
+
+\begin{example*}{}{}
+  If we wanted to write the grammar that produces the language $L^*$ where
+  \begin{equation*}
+    L = \{aa, bb\}
+  \end{equation*}
+  and so
+  \begin{equation*}
+    L^* = \{\Lambda, aa, bb, aaaa, aabb, bbbb, bbaa, \ldots\}
+  \end{equation*}
+  we can write the grammar for $L^*$ as
+  \begin{itemize}
+    \item $S \rightarrow AS \mid \Lambda$ (Closure rule)
+    \item $A \rightarrow aa \mid bb$ ($L$s grammar)
+  \end{itemize}
+\end{example*}
+
+\section*{Equivalent Grammars}
+
+Any given language could have many different grammars which produce the exact same thing. This means that grammars are
+ not unique. We can also use this to simplify grammars.
+
+\begin{example*}{}{}
+  Take the grammar from the previous example,
+  \begin{gather*}
+    S \rightarrow AS \mid \Lambda\\
+    A \rightarrow aa \mid bb
+  \end{gather*}
+  If we replace $A$ in $S$ with the right side of $A$, $aa$, we get the production $S \rightarrow aaS$. We can then do
+   the same with the other production to get $S \rightarrow bbS$. Therefore, we can write this grammar in a simplified
+   form as
+  \begin{equation*}
+    S \rightarrow aaS \mid bbS \mid \Lambda
+  \end{equation*}
+\end{example*}
