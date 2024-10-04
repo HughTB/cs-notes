@@ -205,16 +205,16 @@ There are several methods of encoding a digital signal on an analogue transmissi
  MoDem (Modulator-Demodulator). The main methods of encoding are--
 
 \begin{itemize}
-  \item Amplitude-shift keying (ASK)
-  \item Frequency-shift keying (FSK)
+  \item Amplitude-Shift keying (ASK)
+  \item Frequency-Shift keying (FSK)
   \begin{itemize}
     \item Binary FSK (BFSK)
     \item Multiple FSK (MFSK)
   \end{itemize}
-  \item Phase-shift keying (PSK)
+  \item Phase-Shift keying (PSK)
   \begin{itemize}
-    \item Binary PSK
-    \item Differential PSK (DPSK)
+    \item Binary PSK -- 1 = A sine wave, 0 = The same sine wave shifted by $180^{\circ}$
+    \item Differential PSK (DPSK) -- 1 = The previous sine wave shifted by $180^{\circ}$, 0 = The previous sine wave
     \item Multiple-level PSK
   \end{itemize}
   \item Quadratic AM (Combination of ASK and PSK)
@@ -223,4 +223,82 @@ There are several methods of encoding a digital signal on an analogue transmissi
 The sender and receiver may use different frequencies as to allow full-duplex data transmission on the same physical
  medium or radio channel. Full-duplex meaning full-speed transmission in both directions simultaneously.
 
-{\Huge Once again, need a way to make diagrams of this}
+\subsection*{Diagrams}      
+
+\begin{minipage}[c]{0.47\linewidth}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \draw[step=1cm,gray,very thin,dashed] (0.01,-0.99) grid (7.99,0.99);
+      \draw (0,0) -- (8,0);
+      \draw (0,-1) -- (0,1);
+      \node at (0.5,1.25) {$0$}; \node at (1.5,1.25) {$1$}; \node at (2.5,1.25) {$1$}; \node at (3.5,1.25) {$0$};
+      \node at (4.5,1.25) {$0$}; \node at (5.5,1.25) {$1$}; \node at (6.5,1.25) {$1$}; \node at (7.5,1.25) {$0$};
+    
+      \draw[thick,myPurple] plot[domain=0:2*pi, samples=30] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=2*pi:6*pi, samples=60] ({(\x/pi)/2},{sin(\x r)/2});
+      \draw[thick,myPurple] plot[domain=6*pi:10*pi, samples=60] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=10*pi:14*pi, samples=60] ({(\x/pi)/2},{sin(\x r)/2});
+      \draw[thick,myPurple] plot[domain=14*pi:16*pi, samples=30] ({(\x/pi)/2},{sin(\x r)});
+    \end{tikzpicture}
+    \caption{Amplitude-Shift Keying}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}{0.47\linewidth}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \draw[step=1cm,gray,very thin,dashed] (0.01,-0.99) grid (7.99,0.99);
+      \draw (0,0) -- (8,0);
+      \draw (0,-1) -- (0,1);
+      \node at (0.5,1.25) {$0$}; \node at (1.5,1.25) {$1$}; \node at (2.5,1.25) {$1$}; \node at (3.5,1.25) {$0$};
+      \node at (4.5,1.25) {$0$}; \node at (5.5,1.25) {$1$}; \node at (6.5,1.25) {$1$}; \node at (7.5,1.25) {$0$};
+    
+      \draw[thick,myPurple] plot[domain=0:2*pi, samples=30] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=4*pi:12*pi, samples=60] ({(\x/pi/4)},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=6*pi:10*pi, samples=60] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=20*pi:28*pi, samples=60] ({(\x/pi/4)},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=14*pi:16*pi, samples=30] ({(\x/pi)/2},{sin(\x r)});
+    \end{tikzpicture}
+    \caption{Binary Frequency-Shift Keying}
+  \end{figure}
+\end{minipage}
+
+\begin{minipage}[c]{0.47\linewidth}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \draw[step=1cm,gray,very thin,dashed] (0.01,-0.99) grid (7.99,0.99);
+      \draw (0,0) -- (8,0);
+      \draw (0,-1) -- (0,1);
+      \node at (0.5,1.25) {$0$}; \node at (1.5,1.25) {$1$}; \node at (2.5,1.25) {$1$}; \node at (3.5,1.25) {$0$};
+      \node at (4.5,1.25) {$0$}; \node at (5.5,1.25) {$1$}; \node at (6.5,1.25) {$1$}; \node at (7.5,1.25) {$0$};
+    
+      \draw[thick,myPurple] plot[domain=0:2*pi, samples=30] ({(\x/pi)/2},{0 - sin(\x r)});
+      \draw[thick,myPurple] plot[domain=2*pi:6*pi, samples=60] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=6*pi:10*pi, samples=60] ({(\x/pi)/2},{0 - sin(\x r)});
+      \draw[thick,myPurple] plot[domain=10*pi:14*pi, samples=60] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=14*pi:16*pi, samples=60] ({(\x/pi)/2},{0 - sin(\x r)});
+    \end{tikzpicture}
+    \caption{Binary Phase-Shift Keying}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}{0.47\linewidth}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \draw[step=1cm,gray,very thin,dashed] (0.01,-0.99) grid (7.99,0.99);
+      \draw (0,0) -- (8,0);
+      \draw (0,-1) -- (0,1);
+      \node at (0.5,1.25) {$0$}; \node at (1.5,1.25) {$1$}; \node at (2.5,1.25) {$1$}; \node at (3.5,1.25) {$0$};
+      \node at (4.5,1.25) {$0$}; \node at (5.5,1.25) {$1$}; \node at (6.5,1.25) {$1$}; \node at (7.5,1.25) {$0$};
+    
+      \draw[thick,myPurple] plot[domain=0:2*pi, samples=30] ({(\x/pi)/2},{0 - sin(\x r)});
+      \draw[thick,myPurple] plot[domain=2*pi:4*pi, samples=30] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=4*pi:10*pi, samples=90] ({(\x/pi)/2},{0 - sin(\x r)});
+      \draw[thick,myPurple] plot[domain=10*pi:12*pi, samples=30] ({(\x/pi)/2},{sin(\x r)});
+      \draw[thick,myPurple] plot[domain=12*pi:16*pi, samples=60] ({(\x/pi)/2},{0 - sin(\x r)});
+    \end{tikzpicture}
+    \caption{Differential Phase-Shift Keying}
+  \end{figure}
+\end{minipage}
