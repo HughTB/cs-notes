@@ -1,0 +1,160 @@
+\lecture{Signal Encoding II}{11:00}{07/10/24}{Asim Ali}
+
+\section*{Transmission Media}
+
+There are many different mediums which can be used to transmit information. In the case of networks, there are two main
+ types, guided and unguided media.
+
+\begin{itemize}
+  \item Guided Media
+  \begin{itemize}
+    \item The signal is contained within a medium, such as
+    \item Copper cable (twisted pair, coaxial, etc)
+    \item Fibre optics
+  \end{itemize}
+  \item Unguided Media
+  \begin{itemize}
+    \item The signal is sent out without containment, through the air
+    \item This does not mean that the signal is not directional, microwave networks are often highly directional to
+     reduce signal drop-off and interference
+    \item Microwave, Radio, Cellular and Satellite
+  \end{itemize}
+\end{itemize}
+
+{\huge add spectrum diagram}
+
+\section*{Signal Properties}
+
+\begin{itemize}
+  \item \textbf{Data Rate} -- The speed in bits per second (bps or b/s) at which data can be communicated
+  \item \textbf{Error} -- The reception of a 1 when 0 was transmitted, or vice versa
+  \item \textbf{Error Rate} -- The rate at which errors occur, usually as a ratio or percentage
+  \item \textbf{Frequency Bandwidth} -- The difference between the upper and lower frequency in a continuous frequency
+   band
+  \item \textbf{Channel Capacity} -- The maximum rate at which data can be transmitted through a channel 
+  \item \textbf{Signal-to-Noise Ratio} -- The ratio of the signal power to noise power in decibels (dB)
+\end{itemize}
+
+\section*{Interference and Noise}
+
+\begin{definition*}{}{}
+  \textbf{Interference} is when two signals are added together. There are two main types of interference -- constructive
+   and destructive. When two signals combine to create a signal with a higher amplitude, this is constructive interference.
+   If the amplitude is reduced, this is destructive interference.
+\end{definition*}
+
+\begin{definition*}{}{}
+  \textbf{Noise} is any other signal which interferes with the desired signal along the medium of transmission. Typically,
+   any noise in a signal will make it more difficult to decode, since the signal may be reduced in amplitude or shifted
+   in phase.  
+\end{definition*}
+
+\begin{minipage}[c]{0.47\linewidth}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \node at (-2,-1.5) {Interfering Waves};
+      \node at (-2,-6) {Resulting Wave};
+
+      \draw (0,0) -- (6,0);
+      \draw (0,-1) -- (0,1);
+      \draw[thick,myPurple] plot[domain=0:12*pi, samples=180] ({(\x/pi)/2},{(sin(\x r)/2)});
+
+      \draw (0,-3) -- (6,-3);
+      \draw (0,-4) -- (0,-2);
+      \draw[thick,complGreen] plot[domain=0:12*pi, samples=180] ({(\x/pi)/2},{-3 + (sin(\x r)/2)});
+      
+      \draw (0,-6) -- (6,-6);
+      \draw (0,-7) -- (0,-5);
+      \draw[thick] plot[domain=0:12*pi, samples=180] ({(\x/pi)/2},{-6 + sin(\x r)});
+    \end{tikzpicture}
+    \caption{Constructive interference}
+  \end{figure}
+\end{minipage}\hfill
+\begin{minipage}{0.47\linewidth}
+  \begin{figure}[H]
+    \centering
+    \begin{tikzpicture}[scale=0.9]
+      \node at (-2,-1.5) {Interfering Waves};
+      \node at (-2,-6) {Resulting Wave};
+
+      \draw (0,0) -- (6,0);
+      \draw (0,-1) -- (0,1);
+      \draw[thick,myPurple] plot[domain=0:12*pi, samples=180] ({(\x/pi)/2},{(sin(\x r)/2)});
+
+      \draw (0,-3) -- (6,-3);
+      \draw (0,-4) -- (0,-2);
+      \draw[thick,complGreen] plot[domain=0:12*pi, samples=180] ({(\x/pi)/2},{-3 - (sin(\x r)/2)});
+      
+      \draw (0,-6) -- (6,-6);
+      \draw (0,-7) -- (0,-5);
+      \draw[thick] plot[domain=0:12*pi, samples=180] ({(\x/pi)/2},{-6});
+    \end{tikzpicture}
+    \caption{Destructive interference}
+  \end{figure}
+\end{minipage}
+
+\section*{Securing a Signal}
+
+When a signal is sent through any media, if a third party has access to the same media, they can intercept, block and
+ even fake signals. This is because there is no inherent security in an electromagnetic wave, so we need to find ways of
+ securing it.
+
+\subsection*{Spread Spectrum}
+
+If we were to transmit a signal using a wide range of the spectrum, rather than a single frequency, it makes it harder
+ for a third party to entirely block the signal. This method is often used in military applications, as well as wired and
+ wireless networks. Three common techniques are--
+
+\begin{itemize}
+  \item Frequency Hopping Spread Spectrum (FHSS)
+  \begin{itemize}
+    \item Data is sent using one of the previously discussed analogue transmission techniques, but the carrier frequency
+     is changed rapidly across a wide spectrum, using a code or pattern known by both the transmitter and receiver
+    \item This makes it harder to intercept or block transmissions, as long as the pattern of frequency hopping is not
+     known
+    \item It is also very resilient to narrowband interference (interference over a small band of frequencies)
+  \end{itemize}
+  \item Direct Sequence Spread Spectrum (DSSS)
+  \begin{itemize}
+    \item Each bit of the data is represented by multiple bits of the transmitted signal, using a spreading
+     code
+    \item The bits in the PN sequence are known as chips, and the sequence of them the chip sequence
+    \item One technique is to combine the data with the spreading code bit stream using an exclusive-or
+  \end{itemize}
+  \item Code Division Multiple Access (CDMA)
+\end{itemize}
+
+\section*{Multiplexing}
+
+\begin{definition*}{}{}
+  \textbf{Multiplexing} is sending multiple data streams or signals over a single transmission medium.
+\end{definition*}
+
+\subsection*{Frequency Division}
+
+With frequency division multiplexing, you have a transmission medium which can send data over a wide spectrum of frequencies,
+ and multiple signals you need to send at the same time. If you modulate the different signals using a different carrier
+ frequency for each, and leave a suitable gap between them, you can then combine the waves together to create a single
+ composite wave which encodes the data of all the streams. The receiver then needs to know only the frequency of the
+ signal they need to receive, and pass the composite wave through a filter for that specific frequency to recover the
+ signal intended for them.
+
+\subsection*{Time Division}
+
+With time division multiplexing, each of the signals gets a certain share of time in which it can be transmitted. This
+ often means that the data needs to be buffered on both ends, so may be more costly to implement. This also greatly
+ limits the bandwidth available to each signal, as it would be split between all of the signals on the same channel.
+
+\subsection*{Code Division Multiple Access (CDMA)}
+
+CDMA is a multiplexing technique which can be used with a spread-spectrum signal. Given a data stream of bit rate $R$,
+ we assign each bit a unique user code of $n$ according to a Walsh matrix. If a user, $k$, sends a 1, the transmitter
+ sends the chip code $ck$, and if they send a 0, the transmitter sends the inverse of that chip code, $c'k$. The chip
+ codes of all users will add up to a bipolar signal, $D$. The receiver decodes the signal for a specific user with a
+ function, by taking the cartesian product of $D$ and the specific chip code $ck$, $D.ck$. If $D.ck = n$ then a 1 is
+ received, and if $D.ck = -n$ then a 0 is received.
+
+{\huge Come back to this and find some other material that explains it less terribly}
+
+{\huge Add something about Nyquist and Shannon bandwidth and capacities}
