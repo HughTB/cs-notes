@@ -1,0 +1,337 @@
+\lecture{A3: Regular Languages}{13:00}{10/10/24}{Janka Chlebikova}
+
+A regular language is a simple sort of language that meets a few basic requirements. They are often used for pattern
+ matching and in lexical analysers.
+
+\begin{definition*}{}{}
+  There are several ways of describing a regular language
+  \begin{itemize}
+    \item Languages inductively formed by combining simple languages
+    \item Languages described by a regular expression
+    \item Languages produced by a grammar with a special and restricted form
+    \item Languages that can be accepted by a finite automata
+  \end{itemize}
+\end{definition*}
+
+\section*{Inductively Formed Regular Languages}
+
+We start with a very simple language or set thereof and build more complex ones by combining them in particular ways--
+
+\begin{itemize}
+  \item \textbf{Basis} - $\emptyset$, $\{\Lambda\}$ and $\{a\}$ are all regular languages for all $a \in \Sigma$
+  \item \textbf{Induction} - If $L$ and $M$ are regular languages, then $L \cup M$, $L \cdot M$ and $L^*$ are also
+   regular languages
+\end{itemize}
+
+The basis of this definition gives us the following four regular languages over the alphabet $\Sigma = \{a, b\}$:
+\begin{equation*}
+  \emptyset, \{\Lambda\}, \{a\}, \{b\}
+\end{equation*}
+
+\textbf{All} regular languages over $\Sigma$ can be constructed by combining these four languages in various ways by
+ recursively applying the union, product and closure operations.
+
+\begin{example*}{}{}
+  Is the language $\{a, ab\}$ regular?
+
+  Yes, since it can be constructed from the four basic regular languages using a product and union operation--
+  \begin{align*}
+    \{a, ab\} &= \{a\} \cdot \{\Lambda, b\}\\
+    &= \{a\} \cdot (\{\Lambda\} \cup \{b\})
+  \end{align*}
+\end{example*}
+
+We can also see from this that it is possible to construct any finite language in this way, and therefore \textbf{all
+ finite languages are regular}. There are also many infinite languages which are regular.
+
+\section*{Regular Expressions}
+
+If you wanted to find an algorithm which can determine if a string belongs to a particular regular language, you would
+ most likely use a \textbf{regular expression}
+
+\begin{definition*}{}{}
+  A \textbf{Regular Expression} is basically a short-hand way of showing how a regular language is constructed from a
+   base set of regular languages.
+
+  For each regular expression $E$, there is a regular language $L(E)$
+\end{definition*}
+
+Like the regular languages discussed previously, regular expressions can be manipulated inductively to form new regular
+ expressions.
+
+\begin{itemize}
+  \item \textbf{Basis} - $\Lambda$, $\emptyset$ and $a$ are regular expressions for all $a \in \Sigma$
+  \item \textbf{Induction} - If $R$ and $E$ are also regular expressions, then $(R)$, $R + E$, $R \cdot E$ and $R^*$ are
+   also regular expressions
+\end{itemize}
+
+\begin{example*}{}{}
+  A few of the regular expressions over the alphabet $\Sigma = \{a, b\}$ are
+  \begin{gather*}
+    \Lambda, \emptyset, a, b\\
+    \Lambda + b, b^*, a + (b \cdot a)\\
+    (a + b) \cdot a, a \cdot b^*, a^* \cdot b^*
+  \end{gather*}
+\end{example*}
+
+So that we don't have to include lots of parentheses, the operations have the following hierarchy--
+\begin{itemize}
+  \item $*$ (Highest)
+  \item $\cdot$
+  \item $+$ (Lowest)
+\end{itemize}
+
+\begin{example*}{}{}
+  The regular expression
+  \begin{equation*}
+    a + b \cdot a^*
+  \end{equation*}
+  is the same as
+  \begin{equation*}
+    (a + (b \cdot (a^*)))
+  \end{equation*}
+\end{example*}
+
+We can also juxtapose languages rather than using $\cdot$ where there is only one possible interpretation
+
+\begin{example*}{}{}
+  The regular expression
+  \begin{equation*}
+    a + b \cdot a^*
+  \end{equation*}
+  is the same as
+  \begin{equation*}
+    a + ba^*
+  \end{equation*}
+\end{example*}
+
+\subsection*{Operators}
+
+In regular expressions, there are two binary operations ($+$ and $\cdot$), and one unary operation ($*$). These are
+ closely related to the union, product, and closure operations over corresponding languages.
+
+\begin{example*}{}{}
+  The regular expression
+  \begin{equation*}
+    a + bc^*
+  \end{equation*}
+  is more-or-less shorthand for the regular language
+  \begin{equation*}
+    \{a\} \cup (\{b\} \cdot ({\{c\}}^*))
+  \end{equation*}
+\end{example*}
+
+\subsection*{From Expressions to Languages}
+
+There is a very simple substitution method to find the language described by a regular expression.
+
+\begin{example*}{}{}
+  Find the language described by the regular expression $a + bc^*$--
+
+  \begin{align*}
+    L(a + bc^*) &= L(a) \cup L(bc^*)\\
+    &= L(a) \cup (L(b) \cdot L(c^*))\\
+    &= L(a) \cup (L(b) \cdot {L(c)}^*)\\
+    &= \{a\} \cup (\{b\} \cdot {\{c\}}^*)\\
+    &= \{a\} \cup (\{b\} \cdot \{\Lambda, c, c^2, c^3, \ldots\})\\
+    &= \{a\} \cup \{b, bc, bc^2, bc^3, \ldots\}\\
+    &= \{a, b, bc, bc^2, bc^3, \ldots\}
+  \end{align*}
+\end{example*}
+
+This approach can also be used to prove that a given language is regular.
+
+Many infinite languages can easily be proven to be regular, by finding a regular expression that describes it. Not all
+ infinite languages are regular however.
+
+Regular expressions are also not necessarily unique, as they may represent the same language as another regular expression,
+ such as $a+b$ and $b+a$ being different regular expressions, but both represent the language $\{a, b\}$
+
+\begin{definition*}{}{}
+  Regular expressions are said to be \textbf{Equal} if their languages are the same. If $R$ and $E$ are regular expressions
+   where $L(R) = L(E)$, then they are equal and can be written as $R = E$.
+\end{definition*}
+
+\subsection*{Properties of Regular Expressions}
+
+There are many general equalities for regular expressions, which hold for any regular expressions $R$, $E$, and $F$, and
+ can be proven by using the basic properties of languages and sets.
+
+\begin{itemize}
+  \item Additive Properties
+  \begin{align*}
+    R + E &= E + R\\
+    R + \emptyset &= \emptyset + R = R\\
+    R + R &= R\\
+    (R + E) + F &= R + (E + F)
+  \end{align*}
+  \item Product Properties
+  \begin{align*}
+    R \emptyset &= \emptyset R = \emptyset\\
+    R \Lambda &= \Lambda R = R\\
+    (RE)F &= R(EF)
+  \end{align*}
+  \item COME BACK HERE
+\end{itemize}
+
+\section*{Regular Grammars}
+
+There are several ways to characterize grammars which describe regular languages.
+
+\begin{definition*}{}{}
+  A \textbf{Regular Grammar} is one where all of the productions take one of the following forms
+  \begin{align*}
+    B &\rightarrow \Lambda\\
+    B &\rightarrow w\\
+    B &\rightarrow A\\
+    B &\rightarrow wA
+  \end{align*}
+  Where $A$ and $B$ are non-terminals and $w$ is a non-empty string of terminals
+\end{definition*}
+
+Only one non-terminal can appear on the right hand side of any production. Non-terminals must appear on the right end
+ of the right hand side. Therefore the productions $A \rightarrow aBc$ and $S \rightarrow TU$ are not productions in a
+ regular grammar, but $A \rightarrow abcA$ is.
+
+For any regular language, we can find a regular grammar which describes it, but there may also be non-regular grammars
+ which produce it.
+
+
+
+\lecture{A4: Finite Automata}{13:00}{10/10/24}{Janka Chlebikova}
+
+There are several different `models of computation', such as finite automata, push-down automata and turing machines.
+ They are all abstract models of computers which are capable of different things. They all have an input tape with a
+ single string of an infinite length and can accept or reject the input string.
+
+\section*{Finite Automata}
+
+Finite automata are the most basic models of a computer.
+
+\begin{definition*}{}{}
+  A \textbf{Finite Automaton} has three components--
+  \begin{itemize}
+    \item An input tape, which contains an input string over the alphabet $\Sigma$
+    \item A head, which reads the input string one symbol at a time
+    \item Memory, which is realised as a finite set $Q$ of states, of which the automaton can only be in one at any time
+  \end{itemize}
+
+  The `program' of the automaton defines how the read symbol changes the current state.
+\end{definition*}
+
+To better understand an automaton, they are typically represented as a transition graph, which is a form of directed
+ graph.
+
+\begin{example*}{}{}
+  \centering
+  \begin{tikzpicture}
+    \tikzset{
+      ->, % makes the edges directed
+      >=stealth, % makes the arrow heads bold
+      node distance=3cm, % specifies the minimum distance between two nodes
+      every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+      initial text=$ $, % sets the text that appears on the start arrow
+    }
+
+    \node[state] (s2) {$s_2$};
+    \node[state, initial, left of=s2] (s1) {$s_1$};
+    \node[state, below of=s2] (s3) {$s_3$};
+    \node[state, accepting, right of=s3] (s4) {$s_4$};
+
+    \draw (s1) edge[above] node{a} (s2)
+          (s1) edge[above] node{b} (s3)
+          (s2) edge[loop above] node{b} (s2)
+          (s2) edge[above] node{a} (s4)
+          (s3) edge[loop above] node{a} (s3)
+          (s3) edge[above] node{b} (s4)
+          (s4) edge[loop above] node{a,b} (s4);
+  \end{tikzpicture}
+
+  This is a finite automata which takes the alphabet $\Sigma = \{a, b\}$, and accepts strings such as $abba$, $baab$, etc.
+\end{example*}
+
+Each automaton has one initial state, denoted by the arrow entering $s_1$, and at least one final or accepting state,
+ denoted by the double circle such as $s_4$. Once the whole input string is read into the automaton, if the current
+ state is a final or accepting state, then the string is accepted. Otherwise, the string is rejected. The language of
+ an automaton is the set of strings it accepts.
+
+\subsection*{A Formal Definition}
+
+\begin{definition*}{}{}
+  A finite automaton is defined by
+  \begin{itemize}
+    \item A set of states, $Q$
+    \item A start state, $s \in Q$
+    \item A set of accepting states, $Q_a \subset Q$
+    \item A set of transition functions $T : Q \times \Sigma \rightarrow Q$
+  \end{itemize}
+\end{definition*}
+
+\begin{example*}{}{}
+  A very simple finite automaton could be defined by
+  \begin{gather*}
+    Q = \{0, 1, 2\}\\
+    s = 0\\
+    Q_a = \{1\}\\
+    T(0,a) = 1, T(0,b) = 2\\
+    T(1, a) = T(1, b) = 1\\
+    T(2, a) = T(2, b) = 2
+  \end{gather*}
+  And as a transition graph,
+  % \begin{figure}[h]
+  %   \begin{tikzpicture}
+  %     \tikzset{
+  %       ->, % makes the edges directed
+  %       >=stealth, % makes the arrow heads bold
+  %       node distance=3cm, % specifies the minimum distance between two nodes
+  %       every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+  %       initial text=$ $, % sets the text that appears on the start arrow
+  %     }
+
+  %     \node[state, initial] (s0) {$0$};
+  %     \node[state, accepting, right of=s0] (s1) {$1$};
+  %     \node[state, below of=s1] (s2) {$2$};
+
+  %     \draw (s0) edge[above] node{a} (s1)
+  %           (s0) edge[above] node{b} (s2)
+  %           (s1) edge[loop above] node{a,b} (s1)
+  %           (s2) edge[loop above] node{a,b} (s2);
+  %   \end{tikzpicture}
+  % \end{figure}
+\end{example*}
+
+\subsection*{State Transition Functions}
+
+A state transition function, $T : Q \times \Sigma \rightarrow Q$, of the form
+\begin{figure}
+  \begin{tikzpicture}
+    \tikzset{
+      ->, % makes the edges directed
+      >=stealth, % makes the arrow heads bold
+      node distance=3cm, % specifies the minimum distance between two nodes
+      every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+      initial text=$ $, % sets the text that appears on the start arrow
+    }
+
+    \node[state] (s0) {$0$};
+    \node[state, right of=s0] (s1) {$1$};
+
+    \draw (s0) edge[above] node{a} (s1);
+  \end{tikzpicture}
+\end{figure}
+is represented by $T(0, a) = 1$, where $0, 1 \in Q$ and $a \in \Sigma$.
+
+\section*{Deterministic Finite Automata}
+
+In the previous examples, there is always exactly one transition function for every state and symbol -- every node has
+ exactly one edge for each possible input symbol. Such automata are known as \textbf{deterministic} finite automata.
+ That means that for any input string, we always know which unique state we are in at any symbol in the string.
+
+\begin{definition*}{}{}
+  A \textbf{DFA} accepts a string $w$ over $\Sigma^*$ if and only if there is a path from the initial state to an
+   accepting state, such that $w$ is the concatenation of the labels on the edges of the path. Otherwise, the DFA
+   rejects $w$.
+
+  The set of all strings over $\Sigma$ accepted by the DFA $M$ is known as the language of $M$, and is represented binary
+   $L(M)$
+\end{definition*}
