@@ -1,0 +1,280 @@
+\lecture{A5: Finite Automata \& Regular Languages}{13:00}{17/10/24}{Janka Chlebikova}
+
+\section*{Automata and Regular Languages}
+
+How can we prove that the set of languages accepted by automata is exactly the set of regular languages? Well it takes
+ multiple steps.
+
+\textbf{Step 1}-- We need to show that for any regular expression, we can find an NFA that recognises it, thus proving
+\begin{equation*}
+  L(\mathrm{regular\ expressions}) \subseteq L(\mathrm{NFA})
+\end{equation*}
+\textbf{Step 2}-- Then we take a finite automaton and find a regular expression which describes the language of the
+ automaton, thus proving that
+ \begin{equation*}
+  L(\mathrm{NFA}) \subseteq L(\mathrm{regular\ expressions})
+\end{equation*}
+\textbf{Step 3}-- We then combine the previous results to get that
+\begin{equation*}
+  L(\mathrm{NFA}) = L(\mathrm{regular\ expressions})
+\end{equation*}
+
+\section*{Regular Expressions to Finite Automata}
+
+Given any regular expression, we need to be able to construct a finite automaton (either NFA or DFA) which recognises
+ its language. Given that all regular expressions are built up using union, product and closure operations, we can use
+ a set of rules to construct an FA for a given regular expression.
+
+\textbf{Rule 0}-- Start the algorithm with a simple FA that has a start state, a single accepting state and an edge
+ labelled with the given regular expression.
+
+\textbf{Rule 1}-- If an edge is labelled with $\emptyset$, erase the edge.
+
+\textbf{Rule 2}-- Transform any edge of the form $R + S$ into two edges, labelled $R$ and $S$.
+
+\textbf{Rule 3}-- Transform any edge of the form $R \cdot S$ into a new intermediary state, with an edge labelled $R$
+ going into it from the previous state, and an edge labelled $S$ going into the next state.
+
+\textbf{Rule 4}-- Transform any edge of the form $R^*$ into a new intermediary state with a looping edge labelled $R$,
+ and two edges labelled $\Lambda$, one entering and one exiting the new state.
+
+You must apply these rules until no more of the edges can be broken up any further using the rules.
+
+\begin{example*}{}{}
+  For the regular expression $a^* + ab$, we would follow the steps below--\\
+  Start with rule 0--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (ss) {$s$};
+      \node[state, right of=ss, accepting] (sa) {$f$};
+
+      \draw (ss) edge[above] node{$a^* + ab$} (sa);
+    \end{tikzpicture}
+  \end{center}
+
+  Apply rule 2--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (ss) {$s$};
+      \node[state, right of=ss, accepting] (sa) {$f$};
+
+      \draw (ss) edge[above, bend left=10] node{$a^*$} (sa)
+            (ss) edge[below, bend right=10] node{$ab$} (sa);
+    \end{tikzpicture}
+  \end{center}
+
+  Apply rule 4 to $a^*$--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (ss) {$s$};
+      \node[state, right of=ss] (s1) {$1$};
+      \node[state, right of=s1, accepting] (sa) {$f$};
+
+      \draw (ss) edge[above] node{$\Lambda$} (s1)
+            (ss) edge[below, bend right=30] node{$ab$} (sa)
+            (s1) edge[loop above] node{$a$} (s1)
+            (s1) edge[above] node{$\Lambda$} (sa);
+    \end{tikzpicture}
+  \end{center}
+
+  Apply rule 3 to $ab$--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (ss) {$s$};
+      \node[state, right of=ss] (s1) {$1$};
+      \node[state, below of=s1] (s2) {$2$};
+      \node[state, right of=s1, accepting] (sa) {$f$};
+
+      \draw (ss) edge[above] node{$\Lambda$} (s1)
+            (ss) edge[below] node{$a$} (s2)
+            (s1) edge[loop above] node{$a$} (s1)
+            (s1) edge[above] node{$\Lambda$} (sa)
+            (s2) edge[below] node{$b$} (sa);
+    \end{tikzpicture}
+  \end{center}
+\end{example*}
+
+Thus, we have proven that we can produce a finite automata for any regular expression, and given a set of rules to do so.
+
+\section*{Finite Automata to Regular Expressions}
+
+Now, to do the same thing in reverse, we need a new algorithm, as follows--
+
+\textbf{Step 1}-- Create a new start state $s$, and draw an edge labelled $\Lambda$ to the original start state.
+
+\textbf{Step 2}-- Create a new accepting state $f$, and draw edges labelled $\Lambda$ from all original accepting states.
+
+\textbf{Step 3}-- For each pair of states $i$ and $j$ with more than one edge from $i$ to $j$, replace all edges with a
+ single edge labelled with the regular expression formed by the sum of labels on each edge from $i$ to $j$.
+
+\textbf{Step 4}-- Step-by-step eliminate any states, changing the labels on corresponding edges until the only remaining
+ states are $s$ and $f$. When deleting a state, you must replace any possible transitions with a regular expression
+ which matches all of the possible transitions.
+
+You should end up with an FA with only two states, and a single edge connecting them which is labelled with the desired
+ regular expression.
+
+\begin{example*}{}{}
+  {\Huge Put the example in here}
+\end{example*}
+
+And now, we have proved that we can transform any regular expression into an NFA, and vice versa, and that we can
+ transform any NFA into a DFA, and vice versa.
+
+\begin{equation*}
+  \mathrm{regular\ expressions} \Leftrightarrow \mathrm{NFA} \Leftrightarrow \mathrm{DFA}
+\end{equation*}
+
+\section*{Simplifying DFAs}
+
+A lot of the time, we will end up with a complicated DFA, with far more states than is absolutely necessary. To get a
+ simplified DFA, we need to transform it into a unique DFA with the minimum number of states which recognises the same
+ language.
+
+We can find this DFA in two parts-- Finding all pairs of equivalent states, and combining the equivalent states into a
+ single state, with modified transition functions.
+
+\subsection*{Equivalent States}
+
+We can say that two states $s$ and $t$ are equivalent if for all possible strings $w$ left to consume (including $\Lambda$),
+ the DFA will finish in the same \textbf{type} of state (i.e.\ accepting or non-accepting) after consuming $w$. Therefore,
+ once you arrive at $s$ or $t$, the same string will always produce the same result (accepting or rejecting the string).
+
+Two states are not equivalent if there exists a string $w$ such that, after consuming $w$, we would end up accepting the
+ string if we started from $s$ and rejecting it if we started from $t$, or vice versa.
+
+{\Huge Finish off the algorithm and add at least one example here}
+
+
+
+\lecture{A6: Beyond Regular Languages}{13:00}{17/10/24}{Janka Chlebikova}
+
+\section*{Non-deterministic Finite Automata to Regular Grammars}
+
+Every NFA can be converted into a corresponding regular grammar. Each state of the NFA is associated with a non-terminal
+ symbol of the grammar, and the initial state is associated with the start symbol. Each transition is associated with
+ a grammar production, and every final state has the additional production which produces $\Lambda$.
+
+\begin{example*}{}{}
+  For the NFA--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (s0) {$0$};
+      \node[state, right of=s0] (s1) {$1$};
+      \node[state, right of=s1, accepting] (s2) {$2$};
+      \node[state, below of=s1, accepting] (s3) {$3$};
+
+      \draw (s0) edge[above] node{$a$} (s1)
+            (s0) edge[below] node{$b$} (s3)
+            (s1) edge[above] node{$a$} (s2)
+            (s3) edge[loop below] node{$a$} (s3);
+    \end{tikzpicture}
+  \end{center}
+
+  --we can apply the rules defined above to get the following productions, supposing that $S=0$, $A=1$, $B=2$ and $C=3$
+  \begin{align*}
+    S &\rightarrow aA \mid aC\\
+    A &\rightarrow bB\\
+    B &\rightarrow \Lambda\\
+    C &\rightarrow aC \mid \Lambda
+  \end{align*}
+
+  This may not be the simplest set of productions, but it does work.
+\end{example*}
+
+\section*{Testing for Regular Languages}
+
+Given a language, we need to be able to determine if it is regular. This would also allow us to prove that a given
+ language cannot be recognised by any finite automaton.
+
+One possible method is by using the \textbf{pumping lemma}, which applies for infinite languages. Since all finite
+ languages are regular, this is enough to determine if a language is regular or not.
+
+If the input string is long enough (e.g.\ greater than the number of states in the minimum state DFA for the language),
+ then there must be at least one state $Q$ which is visited more than once. Therefore, there must be at least one closed
+ loop, which begins and ends at the state $Q$, and a particular string $y$, which corresponds to this loop.
+
+We can represent this situation as the FA--
+\begin{center}
+  \begin{tikzpicture}
+    \tikzset{
+      ->, % makes the edges directed
+      >=stealth, % makes the arrow heads bold
+      node distance=2.5cm, % specifies the minimum distance between two nodes
+      every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+      initial text=$ $, % sets the text that appears on the start arrow
+    }
+
+    \node[state, initial] (ss) {};
+    \node[state, right of=ss] (sq) {$Q$};
+    \node[state, right of=sq] (sa) {};
+
+    \draw (ss) edge[above, dotted] node{$x$} (sq)
+          (sq) edge[above, dotted] node{$z$} (sa)
+          (sq) edge[loop above, dotted] node{$y$} (sq);
+  \end{tikzpicture}
+\end{center}
+Where each dotted edge represents a path that may contain other states and transitions of the DFA.
+\begin{itemize}
+  \item $x$ is a string of symbols which the automaton consumes to transition from the start state, to get to the state
+   $Q$
+  \item $y$ is the string of symbols to transition around the closed loop
+  \item $z$ is the string of symbols to transition from $Q$ to an accepting state
+\end{itemize}
+
+Thus, we know that the string $xyz$ is accepted, but also that the DFA must accept the strings
+ $xy, xyz, xyyz, \ldots, x{y^k}z$, and that the central string $y$ is `pumped'.
+
+Formally, the pumping lemma is defined as follows
+\begin{definition*}{}{}
+  Let $L$ be an infinite regular language accepted by a DFA with $m$ states. Then any string $w$ in $L$ with at least $m$
+   symbols can be decomposed as $w = xyz$ with $|xy| \leq m$ and $|y| \geq 1$ such that
+  \begin{equation*}
+    w_i = x{y^i}z
+  \end{equation*}
+  is also in $L$ for all $i = 0, 1, 2, 3, \ldots$
+\end{definition*}
+
+This is necessary, but not sufficient for a language to be regular. If a language does not satisfy the pumping lemma,
+ then it cannot be regular. But a language that satisfies the pumping lemma may not be regular. Therefore, you can use
+ the lemma to prove that a language is \textbf{not} regular, but not that it is regular.
