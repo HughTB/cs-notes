@@ -68,7 +68,7 @@ In asymmetric encryption, the sender and receiver have two different but related
 \begin{enumerate}
   \item Select two large primes $p$ and $q$ (the larger the better)
   \item $n = pq$ and $z = (p - 1)(q - 1)$
-  \item Select a number relatively prime (what?) to $z$ and call it $d$
+  \item Select a number relatively prime (such that they have no common divisors) to $z$ and call it $d$
   \item Find $e$ such that $e * d = 1 \mod z$
   \item The public key is then $(e, n)$ and the private key $(d, n)$
   \item To encrypt a message, convert the plaintext $M$ into an integer $m$ such that $0 \leq m < n$, using a known
@@ -77,7 +77,11 @@ In asymmetric encryption, the sender and receiver have two different but related
    $m$, you recover the message $M$ by reversing the padding scheme
 \end{enumerate}
 
-{\Huge Add example here?}
+\begin{figure}[h]
+  \caption{Encrypt then decrypt the string `PORT' with the public key $(3, 33)$ and the private key $(7, 33)$}
+  \includegraphics[width=0.9\linewidth]{assets/lect3-ex1.png}
+  \centering
+\end{figure}
 
 \subsection*{Confidentiality}
 
