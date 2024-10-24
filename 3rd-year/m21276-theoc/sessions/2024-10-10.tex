@@ -171,7 +171,20 @@ There are many general equalities for regular expressions, which hold for any re
     R \Lambda &= \Lambda R = R\\
     (RE)F &= R(EF)
   \end{align*}
-  \item COME BACK HERE
+  \item Distributive Properties
+  \begin{align*}
+    R(E + F) &= RE + RF\\
+    (R + E)F &= RF + EF
+  \end{align*}
+  \item Closure Properties
+  \begin{align*}
+    \emptyset^* &= \Lambda^* = \Lambda\\
+    R^* &= R^*R^* = {(R^*)}^* = R + R^*\\
+    R^* &= \Lambda + RR^* = (\Lambda + R)R^*\\
+    RR^* &= R^*R\\
+    R{(ER)}^* &= {(RE)}^*R\\
+    {(R + E)}^* &= {(R^*E^*)}^* = {(R^* + E^*)}^* = R^*{(ER^*)}^*
+  \end{align*}
 \end{itemize}
 
 \section*{Regular Grammars}

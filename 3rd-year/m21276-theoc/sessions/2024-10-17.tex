@@ -147,10 +147,144 @@ You should end up with an FA with only two states, and a single edge connecting 
  regular expression.
 
 \begin{example*}{}{}
-  {\Huge Put the example in here}
+  Initial DFA--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (s0) {$0$};
+      \node[state, right of=s0, accepting] (s1) {$1$};
+      \node[state, below of=s1] (s2) {$2$};
+
+      \draw (s0) edge[above] node{$a$} (s1)
+            (s0) edge[below] node{$b$} (s2)
+            (s1) edge[loop above] node{$a,b$} (s1)
+            (s2) edge[loop below] node{$a,b$} (s2);
+    \end{tikzpicture}
+  \end{center}
+
+  Steps 1 and 2: add new initial and final states--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, left of=s0, initial] (ss) {$s$};
+      \node[state] (s0) {$0$};
+      \node[state, right of=s0] (s1) {$1$};
+      \node[state, below of=s1] (s2) {$2$};
+      \node[state, right of=s1, accepting] (sf) {$f$};
+
+      \draw (ss) edge[above] node{$\Lambda$} (s0)
+            (s0) edge[above] node{$a$} (s1)
+            (s0) edge[below] node{$b$} (s2)
+            (s1) edge[loop above] node{$a,b$} (s1)
+            (s1) edge[above] node{$\Lambda$} (sf)
+            (s2) edge[loop below] node{$a,b$} (s2);
+    \end{tikzpicture}
+  \end{center}
+
+  Apply step 3--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, left of=s0, initial] (ss) {$s$};
+      \node[state] (s0) {$0$};
+      \node[state, right of=s0] (s1) {$1$};
+      \node[state, below of=s1] (s2) {$2$};
+      \node[state, right of=s1, accepting] (sf) {$f$};
+
+      \draw (ss) edge[above] node{$\Lambda$} (s0)
+            (s0) edge[above] node{$a$} (s1)
+            (s0) edge[below] node{$b$} (s2)
+            (s1) edge[loop above] node{$a+b$} (s1)
+            (s1) edge[above] node{$\Lambda$} (sf)
+            (s2) edge[loop below] node{$a+b$} (s2);
+    \end{tikzpicture}
+  \end{center}
 \end{example*}
 
-And now, we have proved that we can transform any regular expression into an NFA, and vice versa, and that we can
+\begin{example*}{}{}
+  We can then eliminate state 2, since there is no way for a string to be accepted from it--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, left of=s0, initial] (ss) {$s$};
+      \node[state] (s0) {$0$};
+      \node[state, right of=s0] (s1) {$1$};
+      \node[state, right of=s1, accepting] (sf) {$f$};
+
+      \draw (ss) edge[above] node{$\Lambda$} (s0)
+            (s0) edge[above] node{$a$} (s1)
+            (s1) edge[loop above] node{$a+b$} (s1)
+            (s1) edge[above] node{$\Lambda$} (sf);
+    \end{tikzpicture}
+  \end{center}
+
+  Then we can start to eliminate states to get our final regular expression--
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (ss) {$s$};
+      \node[state, right of=ss] (s1) {$1$};
+      \node[state, right of=s1, accepting] (sf) {$f$};
+
+      \draw (ss) edge[above] node{$a$} (s1)
+            (s1) edge[loop above] node{$a+b$} (s1)
+            (s1) edge[above] node{$\Lambda$} (sf);
+    \end{tikzpicture}\\
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=2.5cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (ss) {$s$};
+      \node[state, right of=ss, accepting] (sf) {$f$};
+
+      \draw (ss) edge[above] node{$a{(a+b)}^*$} (sf);
+    \end{tikzpicture}
+  \end{center}
+
+  And this then leaves us with the final regular expression $a{(a+b)}^*$.
+\end{example*}
+
+And now, we have proven that we can transform any regular expression into an NFA, and vice versa, and that we can
  transform any NFA into a DFA, and vice versa.
 
 \begin{equation*}
@@ -174,8 +308,6 @@ We can say that two states $s$ and $t$ are equivalent if for all possible string
 
 Two states are not equivalent if there exists a string $w$ such that, after consuming $w$, we would end up accepting the
  string if we started from $s$ and rejecting it if we started from $t$, or vice versa.
-
-{\Huge Finish off the algorithm and add at least one example here}
 
 
 
