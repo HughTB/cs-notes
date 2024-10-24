@@ -1,0 +1,137 @@
+\lecture{A7: Pushdown Automata}{13:00}{24/10/24}{Janka Chlebikova}
+
+There are many context-free languages that cannot be recognised by a finite automaton, especially non-regular languages.
+ This is because they typically require an infinite memory to be recognised, such as the language $\{a^n b^n | n \geq 0\}$.
+ A more powerful model of computing is known as Non-deterministic Pushdown Automata, or NDPA.
+
+\section*{Non-Deterministic Pushdown Automata}
+
+An NDPA is like a finite automata, except that they also have memory in the form of a stack, where they can store an
+ infinite amount of information. They are made up of the input tape, an infinite sequence of symbols from the input
+ alphabet, a finite control automaton which is similar to an NFA, and the memory. Since the memory is modelled as a
+ stack, it works in a Last In, First Out way, and there are 3 stack operations which can be performed at each step.
+
+\begin{itemize}
+  \item pop-- Reads the top symbol and removes it from the stack
+  \item push-- Writes a new symbol on to the top of the stack
+  \item nop-- No operation, has no effect on the stack
+\end{itemize}
+
+The symbols contained in the stack are different to the alphabet of the language the NDPA recognises. The initial state
+ of the automaton is that the stack only contains the initial stack symbol, and that the control automaton is in it's
+ initial state.
+
+\section*{Transition Functions}
+
+At each step, the current state, input symbol and symbol at the top of the stack determine the transition to the next
+ state. Each transition must change the state, may read a symbol from and advance the input tape, and change the stack
+ using one of the above stack operations.
+
+Each transition function has three inputs
+\begin{itemize}
+  \item The current state, $p$
+  \item The input character, $a$ or $\Lambda$
+  \item The stack character, $A$
+\end{itemize}
+and two outputs
+\begin{itemize}
+  \item The new state
+  \item A stack operation
+\end{itemize}
+
+\section*{NDPA Formally}
+
+\begin{definition*}{}{}
+  An NDPA can be formally described by
+  \begin{itemize}
+    \item A finite set $Q$ of states, the initial state and the set of accepting states
+    \item A finite set $\Sigma$ of symbols making up the input alphabet
+    \item A finite set $\Gamma$ of symbols making up the stack alphabet, and the initial stack symbol, often $\$$
+    \item A finite set of transition instructions, or a transition function $T$ of the form 
+     $T : Q \times \Sigma \cup \{\Lambda\} \times \Gamma \rightarrow \Gamma^* \times Q$
+  \end{itemize}
+\end{definition*}
+
+\begin{example*}{}{}
+  The transition
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=4cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state] (sp) {$p$};
+      \node[state, right of=sp] (sq) {$q$};
+
+      \draw (sp) edge[above] node{$a, A\ |\ \mathrm{push}(B)$} (sq);
+    \end{tikzpicture}
+  \end{center}
+  can also be written as the function
+  \begin{equation*}
+    T(p, a, A) = (\mathrm{push}(B), q)
+  \end{equation*}
+  or as the transition instruction
+  \begin{equation*}
+    (p, a, A, \mathrm{push}(B), q)
+  \end{equation*}
+\end{example*}
+
+\section*{Accepted Languages}
+
+A string is accepted by an NDPA if there is some path from the initial state to an accepting state which consumes the
+ entire input string. Otherwise, the string is rejected by the NPDA. The language is then the set of all strings that
+ it accepts.
+
+Specifically, an input string is rejected if it finishes reading the string before reaching an accepting state, if the
+ current state has no transition for the current input or stack symbol, or finally if it attempts to pop an empty stack.
+
+\begin{example*}{}{}
+  If we wanted to build an NDPA that recognises the language $\{a^n b^n | n \geq 0\}$, we could use the following plan.
+  \begin{itemize}
+    \item Read the string, and for each $a$ that's read, push $Y$ onto the stack
+    \item Once the first $b$ is read, change state and start removing one $Y$ from the stack for each $b$ read
+    \item If the input string ends and the stack has just emptied, the string is accepted
+    \item Otherwise, the string should be rejected
+  \end{itemize}
+
+  We can create this NDPA as the automaton with
+  \begin{itemize}
+    \item $Q = \{0, 1, 2\}$ where 0 is the initial state, and 2 accepting
+    \item $\Sigma = \{a, b\}$
+    \item $\Gamma = \{Y, \$\}$
+  \end{itemize}
+  and drawn as
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=4cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (s0) {$0$};
+      \node[state, right of=s0] (s1) {$1$};
+      \node[state, right of=s1, accepting] (s2) {$2$};
+
+      \draw (s0) edge[loop above] node{$a, Y\ |\ \mathrm{push}(Y); a, \$\ |\ \mathrm{push}(Y)$} (s0)
+            (s0) edge[above] node{$b, Y\ |\ \mathrm{pop}$} (s1)
+            (s0) edge[bend right=15, below] node{$\Lambda, \$\ |\ \mathrm{nop}$} (s2)
+            (s1) edge[loop above] node{$b, Y\ |\ \mathrm{pop}$} (s1)
+            (s1) edge[above] node{$\Lambda, \$\ |\ \mathrm{nop}$} (s2);
+    \end{tikzpicture}
+  \end{center}
+\end{example*}
+
+{\Huge instantaneous description}
+
+\section*{NDPAs and Context-Free Languages}
+
+The class of all languages accepted by NDPAs is exactly the same as the class of context-free languages.
+
+{\Huge Was on slide 17}
