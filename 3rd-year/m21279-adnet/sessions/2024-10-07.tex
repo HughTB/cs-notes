@@ -21,8 +21,6 @@ There are many different mediums which can be used to transmit information. In t
   \end{itemize}
 \end{itemize}
 
-{\huge add spectrum diagram}
-
 \section*{Signal Properties}
 
 \begin{itemize}
@@ -152,9 +150,23 @@ CDMA is a multiplexing technique which can be used with a spread-spectrum signal
  we assign each bit a unique user code of $n$ according to a Walsh matrix. If a user, $k$, sends a 1, the transmitter
  sends the chip code $ck$, and if they send a 0, the transmitter sends the inverse of that chip code, $c'k$. The chip
  codes of all users will add up to a bipolar signal, $D$. The receiver decodes the signal for a specific user with a
- function, by taking the cartesian product of $D$ and the specific chip code $ck$, $D.ck$. If $D.ck = n$ then a 1 is
- received, and if $D.ck = -n$ then a 0 is received.
+ function, by taking the cartesian product of $D$ and the specific chip code $ck$, $D \times ck$. If $D \times ck = n$
+ then a 1 is received, and if $D \times ck = -n$ then a 0 is received.
 
-{\huge Come back to this and find some other material that explains it less terribly}
+\begin{example*}{}{}
+  We have 4 users, with chip codes as follows
+  \begin{itemize}
+    \item A:\ $(-1, -1, -1, -1)$
+    \item B:\ $(-1, +1, -1, +1)$
+    \item C:\ $(-1, -1, +1, +1)$
+    \item D:\ $(-1, +1, +1, -1)$
+  \end{itemize}
 
-{\huge Add something about Nyquist and Shannon bandwidth and capacities}
+  If the users were to send $1, 1, 1, 0$ respectively, then we would add up the signals such that
+   $A+B+C+D' = (-1, -1, -1, -1) + (-1, +1, -1, +1) + (-1, -1, +1, +1) + (+1, -1, -1, +1) = (-2, -2, -2, +2)$\\
+  
+  Then, the receivers filter out each individual signal by multiplying the received signal by the chip code of the signal
+   they're interested in. To get back the signal for A, you would do the following
+   $(-2, -2, -2, +2) \times (-1, -1, -1, -1) = (-2 \times -1) + (-2 \times -1) + (-2 \times -1) + (+2 \times -1) = 2+2+2-2 = 4$,
+   which shows that A was sending a $1$.
+\end{example*}
