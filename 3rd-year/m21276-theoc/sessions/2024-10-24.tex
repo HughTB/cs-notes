@@ -80,6 +80,34 @@ and two outputs
   \end{equation*}
 \end{example*}
 
+\subsection*{Instantaneous Descriptions of NDPAs}
+
+During computation, you need to be able to describe the NDPA after any given set of inputs. Since it also modifies the
+ stack at each step, the entire stack needs to be included in the description. Formally, this is known as the
+ \textbf{instantaneous description} of an NDPA.
+
+\begin{definition*}{}{}
+  The instantaneous description consists of
+  \begin{itemize}
+    \item The current state
+    \item The unconsumed input characters
+    \item The contents of the stack
+  \end{itemize}
+  and is written as
+
+  \begin{equation*}
+    (\mathrm{current\ state}, \mathrm{unconsumed\ input}, \mathrm{stack\ contents})
+  \end{equation*}
+
+  In this case, the top of the stack is on the left, and bottom on the right.
+\end{definition*}
+
+\begin{example*}{}{}
+  \begin{equation*}
+    (0, abba, YZ\$)
+  \end{equation*}
+\end{example*}
+
 \section*{Accepted Languages}
 
 A string is accepted by an NDPA if there is some path from the initial state to an accepting state which consumes the
@@ -100,7 +128,7 @@ Specifically, an input string is rejected if it finishes reading the string befo
 
   We can create this NDPA as the automaton with
   \begin{itemize}
-    \item $Q = \{0, 1, 2\}$ where 0 is the initial state, and 2 accepting
+    \item $Q = \{0, 1, 2\}$ where $0$ is the initial state, and $2$ accepting
     \item $\Sigma = \{a, b\}$
     \item $\Gamma = \{Y, \$\}$
   \end{itemize}
@@ -128,10 +156,134 @@ Specifically, an input string is rejected if it finishes reading the string befo
   \end{center}
 \end{example*}
 
-{\Huge instantaneous description}
-
 \section*{NDPAs and Context-Free Languages}
 
-The class of all languages accepted by NDPAs is exactly the same as the class of context-free languages.
+The class of all languages accepted by NDPAs is exactly the same as the class of context-free languages. To prove this,
+ we need to show that
+\begin{enumerate}
+  \item With any given NDPA, we can find a context-free grammar which produces the same language
+  \item With any given context-free language,we can find an NDPA which accepts the given language
+\end{enumerate}
 
-{\Huge Was on slide 17}
+\begin{example*}{}{}
+  Show that the language containing all strings over $\{a, b\}$ with exactly the same number of $a$s and $b$s is
+   context-free. Using the theorem, all we need to do is find an NDPA which recognises this language.\\
+  
+  Since we need to keep track of the number of $a$s and $b$s, we can change the stack accordingly. If we've seen more
+   $a$s, add an $X$, and if we've seen more $b$s, add a $Y$.\\
+
+  We can then represent this NDPA as
+  \begin{itemize}
+    \item $Q = \{0, 1\}$ where $0$ is the initial state, and $1$ accepting
+    \item $\Sigma = \{a, b\}$
+    \item $\Gamma = \{X, Y, \$\}$
+  \end{itemize}
+  with the transition diagram
+  \begin{center}
+    \begin{tikzpicture}
+      \tikzset{
+        ->, % makes the edges directed
+        >=stealth, % makes the arrow heads bold
+        node distance=4cm, % specifies the minimum distance between two nodes
+        every state/.style={thick, fill=gray!10}, % sets the properties for each ’state’ node
+        initial text=$ $, % sets the text that appears on the start arrow
+      }
+
+      \node[state, initial] (s0) {$0$};
+      \node[state, right of=s0, accepting] (s1) {$1$};
+
+      \draw (s0) edge[loop below] node{$a, \$\ |\ \mathrm{push}(X); a, X\ |\ \mathrm{push}(X); a, Y\ |\ \mathrm{pop}; b, \$\ |\ \mathrm{push}(Y); b, Y\ |\ \mathrm{push}(Y); b, X\ |\ \mathrm{pop}$} (s0)
+            (s0) edge[above] node{$\Lambda, \$ |\ \mathrm{nop}$} (s1);
+    \end{tikzpicture}
+  \end{center}
+\end{example*}
+
+\section*{Determinism}
+
+Similarly to finite automata, push-down automata can be either deterministic or non-deterministic. However, a non-
+deterministic push-down automata isn't very useful, since it can never make a choice at each state. Unlike NFAs and
+ DFAs, deterministic push-down automata cannot recognise the entire family of context-free languages.
+
+
+
+\lecture{A8: Applications of Context-Free Grammars}{13:00}{24/10/24}{Janka Chlebikova}
+
+The original purpose of context-free languages was to describe the grammar of English, in terms of it's block structure,
+ built up recursively from smaller phrases. However, since phrases with the exact same structure can have one of several
+ meanings, we need a way to show which of the possible derivations was used to produce it. This can be shown using a
+ parse (or derivation) tree, which starts with the initial symbol and works down until all of the leaves are terminal
+ symbols (usually words in a spoken language).
+
+\begin{itemize}
+  \item The start symbol of the grammar becomes the root of the tree
+  \item For each production $X \rightarrow Y_1 \ldots Y_n$, add $Y_1 \ldots Y_n$ as children of the node $X$
+  \item Every leaf must end up as a terminal, and any internal nodes must be non-terminals
+\end{itemize}
+
+If there are multiple possible parse trees for a given string in a language, how do we know which one is correct? Well,
+ all of them are. This means that for any string with a non-unique parse tree, there are several correct meanings.
+
+\section*{Ambiguous Grammars}
+
+If a string in a grammar has a non-unique parse tree, then it is known as \textbf{ambiguous}. This is because there
+ would be no way for a compiler or other computer program to know which of the options is correct. As a human, you can
+ usually figure it out based upon other context, but that is not a luxury afforded to computers.
+
+Conversely, if each string of a language has only one parse tree (or alternatively, if there is only one left-most (or
+ right-most) derivation for each string), then the language is unambiguous.
+
+Since there are no general techniques for handling ambiguity, it is impossible to convert an ambiguous grammar into an
+ unambiguous one. In some cases, a grammar can be modified such that it produces the same language, but is unambiguous,
+ however this can only be done on a case-by-case basis. An example of this is adding parenthesis in mathematical
+ expressions to make sure that the correct order of operations is used.
+
+\section*{Parsing}
+
+\textbf{Parsing} is one of the main steps of a compiler, and is a process in which
+\begin{itemize}
+  \item It is determined whether the input string has correct syntax
+  \item A parse tree is built, which represents the internal structure of a string, and how it was derived from the
+   grammar
+\end{itemize}
+
+Parsing can be done in one of two ways-- top-down parsing and bottom-up parsing.
+
+Top-down parsing constructs the parse tree by starting from the grammar's start symbol, and replacing non-terminals,
+ working it's way towards the string. If, after following every logical set of non-terminals, it is not possible to
+ produce the input string, then the string cannot be parsed and it is not in the language of the parser.
+
+Bottom-up parsing starts with the string, and works backward to get to the start symbol, replacing sets of terminals
+ with a grammar rule which produces them. Once again, if all combinations fail then the string cannot be parsed and is
+ not in the language of the parser.
+
+When working with a top-down parser, there is often a need to backtrack through the parse tree, if it gets stuck at some
+ point and cannot progress any further towards the final string, which means that the whole state at each step needs to
+ be stored until the parse is completed. Some grammars are backtrack-free, and it is sometimes possible to design a
+ grammar purposefully like that.
+
+When bottom-up parsing, the internal state also needs to be stored, but there is usually less backtracking required,
+ depending on the grammar. They can also handle a larger class of grammars than top-down parsers.
+
+\section*{Computer Languages}
+
+Since a parser is one of the most important parts of a compiler, it is desirable to design the programming language in
+ such a way that it is easy to construct a parser for it. This means that a lot of programming languages take the form
+ of a context-free grammar, but more specifically there are categories of CFG that are easier for either a top-down or
+ bottom-up parser to parse.
+
+The best candidates for these easier languages are either $LL(k)$- or $LR(k)$-grammars, for any $k \geq 0$.
+\begin{itemize}
+  \item $LL(k)$-grammars are based on $LL(k)$-parsers, and are better for top-down parsing
+  \item $LR(k)$-grammars are based on $LR(k)$-parsers, and are better for bottom-up parsing
+\end{itemize}
+
+\subsection*{$LL(k)$-grammars}
+
+What does $LL(k)$ actually mean?
+\begin{itemize}
+  \item $L$-- The input string is parsed from left-to-right
+  \item $L$-- Only leftmost derivations are considered at each step
+  \item $k$-- The number of look-ahead symbols needed to decide which derivation to use
+\end{itemize}
+
+{\Huge Come back to slide 18}
