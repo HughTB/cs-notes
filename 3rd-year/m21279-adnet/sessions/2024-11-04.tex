@@ -1,0 +1,57 @@
+\lecture{Local Area Networks}{11:00}{04/11/24}{Asim Ali}
+
+\section*{Data Link Layer}
+
+Within the Data Link layer of the OSI reference model, there are two control systems-- the Logical Link Control and
+ Media Access Control. The logical link control is responsible for interfacing with the layers above it, and performing
+ flow and error control.
+
+Media Access Control is responsible for more of the addressing and actual communications, and handles assembling and
+ disassembling the transmission frame, which consists of
+\begin{itemize}
+  \item Receiver's address
+  \item Error detection data, e.g.\ checksum or crc
+\end{itemize}
+
+\subsection*{Media Access Protocol}
+
+The original ethernet protocol was designed for use in bus or star networks, and so includes error and collision
+ handling. Since only one station is able to transmit at a time in a bus or (hub) star network, there needs to be a way
+ to determine if a collision has occurred and how it should be resolved. This is made up of a set of rules--
+
+\begin{itemize}
+  \item If there is already a station transmitting, do not transmit.
+  \item If another station transmits while you are transmitting, jam the medium and wait for a random length of time,
+   using the back-off algorithm. (Select a random length of time from $0$ to $2^n - 1$ slots, where n is the number of
+   collisions).
+  \item If there have been an excessive number of collisions, cancel the transmission and send an error up through the
+   layers.
+  \item After waiting, attempt to transmit again.
+\end{itemize}
+
+The length of one transmission slot depends upon the speed of the medium, and the minimum size of packets. If the slot
+ size is $512$bits, then at $10$Mbps, the slot time is $\frac{512}{10000000}$ or $0.0000512$ seconds (or
+ $51.2$~{\textmu}sec)
+
+To determine if a collision has occurred, each station is connected to the medium with two wires, one for transmitting
+ and one for receiving. During transmission, if the signal sent out on the transmission line is not the same as what is
+ received, then another station is interfering with the transmission, and a collision has occurred.
+
+\section*{Switching}
+
+\subsection*{Store-and-Forward}
+
+When the switch receives a packet, it waits for the entire packet to arrive and stores it in memory before forwarding it
+ to the intended recipient. This mode of operation works for both half and full-duplex transmission.
+
+The latency in this mode can be calculated by sender-switch transmission time (packet size / transmission speed) +
+ switch latency + switch-recipient transmission time + propagation delay of the medium (how long the data takes to get
+ from one end of the medium to the other).
+
+\subsection*{Virtual-cut Through}
+
+When the switch receives a packet, it only buffers enough of the packet to allow it time to process the MAC header, and
+ determine where the packet should be sent. It then just forwards the buffer and the data as it flows into the switch.
+
+The latency here can be calculated by sender-switch transmission time + switch latency + propagation delay of the
+ medium.
