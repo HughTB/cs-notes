@@ -282,8 +282,50 @@ The best candidates for these easier languages are either $LL(k)$- or $LR(k)$-gr
 What does $LL(k)$ actually mean?
 \begin{itemize}
   \item $L$-- The input string is parsed from left-to-right
-  \item $L$-- Only leftmost derivations are considered at each step
+  \item $L$-- Only left-most derivations are considered at each step
   \item $k$-- The number of look-ahead symbols needed to decide which derivation to use
 \end{itemize}
 
-{\Huge Come back to slide 18}
+\begin{example*}{}{}
+  The grammar $S \rightarrow aSc | b$ for the language $LL(1) = \{{a^n}b{c^n}, n \geq 0\}$ only requires one symbol of
+   look-ahead, since it is always possible to know which production needs to be used to continue parsing any given
+   string.
+\end{example*}
+
+\begin{example*}{}{}
+  The grammar $S \rightarrow AB, A \rightarrow aA | a, B \rightarrow bB | c$ requires two symbols of look-ahead, since
+   there are multiple possible productions for any given symbol. If we had the input symbol $a$, we could have used
+   either of the two productions of $A$.
+\end{example*}
+
+There are some languages that cannot be represented by an $LL(k)$ grammar, such as if any of the productions start with
+ a non-terminal, since you would need to know the length of the full string. That means that it is impossible to do a
+ partial derivation, knowing only how the string starts.
+
+All $LL(k)$ grammars are unambiguous, and are a subset of deterministic context-free languages. $LL(1)$ languages are
+ very popular, as they are much easier to parse than other languages. Some languages however are too complex to be
+ described by an $LL(1)$ grammar, such as the C language, however these can be parsed using higher order grammars.
+
+\subsection*{$LR(k)$-grammars}
+
+Languages based upon $LR(k)$ grammars are parsed bottom up, scanning the string from left-to-right, as with $LL(k)$
+ grammars, but produce a right-most derivation in reverse.
+
+\begin{itemize}
+  \item $L$-- The input string is parsed from left-to-right
+  \item $R$-- Only right-most derivations are considered at each step
+  \item $k$-- The number of look-ahead symbols needed to parse the grammar
+\end{itemize}
+
+Donald Knuth proved that all $LR(1)$ languages are exactly $LR(k)$ languages, which are exactly deterministic context-
+free languages (DCFL). DCFGs are a proper subset of the context-free grammars, and can be recognised by DPDAs. They are
+ also always unambiguous.
+
+They are of particular interest since they can be parsed in linear time, and a parser can be automatically generated
+ from the grammar using a parser generator.
+
+To derive an $LR(k)$ grammar, you start from the bottom up, essentially scanning from left-to-right, until you find the
+ first right-hand side of a production. You then replace the symbols in the string with the left-hand side of the
+ production, and continue the process on the new string. This continues until you eventually cannot find any more
+ productions (in which case, the string does not belong to the language), or you reach the start symbol. You can then
+ invert the order of derivations to find the original derivation of the string.
