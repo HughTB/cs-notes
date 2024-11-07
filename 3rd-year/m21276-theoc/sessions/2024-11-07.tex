@@ -100,3 +100,24 @@ where the current position of the tape head is in bold.
 
 \lecture{A10: Computing with TMs \& Alternative Definitions}{13:00}{07/11/24}{Janka Chlebikova}
 
+We've shown so far that a Turing machine is able to take an input string, and return a boolean value, representing if
+ the string was accepted by the language of the machine. But they can also do much more, such as transform a string, and
+ write the result onto the tape. These machines are sometimes known as transducers.
+
+\section*{Functions with Turing Machines}
+
+The input of the function can be the input string $x$, and the output can be the string $y$ which is written to the tape
+ at the point the machine halts. We can define a partial function $T(x) = y$ for all strings $x$ for which the machine
+ halts. We can also represent non-negative integers in other ways, such as in unary or binary.
+
+{\Huge Machine for adding 2 example}
+
+\section*{Non-Deterministic Turing Machines}
+
+A non-deterministic Turing machines is similar to a deterministic one, but with a finite number of choices at each
+ combination of current state and symbol. A non-deterministic TM accepts the input string if there is at least one
+ computation which reaches the halt state for the input.
+
+Surprisingly, there is no difference in the set of languages which deterministic and non-deterministic Turing machines
+ can accept. This means that they accept the same family of languages, which are of the unrestricted grammar also known
+ as recursive enumerable languages.
