@@ -55,3 +55,20 @@ When the switch receives a packet, it only buffers enough of the packet to allow
 
 The latency here can be calculated by sender-switch transmission time + switch latency + propagation delay of the
  medium.
+
+\section*{Ethernet Frame Format}
+
+Each frame sent on an ethernet network contains
+\begin{itemize}
+  \item Preamble-- A series of 56 $1$s and $0$s, used to sync the clock of the receiver ($56$ bits)
+  \item Frame Delimiter-- A byte which signals the start of the frame, specifically $10101011$ ($8$ bits)
+  \item Source-- Address of the sending station ($48$ bits)
+  \item Destination-- Address of the recipient station ($48$ bits)
+  \item Length-- The length of the data in bytes ($16$ bits)
+  \item Data-- Up to $12000$ bits ($1500$ bytes) of data ($0 - 12000$ bits)
+  \item Pad-- Padding added to ensure the data is at least $46$ bytes long ($0 - 368$ bits)
+  \item CRC-- Cyclic Redundancy Check information, used to detect errors in the frame, so it can be re-sent on error
+   ($32$ bits)
+\end{itemize}
+
+This gives us a minimum frame length of $48 + 48 + 16 + 0 + 368 + 32 = 512$ bits
