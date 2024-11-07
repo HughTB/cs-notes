@@ -1,0 +1,102 @@
+\lecture{A9: Turing Machines}{13:00}{07/11/24}{Janka Chlebikova}
+
+The main difference between finite and pushdown automata is that PDA have an infinite stack of memory. This does make
+ them more powerful than FA, but since they still can only move the reading head to the right at each step, there is a
+ class of languages they cannot parse. For example, NDPAs can parse the language $\{{a^n}{b^n}, n \geq 0\}$, but not
+ $\{{a^n}{b^n}{c^n}, n \geq 0\}$.
+
+If the main differentiating factor is the type of storage available, then we can say an automaton with no storage is an
+ FA, if the storage is a stack, it's a PDA, but what if we had 2 or 3 stacks? They would certainly be a more powerful
+ form of automaton, and theoretically able to parse more complex languages.
+
+\section*{Turing Machines}
+
+Turing machines are the most powerful class of automaton, since they are essentially the same model of computing as
+ modern computers. The main improvement over PDAs is that the memory is modelled as an infinite `tape' of data, which
+ can be read from and written to, but all of it is accessible at once. The tape `head' can move left or right, or not
+ change position on each read or write operation.
+
+The tape is divided into cells, with an infinite number in each direction from the starting cell. Each cell contains
+ either a symbol from the alphabet, or a blank symbol. Since this is based more in reality than previous automatons,
+ the tape must have a finite number of non-blank symbols written on it. The head can only ever read or write to the
+ current cell.
+
+Based upon the current state and symbol in the current cell, the machine may
+\begin{itemize}
+  \item Change the state
+  \item Move the head in either direction (or not at all)
+  \item Rewrite the current symbol, or leave it unchanged
+\end{itemize}
+
+Again, since these are more based in reality, the `standard' type of Turing machine is deterministic, since it would
+ have to be to exist in the physical world.
+
+\subsection*{Instructions}
+
+Each movement step is represented by a letter-- move to the left is $L$, move to the right is $R$, and stay still/ do
+ nothing is $S$.
+
+\begin{definition*}{}{}
+  Each instruction for a Turing machine consists of five parts--
+  \begin{itemize}
+    \item The current state of the machine (over the set of all states, $Q$)
+    \item The symbol read from the current cell of the tape (from $\Gamma$, or the blank symbol)
+    \item A symbol to write to the tape (from $\Gamma$, or the blank symbol)
+    \item The state to transition to (from $Q$)
+    \item The direction for the tape head to move
+  \end{itemize}
+
+  Each instruction is of the form
+  \begin{equation*}
+    T : Q \times \Gamma \rightarrow \Gamma \times Q \times \{L, R, S\}
+  \end{equation*}
+
+  And the instruction can be written as an instruction such as
+  \begin{equation*}
+    (i, a, b, L, j)
+  \end{equation*}
+
+  Or in a diagram in the form
+  \begin{equation*}
+    \frac{a}{b, L}
+  \end{equation*}
+\end{definition*}
+
+\subsection*{Values on the Tape}
+
+An input string is represented by placing the letters from the string into adjacent cells on the tape. All other cells
+ in the tape initially contain the blank symbol, which is denoted by $\square$. Typically, the head starts over the
+ leftmost cell of the input string (the leftmost non-blank cell).
+
+\subsection*{Starting and Stopping}
+
+As with FAs and PDAs, there must be a single start state, which must be specified. In the case of a Turing machine,
+ there is also usually only one final state, usually known as `Halt'. A Turing machine will halt when it either enters
+ the halt state, or enters a state from which there is no valid move.
+
+\subsection*{Recognising Languages}
+
+A Turing machine $T$ recognises a string over $\Sigma$ if and only when
+\begin{itemize}
+  \item $T$ starts in the initial position, with the string $x$ written on the tape
+  \item $T$ halts in a final state
+\end{itemize}
+
+$T$ is said to recognise the language $A$ if $x$ is recognised by $T$, if and only if $x$ belongs to $A$. A string is
+ rejected by $T$ if it never halts, or it halts in a state which is not final.
+
+\subsection*{Instantaneous Description}
+
+To describe a Turing machine at any instant in time, we need to know what's on the tape, where the tape head is located,
+ and what state the control automaton is in. We can represent this as follows:
+\begin{equation*}
+  \mathrm{State\ } i: \square a a \textbf{b} a b \square
+\end{equation*}
+where the current position of the tape head is in bold.
+
+{\Huge Add example 2 here}
+
+
+
+\lecture{A10: Computing with TMs \& Alternative Definitions}{13:00}{07/11/24}{Janka Chlebikova}
+
