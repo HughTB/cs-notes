@@ -1,0 +1,125 @@
+\lecture{Wireless Local Area Networks}{11:00}{11/11/24}{Asim Ali}
+
+A single cell network is one which has a single Access Point (or Control Module), using a single frequency, but may have
+ any number of clients (User Modules). A multiple-cell network may have multiple access points using different
+ frequencies, each with multiple clients, but they must be connected to the same wired network for back-haul.
+
+Each cell acts like a star network, since client can only communicate with the access point, and not directly with any
+ of the other clients on the same network. In a multiple-cell network, they also cannot communicate directly between
+ cells without a wired back-haul, which is usually part of an existing wired network.
+
+Before a client can communicate in a cell, it needs to associate with the access point. In a single cell network, this
+ is simple since there is only ever a single access point that needs to be associated with. In a multi-cell network,
+ the client must disassociate from one access point, and associate to the new one. This may be done manually, if each
+ access point is broadcasting a different SSID, or it may be done automatically if it's a cohesive network where the
+ access points communicate to hand-off clients.
+
+There are also ad-hoc WLAN networks, in which the devices are all simultaneously clients and access points, and
+ communicate directly with each other.
+
+\section*{IEEE 802.11}
+
+\subsection*{Terms}
+
+\begin{itemize}
+  \item Associated Stations-- Devices connected to a WLAN
+  \item Access Point-- Provides access to the network for associated devices
+  \item Basic Service Set (BSS)-- A set of stations controlled by one coordinator
+  \item Extended Service Set (ESS)-- A set of one or more connected BSSs
+  \item Distribution System (DS)-- A system used to connect a set of BSSs and LANs to create an ESS
+  \item Frame-- A unit of data in the MAC protocol
+\end{itemize}
+
+\subsection*{Services}
+
+\begin{table}
+  \centering
+  \begin{tabular}[H]{ lll }
+    \hline Service & Provider & Used for\\
+    \hline Association & Distribution System & MSDU\\
+    Authentication & Stations & Access \& Security\\
+    De-authentication &  Stations & Access \& Security\\
+    Disassociation & Distribution System & MSDU\\
+    Distribution & Distribution System & MSDU\\
+    Integration & Distribution System & MSDU\\
+    MAC Service Data Unit (MSDU) & Stations & \\
+    Privacy & Stations & Access \& Security\\
+    Re-association & Distribution System & MSDU\\
+    \hline
+  \end{tabular}
+\end{table}
+
+The MAC Service Data Unit is effectively the mechanism by which packets are prepared and sent over the medium.
+
+\section*{Access Control (CSMA/CA)}
+
+A very similar protocol to CSMA/CD, but designed specifically for wireless networks rather than wired bus networks.
+ The difference is that the nodes might not know that they are causing a collision, since they may be in range of the
+ access point, but not the other transmitting node.
+
+There is an optional centralised controller known as the Point Coordination Function (PCF), which provides collision
+ avoidance by providing permission to each node before it is allowed to send a message. There is also a distributed
+ version known as the distributed coordination function (DCF), which is used in ad-hoc networks or in networks where
+ throughput is more important than latency.
+
+\subsection*{Point Coordination Function}
+
+The controller (usually the access point) offers a transmission slot to each known client, which the client then replies
+ to, saying that it either does or does not wish to transmit. If the client does not wish to transmit, the slot is
+ offered to the next client, and so on. It uses a round-robin method to give each client an opportunity to transmit, and
+ guarantees there are no collisions. This does however waste a lot of capacity, since nodes often do not wish to
+ transmit, and if there are some devices with lots of data, and some with no data, they are still given the same share
+ of the throughput.
+
+The access point also sends out a `beacon frame' $10-100$ times per second, which advertises the network to any stations
+ within the coverage area. The frame also contains information such as hopping frequencies, dwell times, clock
+ synchronisation and more.
+
+\subsection*{Distributed Coordination Function}
+
+DCF uses CSMA/CA to provide collision avoidance, as well as various levels of Inter-Frame Spacing (IFS). There are two
+ methods which a network can use to confirm that a packet has been received correctly.
+\begin{itemize}
+  \item Frame Exchange Protocol
+  \begin{itemize}
+    \item Sender transmits frame immediately
+    \item Receiver response with an acknowledgement
+    \item If sender doesn't receive acknowledgement, it retransmits the frame
+  \end{itemize}
+  \item Four Frame Exchange
+  \begin{itemize}
+    \item Sender sends request-to-send (RTS)
+    \item Receiver responds with a clear-to-send (CTS)
+    \item Sender transmits frame
+    \item Receiver responds with an acknowledgement
+  \end{itemize}
+\end{itemize}
+
+If any station receives an RTS or CTS message not addressed to them, they immediately put themselves into a Non-Active
+ Mode (NAV) until the medium is again idle. That way, even if the station is not in range of the requesting station, it
+ should always be in range of the clearing station, as it will most likely be the access point. If the sending station
+ does not receive an acknowledgement within a short time, the transmission is cancelled and it must send a new RTS
+ before it can transmit.
+
+The Distributed Inter-Frame Spacing (DIFS) is the length of time that a node must wait between transmissions, and the
+ length of time that is multiplied to get the exponential back-off delays.
+
+\subsection*{Priority Traffic}
+
+Some traffic needs to be given priority over others, such as acknowledgements, CTS messages and poll responses. These
+ types of traffic use the Short Inter-Frame Spacing (SIFS) so they are more likely to transmit immediately. The access
+ point also has priority over all other stations, and uses the Point-Coordinator Inter-Frame Spacing (PIFS), which is
+ shorter than the DIFS, but longer than the SIFS.
+
+\section*{Super Frames}
+
+The bandwidth of the frequency is split into so-called \textbf{Super Frames}, which are a certain length of time.
+
+Each `Super Frame' has two sections. The first part of the frame uses PCF to poll each station for time-sensitive frames
+ which need to be sent before anything else. For the second part, the point-coordinator goes idle and allows time for
+ DCF frames to be sent asynchronously. This allows both time-sensitive and throughput-sensitive traffic on the same
+ network.
+
+If the end of one transmission overlaps the start of a super frame, the length of the super frame is reduced and the
+ PCF section is delayed as to not collide with the previous transmission. This typically means that the DCF time in this
+ super frame is reduced.
