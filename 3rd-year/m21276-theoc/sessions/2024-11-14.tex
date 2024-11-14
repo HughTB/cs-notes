@@ -1,0 +1,51 @@
+\lecture{A11: More About Turing Machines}{13:00}{14/11/24}{Janka Chlebikova}
+
+Some Turing Machines have inputs for which they will never halt. There are 3 possible outcomes for a given string--
+ halting, finishing in a non-halted state, or not halting at all. Of these, only if the TM halts does it accept the
+ input strings. A TM that never halts for any input string can be called a `dancing' Turing Machine.
+
+\section*{Recursive and Recursive Enumerable Languages}
+
+\begin{definition*}{}{}
+  A language $L$ is recursive if $L$ is the set of strings accepted by some TM which halts for every given input.
+
+  A language $L$ is recursively enumerable if $L$ is the set of strings accepted by some TM.
+\end{definition*}
+
+We can then say that if $L$ is a recursive language, then
+\begin{itemize}
+  \item If $w \in L$ then a TM halts in a final state
+  \item If $w \notin L$ then a TM halts in a non-final state
+\end{itemize}
+if $L$ is instead a recursive enumerable language, then
+\begin{itemize}
+  \item If $w \in L$ then a TM halts in a final state
+  \item If $w \notin L$ then a TM halts in a non-final state \textbf{or} loops forever
+\end{itemize}
+
+Every recursive language is therefore also recursive enumerable, but not the other way. There are plenty of Languages
+ which are not recursive enumerable, and as such cannot be described by a grammar. Every regular language is recursive,
+ as there must be a DFA to represent it and a DFA must always halt.
+
+\section*{The Final Chomsky Hierarchy}
+
+{\Huge add info from slide 11}
+
+\section*{The Universal Turing Machine}
+
+The Universal Turing Machine (UTM) is a turing machine that can perform the job of any other turing machine. Given an
+ arbitrary TM $M$ and an input $w$, then $U$ simulates the operations of $M$ on $w$.
+\begin{itemize}
+  \item $U$ must halt on an input if and only if $M$ halts
+  \item If $M$ accepts a string, then $U$ must accept it
+  \item If $M$ rejects a string, then $U$ must reject it
+\end{itemize}
+
+We can imagine this UTM as a TM with three tapes, where
+\begin{itemize}
+  \item Tape 1 corresponds to $M$'s tape
+  \item Tape 2 contains $M$'s program, which $U$ executes
+  \item Tape 3 contains the encoding of the state $M$ is in at any point during the simulation
+\end{itemize}
+
+A UTM acts as a general-purpose computer, and can store and execute any arbitrary program from it's tapes.
