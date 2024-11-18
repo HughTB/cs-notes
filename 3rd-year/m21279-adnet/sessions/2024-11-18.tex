@@ -1,0 +1,108 @@
+\lecture{Bluetooth Networks}{11:00}{18/11/24}{Asim Ali}
+
+The original purpose was to create a universal interface for using small, local ad-hoc networks. It was also intended as
+ a replacement for irDA-- an infrared communication protocol.
+
+The design specifications required a maximum range of $10 - 100m$, low power consumption, and a license free frequency
+ to keep costs low. The specific frequency it uses is roughly $2.45\mathrm{GHz}$, which is within the license free
+ frequency band also occupied by $2.4\mathrm{GHz}$ Wi-Fi.
+ 
+\section*{Bluetooth Protocols}
+
+Ordered from lowest to highest in the protocol stack, these are some of the main protocols used to control and
+ communicate between bluetooth devices.
+
+\subsection*{Radio}
+
+Responsible for frequency hopping, modulation and demodulation, and managing transmission power.
+
+\subsection*{Baseband}
+
+Responsible for establishing connections, addressing different devices, formatting packets, timing messages and
+ controlling transmission power.
+
+\subsection*{Link Manager Protocol}
+
+The Link Manager Protocol (LMP) is responsible for initiating and maintaining connections between devices,
+ authentication and encryption, and is in the lower layers of the bluetooth protocol.
+
+\subsection*{Logical Link Control and Adaption}
+
+Adapts existing protocols to work over a baseband network, such as TCP/IP and telephony. It offers connectionless and
+ connection-oriented services, similar to TCP and UDP.
+
+\subsection*{Service Discovery Protocol}
+
+Provides device information and service advertisement, which can be queried by other devices to initiate establishing a
+ connection.
+
+\section*{Piconet}
+
+A \textbf{Piconet} is a collection of bluetooth devices connected in an ad-hoc manner. They form a star network with
+ one device acting as the master, and up to 255 devices connected to it as clients. All devices in a piconet are
+ synchronised to the same hopping sequence, and each piconet has it's own hopping pattern to avoid interfering with each
+ other. Before a device is able to join a network, it has to synchronise with the hopping pattern.
+
+While up to 255 devices can be in a piconet, only 7 devices can be actively communicating with the master at any time.
+ All other devices are placed into a parked state, where they master is still aware they exist and may want to connect,
+ but they cannot actively communicate.
+
+Active clients can be in one of three states-- Active (Transmits and receives), Sniffing (Reduced number of slots at a
+ reduced power) or Holding (Further reduced power, only supporting SCO links).
+
+There is also a standby state, in which the device is in range of the piconet, but is not participating.
+
+\section*{Radio Specifications}
+
+{\Huge Include table from slide 9}
+
+\section*{Baseband Specification}
+
+Bluetooth baseband uses Frequency Hopping Spread Spectrum (FHSS) to make it less likely for interference to occur, and
+ to make it harder to eavesdrop on communications. The hopping frequency for baseband is 1600 hops/sec, with a dwell
+ time of $625$~{\textmu}sec, which is also the slot time. There are 79 carrier frequencies within the band, each of
+ which is hopped to in a pre-determined but pseudorandom sequence, which further minimises both the likelihood and
+ impact of interference.
+
+Bluetooth devices use Time Division Duplex, where the same frequency is used for sending and receiving data, but not at
+ the same time. Each slot is labelled from $0$ to $2^{27} - 1$, and loops. The master uses even slots, and clients share
+ the odd slots using Time Division Multiple Access (TDMA). In general, Piconets use FH-TDD-TDMA (Frequency Hopping Time
+ Division Duplex Time Division Multiple Access).
+
+\section*{Scatternet}
+
+Multiple piconets may exist in one area, and may form a scatternet. A bridge device connects two piconets together, and
+ may be a client in both networks, or a master in one and client in another. The bridge acts as a relay between the two
+ networks, and forwards messages between them. Clients transmit only with the permission of the master, using Time
+ Division Multiplexing to access the medium.
+
+\section*{Links Between Master and Clients}
+
+\subsection*{Bluetooth Packet Format}
+
+\begin{itemize}
+  \item Access Code-- $72$ bits used for timing synchronisation, offset compensation, paging and inquiry
+  \item Header-- $54$ bits used to identify packet type and contain protocol control information
+  \item Payload-- $0-2745$ bits of actual data
+\end{itemize}
+
+\subsection*{Synchronous Connection Oriented (SCO)}
+
+A fixed number of slots are assigned between point-to-point and master-client communication. The master maintains
+ connections with all devices using reserved slots at a regular interval. Slots must be reserved, and the smallest unit
+ of reservation is 2 consecutive slots-- one in each direction. The payload of each slot may be 80, 160 or 240 bits.
+ The most reliable variant is 80 bits, at 800 slots/sec as the packets are replicated 3 times. The master can support
+ three simultaneous links, if each of them uses the 80 bit variant. SCO communications are never re-transmitted, and
+ error correction techniques are used at each end instead. Each variant uses a different type of Forward Error
+ Correction (FEC), 80 using 1/3 FEC, 160 using 2/3 FEC and 240 using no FEC, where the fraction determines how much
+ of the bandwidth is used for actual data. This is typically used for realtime data, video and audio.
+
+\subsection*{Asynchronous Connectionless (ACL)}
+
+There can be only a single ACL link at a time, and transmits in slots not already reserved for SCO communications. ACL
+ links use 1, 3 or 5 slot packets, which are assigned by the master, depending upon the requirements of devices on the
+ network. The first 259~{\textmu}sec of the slot are used as settling time, then 126 bits of header, and finally
+ 240, 1490 or 2740 bits of data, depending on the number of slots used. There is no bandwidth guaranteed, and
+ retransmission may be required. A client may only reply to the master with an ACL slot, and may never initiate
+ communication without the master having assigned slots. After every ACL slot, a single SCO slot is reserved for the
+ client to reply to the master.
