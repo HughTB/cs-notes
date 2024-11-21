@@ -1,0 +1,103 @@
+\lecture{B1: Computability and Equivalent Models}{13:00}{21/11/24}{Janka Chlebikova}
+
+\section*{Computability}
+
+Something is computable if-- there is some computation which computes it, and if it can be described by an algorithm.
+ Therefore, we can say that a computation is the execution of an algorithm.
+
+\section*{Models of Computation}
+
+There are many different models of computation, some of which are more `powerful' than others. There are several models
+ which are all equivalent, and the most powerful models. Anything that is intuitively computable can be computed by a
+ Turing machine (Church-Turing Thesis).
+
+This means that no one has invented a computational model more powerful than a Turing machine, but there are several
+ other models which are equivalent to a Turing machine.
+
+\subsection*{Simple Programming Language}
+
+The \textbf{simple language} is a small imperative language introduced by Stepherdson and Sturgis in 1963. it has the
+ same power as a Turing machine, so they can solve the same problems as each other.
+
+Informal Description:
+\begin{itemize}
+  \item Variables which take the values in the set of $\mathbb{N}$ natural numbers
+  \item While statement of the form `while $\mathrm{var\ } \neq 0$ do \textbf{statement} od.'
+  \item An assignment, which can only assign $0$, increment or decrement the variable
+  \item A statement is either a while statement, an assignment or a sequence of statements separated by semicolons
+  \item A simple program is a statement
+\end{itemize}
+
+\subsection*{Markov Algorithms}
+
+\textbf{Markov algorithms} were introduced by Markov in 1954. They are also equivalent in power to Turing machines.
+ A markov algorithm over an alphabet $\Sigma$ is a finite ordered sequence of productions $x \rightarrow y$ where
+ $x,y \in \Sigma^*$.
+
+Some productions may be labelled with halt, but it is not required. If there is a production $x \rightarrow y$ such that
+ $x$ occurs as a substring of $w$, then the leftmost occurrence of $x$ in $w$ is replaced by $y$. The algorithm
+ transforms one string over $\Sigma^*$ into another string over $\Sigma^*$, and so it computes a function from 
+ $\Sigma^*$ to $\Sigma^*$.
+
+{\Huge add execution}
+
+\subsection*{Post Algorithms}
+
+A \textbf{post algorithm} is another string processing model, which is also equivalent in power to Turing machines.
+
+
+
+\lecture{B2: Computability and Equivalent Models II}{13:00}{21/11/24}{Janka Chlebikova}
+
+\section*{Recursive Functions}
+
+The basic concept of a computable function is that there must be a finite procedure to follow in order to compute the
+ value of the function for any given input.
+
+Mathematicians created a formal definition of a class of function whose values can be calculated using recursion,
+ partial recursive functions. Typically, the functions of the following forms are computable-- $f(x) = 0$, $g(x) = x+1$
+ and $h(x,y,z) = x$. Functions such as these can be combined together using simple rules to construct all computable
+ functions.
+
+\subsection*{Primitive Recursive Functions}
+
+If you consider the function $\mathrm{exp}(x,y) = x^y$, then you can say that $x^0 = 1$, $x^1 = x$, $x^2 = x \times x$,
+ $\ldots$, $x^y = x \times x \times \ldots$ ($y$ occurrences of $x$). Two `rewriting rules' are then enough to define
+ the function,
+\begin{align*}
+  x^0 &= 1\\
+  x^{y + 1} &= x \times x^y
+\end{align*}
+
+If you then consider multiplication--
+\begin{align*}
+  x \times 0 &= 0\\
+  x \times (y + 1) &= x + x \times y
+\end{align*}
+and addition--
+\begin{align*}
+  x + 0 &= x\\
+  x + (y + 1) &= (x + y) + 1
+\end{align*}
+
+This is effectively rewriting the function as two rules, one for $y = 0$ and one for $y > 0$, where $y$ acts as a
+ `countdown' for the number of remaining computation steps. There are then three basis functions-- successor, zero and
+ projections-- and two ways of building new primitive recursive functions from old ones-- composition and primitive
+ recursion.
+
+\begin{itemize}
+  \item The zero function-- $\mathrm{zero}: \mathbb{N} \rightarrow \mathbb{N}, \mathrm{zero}(x) = 0$
+  \item The successor function-- $\mathrm{succ}(x) = x + 1$
+  \item The projection function-- $\mathrm{project}_i (x_1, \ldots, x_k) = x_i, i \in \{1, \ldots, k\}$
+\end{itemize}
+
+{\huge composition}
+
+Not all functions are primitive recursive, such as the Ackermann Function
+
+\subsection*{Minimisation}
+
+\subsection*{Recursive Functions}
+
+A function is partial recursive if it can be built using the base functions, and composition, primitive recursion and
+ minimisation. A function is computable by a Turing machine if and only if it is partial recursive.
