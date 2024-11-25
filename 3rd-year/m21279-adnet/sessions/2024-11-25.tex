@@ -1,0 +1,92 @@
+\lecture{Cellular Networks}{11:00}{25/11/24}{Asim Ali}
+
+In a cellular network, each cell contains a base station, a number of relay stations and a number of client devices,
+ called user equipment. Each cell has a set bandwidth and number of available channels, each of which can be used to
+ communicate with one device at a time. For example, if a base station has 10 channels, it can communicate directly with
+ 10 devices at once. In this context, a base station is very similar to that in a WLAN network, as it has a controller
+ which handles communication within the cell's channels and a set of transceivers, one for each channel.
+
+A relay station is a smaller station which has equipment to relay communications from devices to the base station. These
+ are usually used near the edges of the cell, or in places with particularly poor reception, such as big concrete
+ warehouses. This is especially needed in cells that span a larger area, since they can be anywhere from a few hundred
+ to 30,000 metres in size.
+
+A cellular network is made up of many cells in close proximity, which form an area of continuous coverage. Cells
+ typically have omnidirectional transceivers, meaning they cover a circular area around them, and usually overlap with
+ other cells around the edges. The space each cell actually covers is usually a hexagon, which is the most effective way
+ to pack cells together, and the overlaps are ignored.
+
+\subsection*{Cell Geometry}
+
+The area of each cell is $2.6 \times R \times R$ or $2.6{R}^2$, and the distance between the centre of each cell is
+ $d = \sqrt{3}R$. In this case, $R$ is the radius and $d$ the diameter of the circular coverage range of the cell, and
+ the given area is the area of the theoretical hexagonal area it covers.
+
+\section*{Frequency Reuse}
+
+It is not possible to use the same frequency in directly adjacent cells, since the signals would interfere with each
+ other. After a certain distance, $D$, it becomes possible to reuse frequencies since the cells do not have overlapping
+ coverage areas. This distance can be calculated by $\frac{D}{d} = \sqrt{N}$ or replacing $d$, $\frac{D}{R} = \sqrt{SN}$
+ where $N$ is the number of cells in a repeating pattern.
+
+Two cells using the same frequency cause co-channel interference (CCI). The frequency reuse distance can be evaluated
+ using the following method with two variables, $i$ and $j$.
+\begin{itemize}
+  \item Move $i$ steps from the reference cell in any direction
+  \item Turn counter-clockwise by 60 degrees
+  \item Move $j$ steps in that direction
+  \item The number of cells in a cluster, $N = i^2 + j^2 + ij$
+\end{itemize}
+
+\section*{Calculating Network Capacity}
+
+In a network with 32 cells, each of which have a radius of 1.6km, a total frequency bandwidth of 336 channels, and
+ reuse factor of 7, how would you find the total coverage area and total channel capacity?
+
+\begin{itemize}
+  \item Area of each cell is $2.6 \times 1.6 \times 1.6 = 6.7{km}^2$ 
+  \item Area of all cells is $6.7 \times 32 = 212.9{km}^2$
+  \item Number of channels per cell is $\frac{336}{7} = 48$
+  \item Total number of channels is $48 \times 32 = 1536$
+\end{itemize}
+
+\section*{Increasing Cell Capacity}
+
+There are several ways to increase the capacity of an individual cell within a cellular network. One option is to simply
+ add more channels, but this is not always possible. To increase capacity without increasing the number of channels,
+ you can use
+\begin{itemize}
+  \item \textbf{Frequency Borrowing}-- Cells with lower usage can have their channels `borrowed' by other cells which
+   are more congested.
+  \item \textbf{Cell Splitting}-- Congested cells can be split into smaller cells, reducing the radius of a cell by a
+   factor of $p$, and increasing the number of base stations by $p^2$, which increases the number of channels in the
+   same area.
+  \item \textbf{Cell Sectioning}-- Congested cells can be divided into a number of wedge-shaped sectors, each of which
+   have their own set of channels transmitted using directional antennae such that they don't overlap.
+  \item \textbf{MicroCells}-- Antennae are moved to buildings, lamp posts, etc, in cities and have their transmission
+   power greatly reduced, such that they only cover a small area, but with far more cells to increase the capacity.
+\end{itemize}
+
+\section*{Cellular Network Operations}
+
+Out of every 66 total channels, 11 are control channels and 55 are traffic channels. The client device listens to the
+ control channels, and selects a base station to connect to, based on the relative strength of the control channels it
+ can receive. Base stations are connected to a Mobile Telecommunications Switching Office (MTSO), which connects the
+ cellular network to the main telephone system. The MTSO also assigns channels, performs hand-offs and monitors calls
+ to meter bills. Each MTSO is usually responsible for more than one cell, and often one cluster of cells as defined by
+ the frequency reuse pattern.
+
+\section*{GSM Networks}
+
+{\Huge diagram of GSM network?}
+
+\subsection*{Channels}
+
+Each GSM provider is typically assigned two 25MHz chunks of the spectrum, one for uplink channels and one for downlink
+ channels. Within this, each channel is 200KHz, meaning that there can be up to 125 channels for uplink and downlink.
+ This means that there are 125 full-duplex channels, each of which can be split up using 8-way TDMA, to get a total user
+ count of 1000 in each cell.
+
+\section*{2nd Generation, CDMA}
+
+Up to 35 users per channel, using CDMA with a $64 \times 64$ Walsh Matrix.
