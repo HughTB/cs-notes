@@ -1,0 +1,156 @@
+\lecture{B3: Diagonalisation and the Halting Problem}{13:00}{28/11/24}{Janka Chlebikova}
+
+There are limits to computation, and not all problems are algorithmically solvable. This also supports the Church-Turing
+ thesis, since it shows that if a problem cannot be solved by a turing machine, it likely cannot be solved by any form
+ of computer.
+
+These problems which cannot be solved by a computer are known as `undecidable problems'.
+
+\section*{Diagonalisation}
+
+The initial proofs for undecidability used a technique known as self-reference or diagonalisation. Any computational
+ model that is powerful enough to allow self-reference will cause problems. To demonstrate this, we will use the Barber
+ paradox.
+
+\subsection*{Barber Paradox}
+
+Suppose there is a small town in which
+\begin{itemize}
+  \item There is a single barber
+  \item Every man is clean-shaven, either by shaving themselves or by going to the barber
+  \item The barber obeys the rule `Shave all and only those men in town who do not shave themselves'
+\end{itemize}
+This then presents a problem if we need to know if the barber shaves himself.
+\begin{itemize}
+  \item If the barber shaves himself, then according to the rule he does not shave himself
+  \item If the barber does not shave himself, then according to the rule he does shave himself
+\end{itemize}
+There is no solution to this problem, and so it is a paradox.
+
+\subsection*{Countable Sets}
+
+How can we prove that two sets are the same size, without counting the elements? If the sets are both finite, we can
+ pair one item from each set, and if we can pair each item then they are the same size. If a set is infinite, does the
+ set have the same size as $\mathbb{N}$, or is it larger?
+
+\begin{example*}{}{}
+  The set of all even numbers is the same size as $\mathbb{N}$, since they can be paired as
+  \begin{gather*}
+    1 - 2\\
+    2 - 4\\
+    3 - 6\\
+    4 - 8\\
+    \ldots
+  \end{gather*}
+\end{example*}
+
+A set is known as \textbf{countably infinite} if it is the same size as $\mathbb{N}$. A set is countable if it is finite
+ or countably infinite, meaning that you can construct a numbered list of all it's elements. The set of integers, the
+ set of odd numbers and the set of rational numbers are all countable.
+
+However, the size of the power set of $\mathbb{N}$ is not countable, which we can prove using a method known as
+ diagonalisation.
+
+\begin{example*}{}{}
+  To prove that the set $P(\mathbb{N})$ is not countable, we can use proof by contradiction.
+
+  Suppose that the set is countable, so we can write down a list of all the subsets of $\mathbb{N}$. It might look like
+  \begin{equation*}
+    1 - \{2, 3\}, 2 - \{4, 7\}, 3 - \{2, 4, 6, 8\}, \ldots
+  \end{equation*}
+
+  So, we have a function $f : \mathbb{N} \rightarrow P(\mathbb{N})$ that maps the numbers to sets such that every set
+   appears in the list.
+
+  If we now define a set $T$ such as: add $i$ to the set $T$ when $i \notin f(i)$, e.g. $1 \in T$ because
+   $1 \notin f(1)$, $3 \in T$ because $3 \notin f(3)$, etc.
+
+  $T$ cannot be in $P(\mathbb{N})$ because it is different from every set, but $T$ is a subset of $\mathbb{N}$. This is
+   a contradiction, and so $P(\mathbb{N})$ is not countable.
+\end{example*}
+
+\section*{Decision Problems}
+
+A decision problem is any which asks a question with a yes or no answer. {Examples}
+
+A decision problem can be viewed as a language where the members of the language are instances whose answer is yes, and
+ non-members are instances whose output is no. A decision problem is decidable if there is an algorithm which for every
+ input instance of the problem, halts with a correct answer, either yes or no. If no such algorithm exists, then the
+ problem is undecidable.
+
+Decidable problems correspond to recursive languages. They can be recognised by Turing machines which halt for every
+ input.
+
+\subsection*{Partial Decision Problems}
+
+\begin{definition*}{}{}
+  An undecidable problem is partially decidable if there is an algorithm which
+  \begin{itemize}
+    \item Halts with the answer yes for instances that have the answer yes, but
+    \item May run forever for instances which have the answer no
+  \end{itemize}
+  (Or the other way around in some cases)
+\end{definition*}
+
+Partial decidable problems correspond to the recursive enumerable languages, which can be recognised by Turing machines.
+
+\section*{Existence of an undecidable problem}
+
+How many Turing machines exist? If we let $S$ be a countable set of symbols, then any TM can be coded as a finite string
+ of symbols over $S$, with all transition functions one after the other. This means there are a countable number of
+ finite strings over $S$, and therefore a function which maps a unique number to each TM. This means that the set of all
+ TMs is countable.
+
+How many languages exist? A language is a subset of a countable set of strings. We have shown that the size of the set
+ of all subsets of $\mathbb{N}$ is not countable. This means that the set of language is uncountable!
+
+So, we've shown that the set of all TMs is countable, and sot the set of languages accepted by TMs is also countable,
+ but that the set of all languages is uncountable. Therefore, there is a language which cannot be recognised by any
+ TM, and therefore is an undecidable problem.
+
+The Halting problem is famous because it was one of the first problems to be proven to be algorithmically undecidable.
+
+
+
+\lecture{B4: Undecidable Problems}{13:00}{28/11/24}{Janka Chlebikova}
+
+\section*{The Halting Problem}
+
+Algorithms may contain loops which may be finite or infinite. The amount of work done by an algorithm usually depends
+ on the input data.
+
+The halting problem asks the question `Is there an algorithm which can decide whether the execution of an arbitrary
+ program halts on an arbitrary input?'
+
+You might initially think that you can simply run the program with the given input. This works if the program stops,
+ since it then clearly halted. But if the program doesn't stop within a reasonable length of time, we have no way to
+ know if it will halt at some point, and if we've not waited long enough, or if it will simply run forever.
+
+The halting problem is undecidable, or more accurately it is partially decidable, since it will always eventually halt
+ if the answer is yes and we just run the program. Therefore, there is no algorithm which could solve it.
+
+\subsection*{Acceptance Formulation}
+
+Define the set $A = \{<M, w> : M \mathrm{\ is\ a\ TM\ that\ accepts\ } w$, where $<M, w>$ is a unique coding. This is
+ another formulation as the halting problem; is there a TM which will recognise the set $A$? No.
+
+This proof is once again done by contradiction.
+
+Suppose there is a machine \textbf{Solver} for which on every input $w$ and every TM $M$, would tell us if $M$ accepts
+ $w$. If we build another TM \textbf{Opposer} which does the following
+\begin{itemize}
+  \item Take the input $w$ and determines the TM $<w>$ which $w$ encodes
+  \item Ask Solver for the answer, e.g. `does the TM $<w>$ accept $w$'
+  \item If Solver accepts, reject
+  \item If Solver rejects, accept
+\end{itemize}
+Opposer must be a valid TM, since Solver always halts.
+
+But what if the input to Opposer is the encoding of Opposer itself?
+\begin{itemize}
+  \item Opposer asks Solver for an answer for itself
+  \item If Solver claims that Opposer accepts, then Opposer rejects
+  \item If Solver claims that Opposer rejects, then Opposer accepts
+\end{itemize}
+
+This is a paradox, assuming that Solver exists, and so Solver cannot exist!
