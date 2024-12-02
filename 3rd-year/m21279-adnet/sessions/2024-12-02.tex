@@ -1,0 +1,70 @@
+\lecture{Software-Defined Networks (SDN)}{11:00}{02/12/24}{Asim Ali}
+
+\section*{VLANs}
+
+VLANs are virtual networks made up of one or more physical LANs, combined together using switches to create a virtual
+ LAN. This is useful for separating different types of devices on the same network, and making sure they don't conflict
+ with each other.
+
+\section*{Management, Control and Data Planes}
+
+The Data plane is responsible for transmitting and receiving packets, as well as forwarding them from one device to
+ another. It is also responsible for enforcing the routing rules decided upon by the Control plane. Uses common
+ protocols such as TCP/IP and UDP. All functions relating to data reside within the Data plane.
+
+The Control plane is responsible for routing packets between networks, naming devices, policy declaration (such as
+ bandwidth and speeds, encryption and authentication), security and routing protocols such as OSPF, BGP and MPLS. It
+ also decides upon the route packets should take from the source to the destination, which is enforced by the Data
+ plane.
+
+The Management plane is responsible for configuration and monitoring of network devices. Uses protocols such as SSH,
+ Telnet and SNMP.
+
+\section*{SDN Architecture}
+
+The network is logically divided into three planes-- the Data, Control and Application planes. The data plane contains 
+ the physical switches, routers and devices in the network. The control plane is made up of software which manages
+ routing, traffic engineering and mobility, typically running on a physical machine somewhere on the network. The
+ application plane contains the SDN applications, business applications and any cloud orchestration software.
+
+The OpenFlow API is used to communicate between the SDN software and physical network devices, which performs the
+ configuration and monitoring of devices, to form the network how the control plane decides. Because the control layer
+ is decoupled from the physical devices, it has only a single interface, allowing administrators to easily and
+ dynamically adjust the network to meet the needs of applications.
+
+\subsection*{OpenFlow Switches}
+
+The first packet of each new device is encapsulated and forwarded to the SDN controller, so routing decisions can be
+ made. The switch forwards all incoming packets through the appropriate port using a flow table. Each flow can
+ temporarily or permanently drop packets, as decided by the controller.
+
+\subsection*{Message Types}
+
+\begin{itemize}
+  \item Controller-to-Switch-- Sent from the controller to one or all switches to configure the switch, or retrieve
+   information from it
+  \item Asynchronous (Switch-to-Controller)-- Sent from the switch to the controller to report packet information,
+   state changes, error rates, and so on
+  \item Symmetric (Switch-to-Controller or Controller-to-Switch)-- Messages sent without solicitation from either side,
+   typically used for health check messages or to check that channels are available
+\end{itemize}
+
+\subsection*{Controller Actions}
+
+\begin{itemize}
+  \item Reactive Mode
+  \begin{itemize}
+    \item The controller is queried when a packet arrives that has no flow entry or an expired timer
+    \item The controller creates and installs a rule to the flow table of switches on the path with rules for that
+     specific packet
+    \item The first switch then forwards the packet according to the new rule(s)
+  \end{itemize}
+  \item Proactive Mode
+  \begin{itemize}
+    \item The controller creates flow rules for all possible types of traffic
+    \item These rules are installed statically ahead of time
+    \item The controller is not queried since all incoming packets should find a flow entry
+    \item This means that packets are switched at line-rate with no delay, but implementing the tables requires lots
+     of expensive memory for moderately large tables
+  \end{itemize}
+\end{itemize}
