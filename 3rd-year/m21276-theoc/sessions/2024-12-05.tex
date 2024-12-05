@@ -1,0 +1,184 @@
+\lecture{B5: Introduction to Computational Complexity}{13:00}{05/12/24}{Janka Chlebikova}
+
+Theoretically, any decidable problems are solvable by Turing machines and therefore modern computers. However, it is not
+ always practical to solve these problems due to limited time, memory, storage, etc.
+
+\section*{Developing a Solution}
+
+Developing a solution to a problem typically involves at least 4 steps--
+\begin{itemize}
+  \item Designing an algorithm or procedure for solving the problem
+  \item Analysing the correctness and efficiency of the algorithm
+  \item Implementing the algorithm in some programming language
+  \item Testing the implementation
+\end{itemize}
+
+\section*{Time Complexity}
+
+Informally, one may describe a program or algorithm as being `fast' or `slow', but the actual execution time of an
+ algorithm depends on many different factors. This includes-- the algorithm itself, the programming language used to
+ implement the algorithm, the quality of the algorithm, the computer actually running the code, and the size of the
+ input to the algorithm.
+
+Formally, when analysing the efficiency of an algorithm you would focus on the `speed' (or complexity) of the algorithm
+ as a function of the size of the input upon which it is run. The time-complexity function $T(n)$ of an algorithm
+ expresses the number of operations which the algorithm needs to execute to get the result for an input of size $n$.
+ You almost always refer to the worst-case time complexity of an algorithm, as then the algorithm must always finish
+ in that time or less, for all inputs of size $n$.
+
+\begin{example*}{}{}
+  With the array sum problem (given a list of $n$ integers, return their sum), how does the time taken scale with the
+   size of the input?
+
+  \begin{itemize}
+    \item Problem-- Add all $n$ integers in the array $S$
+    \item Inputs-- A positive integer $n$, and an array of numbers $S$ indexed from $1$ to $n$
+    \item Outputs-- An integer, the sum of the integers in $S$
+  \end{itemize}
+
+  We may chose to implement this using a for-loop over the array which adds the current integer to a running total at
+   each step. If we implement it using this method, we would have 4 main steps, each of which taking a different length
+   of time-- Initialising the function ($t_1$), setting up the loop ($t_2$), iterating the loop and adding to the total
+   ($t_3$), finalising the function and returning the result ($t_4$).
+
+  \begin{itemize}
+    \item Operation-- Adding the current item to the running total is the most expensive (in terms of time) operation
+     in the implementation
+    \item Input size-- The size of the input is proportional to $n$, the number of items in the array
+    \item Time complexity function-- The time required is dominated by the addition operation $t_3$, which is called
+     $n$ times and so, $T(n) \approx t_1 + t_2 + t_3 \times n + t_4$
+  \end{itemize}
+
+  We can then simplify $T(n)$ by removing the less significant times, in this case anything that requires constant time,
+   and get $T(n) = A \times n$ where $A$ is a suitable constant corresponding to the number of primitive operations
+   needed to perform the addition.
+\end{example*}
+
+\begin{example*}{}{}
+  \huge Add key searching example
+\end{example*}
+
+As in the previous example, there may be multiple perfectly valid solutions to a problem, but there is often only one
+ which is optimal, with the lowest time-complexity. It is almost always desirable to reduce the time-complexity of an
+ algorithm, especially if the algorithm is going to be run repeatedly or on a slow computer.
+
+\section*{The Travelling Salesman Problem}
+
+Problem-- There are $n$ cities labelled $C_1, C_2, \ldots, c_n$ for which the distance $d_{i,j}$ between any two cities
+ $C_i$ and $C_j$ is known. Find the shortest possible path that visits each city exactly once.
+
+\subsection*{Brute-Force}
+
+One possible solution to solve this problem would be to brute-force every possible routing, and pick the one of the
+ shortest length. But, this may be inefficient depending upon how many possible routes there are. Clearly, there are
+\begin{itemize}
+  \item $n - 1$ ways to select the first city
+  \item $n - 2$ ways to select the second city
+  \item And so on, until there is only one city left to visit
+\end{itemize}
+
+That means that the number of possible routes would be
+\begin{equation*}
+  \frac{(n-1) \times (n-2) \times \cdots \times 1}{2} = \frac{(n-1)!}{2}
+\end{equation*}
+which is clearly a factorial function, which grows rapidly.
+
+If we were to implement this brute-force function, we would see that each possible route requires $n$ additions, and
+ there are ${(n-1)!}$ routes, so it would require $n \times {(n-1)!}$ additions. The time-complexity of the algorithm
+ would therefore be $T(n) = A \times {n!}$. This is obviously a very inefficient algorithm, and would quickly become
+ infeasible to run on a computer with a relatively small number of cities.
+
+\subsection*{Other Algorithms}
+
+There are various other algorithms which can solve the travelling salesman problem, but they all have a limit to the
+ number of cities before they two become infeasible.
+\begin{itemize}
+  \item Various branch-and-bound algorithms can be used with up to 86000 cities
+  \item Progressive improvement algorithms can work well for up to 200 cities
+  \item An exact solution was found for 15112 cities using a solution based on linear programming
+\end{itemize}
+
+
+
+\lecture{B6: Asymptotic Growth}{13:00}{05/12/24}{Janka Chlebikova}
+
+There are usually several algorithms which can solve any given problem. Ideally, we want to use the algorithm which
+ has the lowest time-complexity, and uses the least memory.
+
+{\huge add time-complexity graph}
+
+There are two factors two consider when comparing the time-complexity of two algorithms--
+\begin{itemize}
+  \item It is usually important to know how fast the time taken to run an algorithm grows with the size of the input
+   to the function
+  \item Counting the basic steps in a time-complexity function does not give a completely accurate picture, since it
+   depends heavily on the programming language, compiler, and computer used to implement the algorithm, but the
+   difference is at most a constant factor
+\end{itemize}
+
+We can see from this that comparing the time complexity of the algorithms is equivalent to comparing the asymptotic
+ growth of the time-complexity functions.
+
+\section*{Asymptotic Analysis}
+
+If we have two algorithms with the time complexities $T_A(n) = n + 10$ and $T_B(n) = n$, then the growth of the
+ functions is the same, and for large values of $n$, $n \approx n + 10$.
+
+If the two algorithms instead had the time-complexities $T_A(n) = 4n^2 + 3n + 10$ and $T_B(n) = 2n^2$, then the growth
+ is once again the same, as for large values of $n$, $4n^2 + 3n + 10 \approx 2n^2 \approx n^2$.
+
+If we wanted to formally express the rate of growth of a function, we want to keep the dominant term with respect to $n$
+, but ignore any constants around it. We also want to formalise that an $n \log{10}{n}$ algorithm is better than an
+ $n^2$ algorithm.
+
+\subsection*{Big-O}
+
+One way of formalising this is the Big-O notation. $O(\ldots)$ is known as an asymptotic upper bound of a function.
+
+Informally, when $f, g$ are two non-negative functions, then $f(n)$ is $O(g(n))$ if $f$ grows at most as fast as $g$.
+ Formally, $f(n) = O(g(n))$ if there exists $c, n_0 \in \mathbb{R}^+$ such that for all $n \geq n_0$,
+ $f(n) \leq c \times g(n)$.
+
+We write $f(n) = O(g(n))$ or $f(n) \in O(g(n))$ and read this as `$f(n)$ is big O of $g(n)$'.
+
+\begin{example*}{}{}
+  $2n^2 + 10 = O(g(n))$ if there exists $c, n_0 \in \mathbb{R}^+$ such that $c \times g(n) \geq 2n^2 + 10$ for all
+   $n \geq n_0$.
+
+  Therefore, $2n^2 + 10 = O(n^2)$ since $3n^2 \geq 2n^2 + 10$ for all $n \geq 4$, hence $c = 3$ and $n_0 = 4$. But we
+   could also use $c = 100$ and $n_0 = 1$, since this still holds the rule.
+\end{example*}
+
+So, Big-O gives an upper-bound on the growth of $f$, but not necessarily a tight one.
+
+\subsection*{Big Omega (or $\Omega$-notation)}
+
+Big Omega is known as an asymptotic lower bound of a function.
+
+Informally, when $f, g$ are two functions, then $f(n)$ is $\Omega(g(n))$ if $f$ grows at least as fast as $g$.
+ Formally, $f(n) = \Omega(g(n))$ if there exists $c, n_0 \in \mathbb{R}^+$ such that for all $n \geq n_0$,
+ $f(n) \geq c \times g(n)$.
+
+We write $f(n) = \Omega(g(n))$ or $f(n) \in \Omega(g(n))$ and read this as `$f(n)$ is big omega of $g(n)$'.
+
+\begin{example*}{}{}
+  $4n^2 - 10 = \Omega(n^2)$ if there exists $c, n_0 \in \mathbb{R}^+$ such that $c \times g(n) \leq 4n^2 - 10$ for all
+   $n \geq n_0$.
+
+  Therefore, $4n^2 - 10 = \Omega(n^2)$ since $n^2 \leq 4n^2 - 10$ for all $n \geq 2$, hence $c = 1$ and $n_0 = 2$.
+\end{example*}
+
+\subsection*{Big Theta (or $\Theta$-notation)}
+
+Big Theta is known as the asymptotic tight bound of a function.
+
+Informally, when $f, g$ are two functions, then $f(n)$ is $\Theta(g(n))$ if $f$ is essentially the same as $g$, to
+ within a constant multiple. Formally, $f(n) = \Theta(g(n))$ if $f(n) = O(g(n))$ and $f(n) = \Omega(g(n))$.
+
+We write $f(n) = \Theta(g(n))$ or $f(n) \in \Theta(g(n))$ and read this as $f(n)$ is big theta of $g(n)$
+
+\begin{example*}{}{}
+  \huge add big theta example
+\end{example*}
+
+{\huge finish off from slide 17}
