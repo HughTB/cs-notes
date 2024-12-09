@@ -1,0 +1,108 @@
+\lecture{Satellite Networks}{11:00}{09/12/24}{Asim Ali}
+
+Most communication satellites effectively act as a reflector which sends signals between two stations on the ground.
+ They typically have several transponders, each of which is able to listen to several portions of the spectrum, and
+ amplify the incoming (uplink) signal, change it's frequency and then broadcasts it to the receiving station (downlink).
+ Each ground station has it's own transmitters and receivers, with antennae pointed towards the satellite. They allow
+ communication between two points on the ground which do not have line-of-sight, typically due to their distance and
+ the curvature of the Earth.
+
+Satellites can either be point-to-point, or have a broadcast link, where there is one transmitter, and the signal is
+ amplified and broadcasted to multiple receivers on the ground.
+
+\section*{Satellite Orbits}
+
+There are several important factors which determine which orbit a satellite will use, such as where it needs to have
+ line-of-sight, and when. All orbits have an apogee (the furthest point from Earth) and a perigee (closest point to
+ Earth). If the orbit is elliptical, then it is usually off-centre, and so the satellite gets much closer and further
+ away along it's orbit. There are also circular orbits, which are more useful for Geostationary orbits, or for
+ satellites which need to be a constant distance from the ground.
+
+\subsection*{Orbital Periods}
+
+The orbital period is the time it takes for the satellite to make one complete orbit around the planet, and it can be
+ calculated as
+\begin{equation*}
+  T = \frac{{(R + A)}^{1.5}}{100}
+\end{equation*}
+ where $R$ is the radius of the earth (6378Km), $A$ is the altitude of the satellite, and $T$ is the orbital period in
+ seconds.
+
+\subsection*{Different Orbits}
+
+There are three main types of orbits which are used for communication satellites--
+\begin{itemize}
+  \item Low-Earth Orbit (LEO)-- 500 to 1500Km altitude, moving very quickly. Much lower latency than other orbits
+  \item Medium-Earth Orbit (MEO)-- 5000 to 18000Km altitude, moving slower than LEO. Higher latency than LEO but lower
+   than geostationary
+  \item Geostationary-Earth Orbit (GEO)-- Roughly 35786Km altitude, moving much slower than MEO. Much higher latency
+   than LEO or MEO, but always above the same point on Earth, so useful for static communication links
+\end{itemize}
+
+There are also two layers of the Van Allen belt, which are layers of charged particles, which very quickly destroy any
+ satellites which enter them. They are from 1500 to 5000 and 15000 to 20000Km in altitude.
+
+Using a higher orbit increases the coverage area of each satellite, which means that less are needed for full coverage.
+ However, it also greatly increases latency and so is not suitable for realtime communications.
+
+\subsection*{Geostationary Satellites}
+
+Since the orbital period of a geostationary satellite is 24 hours, they always stay above the same point on the equator,
+ which means that antennae don't need to constantly adjust to follow the satellite as they move across the sky. They
+ provide great coverage, theoretically covering 120 degrees of the surface, everywhere except the poles, meaning that
+ only 3 satellites are needed for total coverage. There are at most 180 satellites in a perfect geostationary orbit
+ at any time, as they need 2 degrees of rotational separation to ensure they don't collide. The allocation of `slots'
+ is managed by the ITU.
+
+\subsection*{LEO Satellites}
+
+Typically have a circular or slightly elliptical orbit, with an altitude lower than 2000Km. The orbital period is
+ typically anywhere from 1.5 to 2 hours, and they typically have a coverage area with a diameter of roughly 8000Km.
+ They are typically only visible for up to 20 minutes at any given point, and so the system must be able to aim the
+ antennae to maintain line-of-sight. There is also a large amount of doppler shift in the signal due to the very high
+ relative speed of the satellites. Because they orbit so low, they experience atmospheric drag and must boost their
+ altitude often to avoid orbital deterioration and then falling back to Earth and burning up.
+
+\subsection*{MEO Satellites}
+
+Can have either circular or elliptical orbit, with an altitude from 5000 to 18000Km. The orbital period is typically
+ roughly 6 hours. They do not experience atmospheric drag, and so typically have a longer lifespan than LEO satellites.
+ GPS satellites are typically MEO, and orbit at around 18000Km. Their orbits are usually inclined with respect to the
+ equator, which means that they cover a larger portion of the surface over time.
+
+\section*{Frequency Bands}
+
+{\Huge add table here}
+
+\subsection*{Transmission Performance}
+
+There are several factors which determine the performance of a satellite communication link--
+\begin{itemize}
+  \item The distance between the station antennae and the satellite antennae, due to signal dissipation and latency
+  \item The ground distance between the station antennae and the main focus point of the satellite
+  \item Atmospheric attenuation due to varying weather and atmospheric pressure
+\end{itemize}
+
+\section*{Satellite Capacity Allocation}
+
+Since there is a limited number of satellites in each orbit, and each satellite has a limited number of transponders,
+ to serve a large number of users it is necessary to use multiplexing to increase capacity. Methods discussed before
+ are used.
+
+\subsection*{Frequency Division Multiple Access (FDMA)}
+
+The bandwidth assigned to the satellite is divided into channels, for example a 500MHz bandwidth divided into 24 40MHz
+ channels, with a guard band of 4MHz built in. Each of the channels could be used for any purpose, and they can all
+ transmit simultaneously without colliding. There are only 12 40MHz channels in a 500MHz band, but satellites often use
+ horizontal and vertical polarisation to double the bandwidth available. Within each channel, there can be multiple
+ stations, each of which uses a different amount of bandwidth and different frequencies.
+
+\subsection*{Time Division Multiple Access (TDMA)}
+
+There are a set number of slots in each second, which are divided up so that each station has the same share of time.
+ The uplink is divided up and each of the stations transmits at a different time, only to the satellite. The downlink
+ is divided up and the satellite broadcasts all of the data to all of the stations, and they ignore any data destined
+ for the other stations. There is also a guard time between each slot, to make sure that there are no collisions. At the
+ start of each frame, there is a so-called `reference burst', which are used to denote the start of a new frame, and to
+ synchronise the clocks in the devices.
+
