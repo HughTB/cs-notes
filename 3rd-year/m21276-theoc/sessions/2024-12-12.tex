@@ -1,0 +1,77 @@
+\lecture{B7: Analysis of Algorithms}{13:00}{12/12/24}{Janka Chlebikova}
+
+\section*{Sorting Algorithms}
+
+\begin{itemize}
+  \item \textbf{Problem}-- Sort $n$ integers in ascending order
+  \item \textbf{Inputs}-- Positive integer $n$, array $S$ of integers indexed from $1$ to $n$
+  \item \textbf{Output}-- The array $S$ containing the integers sorted in ascending order
+\end{itemize}
+
+There are many algorithms which can be used to sort arrays, each of which has a different time-complexity. Each
+ algorithm is not explained, as they have been covered in previous modules. Any new algorithms are explained fully.
+
+\subsection*{Bubble Sort}
+
+The algorithm makes use of two nested for-loops, one of which repeats $n - 1$ times, and the other repeats $n - i$ times
+ for every loop of the other for-loop, i.e. $\sum_{i=1}^{n-1} (n - i)$.
+
+If you then simplify this, it works out as
+\begin{equation*}
+  \sum_{i=1}^{n-1} (n - i) = n(n-1) - \sum_{i=1}^{n-1} i = n(n - 1) - \frac{n(n-1)}{2} = \frac{n(n-1)}{2}
+\end{equation*}
+and so, $T(n) = \Theta(n^2)$.
+
+\subsection*{Exchange Sort}
+
+The first unsorted element is compared to every subsequent element, and if they need to be, they are swapped. This is
+ repeated until no swaps are needed, which indicates that the list is sorted. After each iteration, the next smallest
+ item is moved to the correct position.
+
+Once again, the algorithm makes use of two nested for-loops, one of which repeats $n - 1$ times, and the other repeats
+ $n - i$ times for every loop of the other for-loop, i.e. $\sum_{i=1}^{n-1} (n - i)$.
+
+ If you then simplify this, it also works out as
+ \begin{equation*}
+   \sum_{i=1}^{n-1} (n - i) = n(n-1) - \sum_{i=1}^{n-1} i = n(n - 1) - \frac{n(n-1)}{2} = \frac{n(n-1)}{2}
+ \end{equation*}
+ and so, $T(n) = \Theta(n^2)$.
+
+\subsection*{Insertion Sort}
+
+This algorithm makes use of a for-loop with a nested while-loop. This once again works out such that
+ $T(n) = \Theta(n^2)$, since it uses nested loops. Any algorithm with nested loops, each iteration of which takes
+ constant time, will end up running in exponential time, as each loop runs in linear time, which are effectively
+ multiplied by being nested.
+
+\subsection*{Merge Sort}
+
+If the size of the array is already 1, then the algorithm completes in constant time, as the array is already sorted.
+ The time taken to sort an array of size $n$ is roughly $2T(\frac{n}{2})$, since it splits the array into two smaller
+ arrays of size $\frac{n}{2}$.
+ 
+We then need to merge the two arrays together, which requires $n$ comparisons between the items in each of the arrays,
+ and so runs in linear time. Since each level of recursion spits the problem in half, the number of recursions needed
+ is the logarithm to the base 2 of $n$, $\log_{2}{n}$.
+
+Since the two steps are linear and logarithmic time, when we multiply the two together, we end up with the final
+ $T(n) = \Theta(n \log_{2}{n})$.
+
+\subsection*{Comparison}
+
+Since $n \log_{2}{n}$ grows slower than $n^2$ asymptotically, the merge sort algorithm is more efficient than the others, at least in the worst case.
+
+\section*{Towers of Hanoi}
+
+It is not immediately obvious that there is a general solution for $n$ disks, but it can actually be solved recursively.
+ In general, $T(n) \leq 2 \times T(n - 1) + 1$, e.g. $T(3) \leq 2 \times T(2) + 1$. The lower bound for this recursion
+ is when $n = 1$, since only 1 move is needed to move the single disk. Therefore, we can say that the number of steps
+ would be
+\begin{align*}
+  T(1) &= 1\\
+  T(n) &= 2 \times T(n - 1) + 1
+\end{align*}
+
+
+\lecture{B8: Problem Complexity and Classification of Problems}{13:00}{12/12/24}{Janka Chlebikova}
+
