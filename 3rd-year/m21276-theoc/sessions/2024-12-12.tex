@@ -75,3 +75,127 @@ It is not immediately obvious that there is a general solution for $n$ disks, bu
 
 \lecture{B8: Problem Complexity and Classification of Problems}{13:00}{12/12/24}{Janka Chlebikova}
 
+As well as the complexity of the algorithm, it is sometimes useful to be able to talk about the complexity of a problem.
+ There is often no way to give a definitive complexity, but we can at least find the upper and lower bounds.
+
+\section*{Upper Bounds}
+
+Upper bounds are typically defined by the most efficient known algorithm, and each time a more efficient algorithm is
+ found, the upper bound decreases to that point. For example, if the first known algorithm $A$ to solve a problem $Q$
+ has a time-complexity of $O(n^3)$, then the upper bound for $Q$ would also be $O(n^3)$. Later, an algorithm is
+ discovered which can solve $Q$ in $O(n^2)$ time. The upper bound for $Q$ therefore becomes $O(n^2)$. Each successive
+ algorithm improvement moves the upper bound downwards.
+
+\section*{Lower Bounds}
+
+Lower bounds are typically defined by what can be proven about the problem. For example, if a problem $Q$ is proven to
+ not be solvable in less than linear time $\Omega(n)$, then the problem complexity cannot be lower than $\Omega(n)$.
+ It is later proven that the problem cannot be solved in less than $\Omega(n \log_{2}{n})$ time, and as such, the lower
+ bound for the complexity becomes $\Omega(n \log_{2}{n})$. Each successive proof moves the lower bound upwards.
+
+Finding these proofs is typically very difficult, as it must be generalised for all possible algorithms that can solve
+ the problem. As the lower bound approaches the upper bound, it becomes harder and harder to prove.
+
+\section*{Open Complexity}
+
+The complexity of most problems is not fully known. In some cases, the upper and lower bound reach the same complexity,
+ in which case that is exactly the problem complexity. In the vast majority of cases, there's a difference between the
+ upper and lower bounds, meaning that more experimentation and research needs to be done into the topic to be certain.
+
+There are some simple problems which we do know definitively the complexities for--
+\begin{itemize}
+  \item Searching an unordered list of items-- Upper and lower bound are linear, so problem complexity is $\Theta(n)$
+  \item Searching an ordered list of items-- Upper and lower bound are logarithmic, so problem complexity is
+   $\Theta(\log n)$
+  \item Sorting an arbitrary array-- Upper and lower bound are both logarithmic, so problem complexity is
+   $\Theta(n \log n)$
+\end{itemize}
+
+From this, we can also see that the merge sort algorithm is already as efficient as possible at sorting an arbitrary
+ array, as it's time-complexity is $\Theta(n \log n)$.
+
+\section*{Decision Trees}
+
+Decision trees can be used to prove a lower bound as being logarithmic. Since we can often use a tree to represent the
+ decision process that takes place in an algorithm, it is a useful tool to see how many decisions are actually required
+ to solve a problem. If each step has only two outcomes, then it is a binary decision tree. We may need a tree with
+ more possible outcomes, in which case we can use a tree with a higher degree, where there are at most $k$ outcomes
+ at each step, for some constant $k$.
+
+The depth of a decision tree often corresponds to the lower bound for the complexity of a problem, as the worst-case
+ scenario for the run time is just the maximum depth. The depth is certainly a lower bound on the actual running time,
+ which is typically good enough to prove the lower bound for the complexity of a problem.
+
+\subsection*{Why Logarithms?}
+
+If a problem has $n$ different outputs, then any decision tree for the problem must have at least $n$ leaves. Since the
+ number of leaves in a binary tree of height $h$ is at most $2^h$, $2^h \geq n$, and so the height of the decision tree
+ must be at least $\lceil \log_{2}{n} \rceil$ or $\Omega(\log n)$.
+
+\section*{Intractable Problems}
+
+We've seen decidable and undecidable problems so far, but some problems are partially decidable, meaning there is an
+ algorithm which may return yes, but may never return no for any given input.
+
+Decidable problems can also be split into three categories--
+\begin{enumerate}
+  \item (Proven) Intractable-- Solvable, but impractical
+  \item (Apparently) Intractable-- Problems which \textit{appear} to be intractable but which have not been proven so
+  \item Tractable-- Practically solvable
+\end{enumerate}
+
+\subsection*{Proven Intractable Problems}
+
+There are two types of problems in this category, those which require a non-polynomial amount of time to solve, such
+ as the travelling salesman problem and the towers of Hanoi. Both are proven to be solvable, but require unreasonable
+ amounts of time, requiring ${(n - 1)!}$ and $2^n - 1$ steps to solve, respectively.
+
+There are also problems which \textbf{do not} require a non-polynomial amount of time, but which we can prove cannot
+ be solved in polynomial time. Only a few of these problems are known to exist, and all of them were created with the
+ sole intention of proving their existence, not to solve a real problem.
+
+\subsection*{Apparently Intractable Problems}
+
+In the case of these problems, no polynomial-time algorithms have been discovered, but it has also not been proven to
+ not exist. Examples of this include the Hamiltonian cycle and travelling salesman problems.
+
+\subsection*{Tractable Problems}
+
+Tractable problems are those that already have a polynomial-time algorithm to solve them.
+
+
+\section*{Decision Problems}
+
+All previous discussion includes any types of problem, including decision problems, but there are some unique features
+ of decision problems. They are all those problems whose outputs are simply yes or no. Many problems can also be
+ re-written to become decision problems. For example, we could re-write the travelling salesman problem as-- Given $n$
+ cities, the pairwise distances between them and a constant $d > 0$, is it possible to find a round trip with a total
+ length less than $d$?
+
+\subsection*{Complexity Classes}
+
+Decision problems can be separated into so-called complexity classes, $P$, $NP$ and $NP-\mathrm{complete}$.
+
+\subsubsection*{$P$}
+
+The class $P$ is the set of all decision problems that can be solved by polynomial-time algorithms. That means that it
+ is also just the set of tractable decision problems. It does not contain proven intractable or undecidable problems,
+ as are proven to not be solvable in polynomial time.
+
+\subsubsection*{$NP$}
+
+The class $NP$ is the set of all non-deterministically polynomial problems. That means that there is a non-deterministic
+ algorithm which can solve the problem in polynomial time. A non-deterministic algorithm allows at every possible step
+ multiple continuations. These algorithms accept an input if there exists a sequence of choices for which the algorithm
+ returns yes. What this really means is that the algorithm must be able to produce a yes within polynomial time, but
+ may take longer to produce a no.
+
+An $NP$ solution can be thought of as having two stages--
+\begin{itemize}
+  \item Guessing Stage-- Make a guess at a solution, using any means
+  \item Verification Stage-- A deterministic algorithm checks if the solution completes in polynomial time, definitely
+   halting in every case where the answer is yes
+\end{itemize}
+
+One example of this is the decision version of the travelling salesman problem, as we only need to be able to decide if
+ the solution is correct in polynomial, not actually come up with the solution.
