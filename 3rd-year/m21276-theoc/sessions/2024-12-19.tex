@@ -1,0 +1,97 @@
+\lecture{B9: P, NP and NP-Complete Problems}{13:00}{19/12/24}{Janka Chlebikova}
+
+\section*{$P$ and $NP$}
+
+To prove a problem is in $P$, you must write an algorithm which can solve it in polynomial time. To prove a problem is
+ in $NP$, you mist write an algorithm which can check a given yes-solution in polynomial time.
+
+Everything in $P$ is in $NP$, such as $P \subseteq NP$, since to be in $P$ the problem must be solvable in polynomial
+ time with a deterministic Turing machine, which is also clearly a non-deterministic Turing machine.
+
+So far, no one has found a problem in $NP$ which is definitely not in $P$, but also it has not been proven that all
+ problems in $NP$ are also in $P$. The consensus so far is that $P \neq NP$, but it is still as yet unproven.
+
+\section*{$NP$-complete}
+
+Within the $NP$ problems, some are more `difficult' than others. In 1979, Cook discovered that there are a number of
+ problems which are the hardest in $NP$, known as the $NP$-complete problems. The first problem shown to be
+ $NP$-complete was the satisfiability problem.
+
+\textbf{Satisfiability Problem}-- Given a boolean expression written using only AND, OR, NOT, variables and parentheses,
+ is there an assignment of True/False values to the variables which makes the entire expression true? Every such boolean
+ expression is equivalent to the one in conjunctive normal form.
+
+The base problem is in $NP$, as the checking stage can be performed in $O(n)$ time. A restricted form of the problem,
+ the 3-satisfiability problem, is $NP$-complete.
+
+$NP$-complete problems are all equivalent in the sense that if any one of them is in $P$, then all of them are. If any
+ $NP$-complete problem is shown to have a polynomial time solution, we can deduce that $P = NP$.
+
+Any $NP$ problem can be solved by an exponential algorithm, but for none of them a polynomial algorithm is known.
+ Further, no-one has been able to prove that no polynomial algorithm exists for any of those problems.
+
+\begin{definition*}{}{}
+  A decision problem, $B$ is $NP$-complete if
+  \begin{itemize}
+    \item $B \in NP$
+    \item $A \leq B$ for all problems where $A \in NP$, i.e. $NP$-complete problems are problems in $NP$ to which all
+     other $NP$ problems can be reduced in polynomial time
+  \end{itemize}
+
+  To prove that a problem is $NP$-complete--
+  \begin{enumerate}
+    \item Prove that the problem is in $NP$
+    \item Find an $NP$-complete problem $A$ which can be polynomially reduced to the problem
+  \end{enumerate}
+\end{definition*}
+
+\section*{Polynomially Reducible}
+
+Given two problems, a polynomial-time reduction is an algorithm which runs in polynomial time and reduces one problem
+ to the other. Suppose that we know how to solve problem $B$ and want to know how to solve problem $A$. What we need to
+ find is a polynomial reduction which transforms the an input $I_A$ of $A$ to the input of $I_B$ of $B$ in such a way
+ that $B$'s answer to $I_B$ is the same as $A$'s answer to $I_A$.
+
+Then, if we have an input $I_A$ to $A$, we can transform $I_A$ to an input $I_B$ for $B$, and use the algorithm for $B$
+ to get the desired output. Therefore, if we had a polynomial algorithm for $B$, we would have a polynomial algorithm
+ for $A$ as well.
+
+{\Huge add example?}
+
+\section*{$NP$-hard}
+
+A problem is $NP$-hard if all $NP$ problems can be polynomially reduced to it. An $NP$-hard problem does not need to be
+ in $NP$, and it does not need to be a decision problem. For example, the original TSP is $NP$-hard, and the decision
+ version of the TSP is $NP$-complete.
+
+
+\lecture{B10: Tackling NP-complete \& NP-hard Problems}{13:00}{12/12/24}{Janka Chlebikova}
+
+If the problem is known to be $NP$-complete or $NP$-hard, then we know there is no point looking for an optimal solution.
+ Instead, it may be useful to look for an algorithm which comes close to the real answer, or which can get the correct
+ answer for a subset of inputs.
+
+\section*{Heuristic Solutions}
+
+An algorithm which works `reasonably well' for many instances, but for which there is no proof that the algorithm is
+ always fast or always produces a good solution. This also contains genetic algorithms.
+
+\section*{Approximation Algorithms}
+
+An algorithm which finds a solution that is `close' to optimal in polynomial time, for every instance. There must be a
+ proof that these properties are true. For any given problem, `close' may have a different meaning, either due to the
+ nature of the problem, or the needed accuracy of the solution. The `closeness' could mean anything arbitrarily close
+ to the optimal solution, such as $1 + \epsilon$ for any $\epsilon$, or a constant factor, or even worse.
+
+\section*{Restricting the Input}
+
+Some $NP$-hard and $NP$-complete problems can be in $P$, if we solve them only for a subset of the inputs. For example,
+ the 3-satisfiability problem is $NP$-complete but the 1- and 2-satisfiability problems are in $P$.
+
+\section*{Parametrisation}
+
+There are often fast algorithms to solve problems, if certain parameters are fixed, or have a small value.
+
+\section*{Probabilistic Solutions}
+
+There are some algorithms which are usually correct, but give an incorrect answer in a small number of cases.
