@@ -1,0 +1,54 @@
+\lecture{Introduction to DS\&S}{10:00}{27/01/25}{Amanda Peart}
+
+\section*{Module Info}
+
+Spit into two parts, Distributed Systems covered in the first 8 weeks and lectured by Amanda, Security covered in the last 4 weeks, lectured by Fahad.
+
+\begin{itemize}
+  \item Distributed Systems covered by a 60\% exam, Weds 26th March
+  \item Security covered by a 40\% exam
+\end{itemize}
+
+\lecture{Distributed Systems}{10:00}{27/01/25}{Amanda Peart}
+
+\section*{What is a Distributed System?}
+
+A distributed system is the interactions between two or more computers, which are connected in some way to form a single computing system. The two main issues with distributed systems are how to connect the devices, and how to make them interact.
+
+\begin{definition*}{}{}
+  A distributed system is one which is made up of a set of independent computers which appear to the user as a single system. They are typically connected using a coordination system, which may use any of many networking and communications standards.
+\end{definition*}
+
+\subsection*{Networking Requirements}
+
+Most systems typically require fast and reliable networking to coordinate between systems. The often also require access to large amounts of data, which may needed to be accessed by any or all of the systems at the same time, so fast and reliable storage is also necessary.
+
+\section*{Parts of a Distributed System}
+
+There are several levels to a distributed system, from what runs on each machine to the system as a whole. The low-level systems work on a per-machine level, and include processes, threads, concurrency, etc. Middleware acts to synchronise and coordinate the different parts of the system and ensure efficiency. The application itself sits on top of the Middleware and manages high-availability and fault tolerance.
+
+\section*{Design Issues}
+
+\subsection*{Naming}
+
+It's important that every part of a distributed system has a useful and descriptive name which have a global meaning. This may be supported by a name interpretation or translation system to allow programs to access named resources.
+
+\subsection*{Access}
+
+It's important to limit who and what can access the system, both in terms of security and accessibility. They should support as many systems as possible 
+
+\subsection*{Communication}
+
+The performance and reliability of the communication system is very important to both the availability and overall performance of the system as a whole.
+
+\subsection*{Software}
+
+Data abstraction is very important as it allows many different systems to interact with the same data on a high-level without needing to convert data constantly between different formats. Part of this is well designed and documented APIs that allow access to the information and systems.
+
+\subsection*{Resource Management}
+
+Optimisation of resources is very important to make sure that there is capacity and availability where it's needed. This includes load balancing and load shifting.
+
+\subsection*{Consistency}
+
+The data must be consistent across the system, and must appear the same for all users.
