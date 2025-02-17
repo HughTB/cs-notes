@@ -1,0 +1,66 @@
+\lecture{Distributed Shared Memory}{09:00}{17/02/25}{Amanda Peart}
+
+Distributed Shared Memory (DSM) simplifies communication between nodes in distributed systems by providing a single memory space that all nodes have equal access to. It simplifies programming, as there is no need to perform explicit message passing between nodes or processes. It theoretically also reduces the overhead inherent in resource sharing, as it does not require the data to be duplicated on every node.
+
+DSM is an abstraction which allows multiple computers which do not share any physical memory to access the same data as if it were a single unified address space. It is usually entirely transparent to the system running on it, as there is typically no need for the program to directly interact with the system implementing the abstraction.
+
+\section*{Key Features}
+
+\begin{itemize}
+  \item \textbf{Transparency}-- The user and the system do not need to know that the memory is distributed
+  \item \textbf{Scalability}-- Nodes should be able to be added and removed without affecting performance or reliability
+  \item \textbf{Consistency Control}-- It is essential to ensure that the memory is exactly the same on all nodes at the same time, to ensure that nodes are not using different or stale values
+  \item \textbf{Synchronisation}-- Using locks, semaphores or other synchronisation techniques to prevent conflicts between nodes
+  \item \textbf{Performance}-- Store data locally to ensure quick access
+\end{itemize}
+
+\section*{Centralised vs Distributed DSM}
+
+\begin{itemize}
+  \item Centralised
+  \begin{itemize}
+    \item Shared memory managed by a single server
+    \item Data is accessed only through the single server
+    \item Data is stored in a single place
+    \item This makes it easier to manage and ensure consistency, but has a single point of failure and a large bottleneck on the performance of the single server
+  \end{itemize}
+  \item Distributed
+  \begin{itemize}
+    \item Memory is stored across multiple nodes but appears as one
+    \item Each node manages part of the memory space
+    \item This reduces the reliance on a single machine both in terms of reliability, and performance, but is significantly harder to manage and ensure consistency between nodes
+  \end{itemize}
+\end{itemize}
+
+\section*{DSM Models}
+
+\begin{itemize}
+  \item Page-Based
+  \begin{itemize}
+    \item Transfers entire memory pages
+    \item Can be efficient for large datasets
+    \item Is susceptible to page faults causing large overhead
+  \end{itemize}
+  \item Object-Based
+  \begin{itemize}
+    \item Transfers single object instances
+    \item Reduced data transfers for each object
+    \item Harder to enforce consistency
+  \end{itemize}
+  \item Variable-Based
+  \begin{itemize}
+    \item Transfers single variable values
+    \item Ideal for sharing small amounts of data infrequently
+    \item Very bad in terms of scalability
+  \end{itemize}
+  \item Library-Based
+  \begin{itemize}
+    \item Run-time RPC/IPC
+    \item Very scalable if implemented correctly
+    \item Code may fail at runtime, causing unrecoverable errors
+  \end{itemize}
+\end{itemize}
+
+\section*{Consistency Models}
+
+{\huge Insert table here}
