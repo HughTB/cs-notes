@@ -1,0 +1,57 @@
+\lecture{Web Services and Naming Systems}{10:00}{22/02/25}{Amanda Peart}
+
+\section*{Web Service Architecture}
+
+\begin{itemize}
+  \item Provider
+  \begin{itemize}
+    \item Creates and offers web services
+    \item Describes their services in a standardised format to be published in a registry
+  \end{itemize}
+  \item Registry
+  \begin{itemize}
+    \item Contains data about services offers by different providers
+    \item Usually includes technical details, as well as company info like addresses and contact details
+  \end{itemize}
+  \item Consumer
+  \begin{itemize}
+    \item Retrieves information about services from the registry
+    \item Uses information from the description to directly connect to the provider and actually use the service
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Web Service Definition Language (WDSL)}
+
+WDSL is a standard method of describing the services offered by a web service. It tells the client what services it offers, how the client should connect to the service, and what the expected results should be. It specifies the protocols and endpoints used, as well as the location of the service.
+
+Typically formatted as XML, especially when used with SOAP APIs, and tells the client exactly what the format of SOAP messages should be, both the request the client must make, and the response it should receive.
+
+\subsection*{Simple Object Access Protocol}
+
+An API standard which defines how web services talk to each other, and how clients should invoke methods on the server. Typically uses XML as the serialized format which is exchanged between the client and server. Each message consists of an envelope that defines what is contained within a message and how to process it, and a set of standards for how the message is formatted. Most SOAP services use HTTP but it is not the only protocol that can be used.
+
+\section*{Naming Systems}
+
+\subsection*{Types of Names}
+
+\begin{itemize}
+  \item \textbf{Human Readable Names}-- Names used by humans, typically abstracted, e.g. URLs, domain names, hostnames, etc.
+  \item \textbf{Identifiers}-- Unique identifiers used within systems, e.g. IP addresses, MAC addresses, etc.
+  \item \textbf{Addresses}-- Internal addresses used by the application, e.g. Memory addresses, storage addresses, etc.
+\end{itemize}
+
+\subsection*{Naming Schemes}
+
+\begin{itemize}
+  \item \textbf{Flat Naming}-- No structure, typically used in peer-to-peer networking
+  \item \textbf{Hierarchical Naming}-- Organised into a hierarchy like a tree, used in DNS, Active Directory, etc.
+  \item \textbf{Attribute Based Naming}-- Names based on the attributes of resources
+\end{itemize}
+
+\subsection*{Name Resolution}
+
+How names are mapped to an address or identifier. Can be centralized to a single server, or can be distributed hierarchically, as in DNS. Can also use caching to improve speed and efficiency, but can introduce consistency issues.
+
+\subsection*{Challenges}
+
+The main challenges in naming schemes are scalability, consistency and security. This is because a naming system needs to be able to handle a large number of names, always be correct, and needs to prevent unauthorized access to name resolution and spoofing naming. There's also the issue of making a naming system that actually makes sense, since it may be based heavily on business-specific schemes, which may not be useful to anyone outside of the organization.
