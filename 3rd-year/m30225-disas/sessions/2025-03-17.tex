@@ -1,0 +1,98 @@
+\lecture{Fault Tolerance}{10:00}{17/03/25}{Amanda Peart}
+
+Fault tolerance is the ability of a system to continue operating in spite of any failures. It is very important as failures are more or less inevitable, given the sheer complexity of many distributed systems.
+
+\section*{Types of Failure}
+
+\begin{itemize}
+  \item Crashing
+  \begin{itemize}
+    \item A node or the software running on it completely stops responding, for example if power fails to the node, or database software crashing in the middle of transactions.
+  \end{itemize}
+  \item Omission
+  \begin{itemize}
+    \item Messages are lost or dropped in transmission, for example network congestion causing transactions to take much longer than expected, or network devices failing and packets being lost.
+  \end{itemize}
+  \item Timing
+  \begin{itemize}
+    \item Part of the system responds too late or too early, for example a banking system not processing transactions in realtime, or transactions not being processed in chronological order leading to inconsistent results.
+  \end{itemize}
+  \item Byzantine
+  \begin{itemize}
+    \item A node sending incorrect data due to code errors or malicious attacks, for example a node in a blockchain network intentionally sending false transactions, or the software producing incorrect results due to a logic error.
+  \end{itemize}
+  \item Network Partition
+  \begin{itemize}
+    \item Some nodes become disconnected from the system as a whole, for example two datacenters losing communication, causing inconsistencies in the stored data.
+  \end{itemize}
+\end{itemize}
+
+\section*{Redundancy and Replication Techniques}
+
+\begin{itemize}
+  \item Data Replication
+  \begin{itemize}
+    \item Primary-Backup model, where one server is the main server which handles writes, but there is one or more backup nodes which are ready to take over requests if the primary node fails
+  \end{itemize}
+  \item Quorum-Based Redundancy
+  \begin{itemize}
+    \item The majority of nodes must agree before an update or transaction can be completed
+  \end{itemize}
+  \item Process Redundancy
+  \begin{itemize}
+    \item Active Replication-- All nodes run in parallel
+    \item Passive Replication-- One node acts as a primary, all others act as passive backups
+  \end{itemize}
+  \item Voting Mechanisms
+  \begin{itemize}
+    \item Used in datastores like databases to ensure all nodes agree before committing a transaction
+  \end{itemize}
+\end{itemize}
+
+\section*{Recovery Mechanisms}
+
+\begin{itemize}
+  \item Checkpointing
+  \begin{itemize}
+    \item Save the state of the entire system periodically, so only data modified after that point is lost in the event of a failure
+  \end{itemize}
+  \item Rollback
+  \begin{itemize}
+    \item Restoring the state of the system to a checkpoint after a failure
+  \end{itemize}
+  \item Message Logging
+  \begin{itemize}
+    \item Store messages before they are processed so they can be re-processed in the event of a crash or other failure
+  \end{itemize}
+  \item Self-healing
+  \begin{itemize}
+    \item Using algorithms or machine learning to monitor the state of the system and predict if system is likely to fail imminently, and either resolve automatically or page administrators
+  \end{itemize}
+\end{itemize}
+
+\section*{Consensus Algorithms}
+
+\begin{itemize}
+  \item Paxos Algorithm
+  \item Raft Algorithm
+  \item Byzantine Fault Tolerance
+\end{itemize}
+
+(To be filled in after seminar)
+
+\section*{Fault Detection Mechanisms}
+
+\begin{itemize}
+  \item Heartbeats
+  \begin{itemize}
+    \item Nodes periodically send a `heartbeat', effectively just a message saying they're still online and working as expected
+  \end{itemize}
+  \item Timeouts
+  \begin{itemize}
+    \item If responses are taking longer than expected or aren't being received at all, the node is marked as failed
+  \end{itemize}
+  \item Gossip Protocols
+  \begin{itemize}
+    \item Nodes spread information about failures throughout the system using peer-to-peer communication
+  \end{itemize}
+\end{itemize}
