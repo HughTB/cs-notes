@@ -1,0 +1,95 @@
+\lecture{Communication Models in Distributed Systems}{10:00}{03/02/25}{Amanda Peart}
+
+\section*{Communication Models}
+
+The communication model of a distributed system defines how each process or node in the system interacts with the others. The models influence the overall design of the system, as well as the efficiency and reliability of the complete system.
+
+\subsection*{Message Passing}
+
+The `nodes' communicate by sending and receiving messages over the network. There are several variants of this model, which may use synchronous or asynchronous message exchange, but all of them require data to be serialised and deserialised before it is sent over the network. Because messages are sent discretely, it can easily suffer from delays and failures in the network.
+
+Examples of message passing include
+\begin{itemize}
+  \item Sockets (Both TCP and UDP)
+  \item Remote Procedure Call (RPC)
+  \item Message Queue Systems (RabbitMQ, Kafka)
+  \item REST APIs
+\end{itemize}
+
+\subsection*{Shared Memory Model}
+
+Nodes communicate by reading and writing data to a shared memory space. This model is more commonly used in multi-threaded distributed systems running on a single physical machine, but can be used in a fully distributed system when some form of Distributed Shared Memory (DSM) is implemented. Because the memory is directly shared between nodes, there is no need to exchange messages, and as such the overhead is much lower. It also provides a global abstraction of all of the memory used by a system. There is however the overhead of some sort of synchronisation mechanism, such as locks or semaphores to ensure data integrity.
+
+Examples of a shared memory model include
+\begin{itemize}
+  \item Distributed Shared Memory (DSM)
+  \item Distributed File Systems
+  \begin{itemize}
+    \item Google File System (Used in Google Drive and other Google services)
+    \item Hadoop Distributed File System
+  \end{itemize}
+\end{itemize}
+
+\subsection*{Remote Procedure Call (RPC)}
+
+Nodes are able to invoke functions on remote systems as if it were a local function call, with the result being returned as normal to the caller. All network communication details are abstracted away. Can be either blocking (synchronous) or non-blocking (asynchronous). Also requires serialisation, as it typically uses message passing in the backend to actually initiate function calls and return results.
+
+Examples of RPC include
+\begin{itemize}
+  \item gRPC (Google Remote Procedure Call)
+  \item Apache Thrift
+  \item Java RMI (Remote Method Invocation)
+\end{itemize}
+
+\subsection*{Publish-Subscribe}
+
+Nodes communicate using event-based messaging, where publishers broadcast messages, not knowing who the subscribers are. It is a decoupled architecture, meaning that there is no direct connection between the sender and receiver(s). It is always asynchronous communication, as once the message is sent, the publisher does not receive any confirmations.
+
+Examples of Publish-Subscribe include
+\begin{itemize}
+  \item Real-time video and audio streaming
+  \item Apache Kafka
+  \item MQTT (Message Queueing Telemetry Transport)
+\end{itemize}
+
+\subsection*{Data Streaming}
+
+Nodes continuously send and receive data in real-time. This model is ideal for applications which require low latency data transmission. Typically used in real-time data analytics and monitoring. Often used in conjunction with a publish-subscribe system.
+
+\subsection*{Peer-to-Peer (P2P)}
+
+All nodes act as both clients and servers, which are able to share data and resources without any centralised authority. With this decentralised architecture, it is highly scalable and reliable, but may run into consistency issues, especially if any rogue nodes connect.
+
+Examples of P2P include
+\begin{itemize}
+  \item Blockchains
+  \item P2P file sharing such as Torrents and Usenet
+  \item Various game networks
+\end{itemize}
+
+\subsection*{Tuple Space Model}
+
+Processes interact through a shared tuple space, where they can read, write and `take' data tuples rather than directly exchanging messages. It is decoupled in both time and space, meaning that process need not be online all at once. Often used in distributed coordination and parallel computing.
+
+Examples of the Tuple Space Model include
+\begin{itemize}
+  \item JavaSpaces
+  \item Apache ZooKeeper
+  \item TIBCO Rendezvous
+\end{itemize}
+
+\section*{Comparison of Communication Models}
+
+\begin{center}
+  \begin{tabular}{ p{0.1\textwidth} p{0.1\textwidth} p{0.2\textwidth} p{0.2\textwidth} p{0.2\textwidth} }
+    Model & Type & Pros & Cons & Examples\\
+    \hline
+    Message Passing & Direct & Scalable, widely used & Requires message handling and serialisation & TCP/IP, RabbitMQ\\
+    Shared Memory & Indirect & Fast data access & Synchronisation overhead & Hadoop DFS\\
+    RPC & Direct & Abstracts network details & Can be blocking & gRPC, Java RMI\\
+    Publish-Subscribe & Indirect & Decoupled, scalable & Unpredictable latency & Kafka, MQTT\\
+    Data Streaming & Direct & Real-time, low latency & Complex implementation & Video \& Audio streaming\\
+    P2P & Direct & Decentralised, fault tolerant & Data consistency issues & Blockchain, BitTorrent\\
+    Tuple Space & Indirect & Asynchronous coordination & Complexity in managing tuples & JavaSpaces\\
+  \end{tabular}
+\end{center}
