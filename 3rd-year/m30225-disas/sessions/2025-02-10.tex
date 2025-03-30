@@ -1,0 +1,111 @@
+\lecture{Time \& Coordination}{09:00}{10/02/25}{Amanda Peart}
+
+\section*{Time Synchronisation}
+
+Time needs to be synchronised in distributed systems for many reasons, including
+\begin{itemize}
+  \item To allow precise measurements of delays between distributed components
+  \item To synchronise real-time applications such as audio and video streams
+  \item To accurately timestamp events, transactions and security data
+  \item To order events and achieve a consistent global state in the system
+\end{itemize}
+
+The main reason that synchronisation is important is to ensure accuracy and consistency when multiple users are accessing the same data, such as when booking flights, hotels, event tickets, etc.
+
+\subsection*{Synchronisation Issues}
+
+Synchronisation is very important in distributed systems, as it is required when a large number of nodes are sharing resources, need to agree on the order of transactions or events, or when they need to recover from failures.
+
+If clocks are not properly synchronised, it could lead to transactions resulting in the incorrect balance, tickets being double booked, and many other issues.
+
+\subsection*{Clock Inaccuracy}
+
+No clock is perfectly accurate, as they constantly either lag behind or speed ahead of the true time. Each clock will also drift at a different rate, meaning that two synchronised clocks will always slowly drift apart if not corrected.
+
+\begin{itemize}
+  \item Clock Skew is the instantaneous difference between the times recorded by two clocks
+  \item Clock Drift is the difference in counting rate per unit of time as compared to some `ideal' or perfect reference clock
+\end{itemize}
+
+\subsection*{Types of Synchronisation}
+
+There are two main types of clock synchronisation; external and internal. When synced externally, all clocks in a system are synchronised with a single external clock that acts as a reference point for `real time'. When synced internally, all clocks in a system are synchronised to match each other, even if they may not be in sync with `real time'.
+
+\section*{Clock Synchronisation Methods}
+
+\begin{itemize}
+  \item Internal Synchronisation in a Synchronous system
+  \item Cristian's Method (External Synchronisation)
+  \item The Berkeley Algorithm (Internal Synchronisation)
+  \item The Network Time Protocol (NTP, External or Internal Synchronisation)
+\end{itemize}
+
+\subsection*{Synchronous Systems}
+
+A synchronous distributed system is one in which there is a known bound for: clock drift rate; maximum message transmission delay; time to execute each step of a process.
+
+The general process for internally synchronising clocks in such a synchronous system is as follows;
+\begin{itemize}
+  \item One process $p_1$ sends it's local time $t$ to another process $p_2$ in a message $m$
+  \item $p_2$ wants to set it's internal clock to $t + T_{trans}$, where $T_{trans}$ is the time taken to transmit the message $m$, but $T_{trans}$ is not known
+  \item Since $T_{trans}$ is unknown, it can't be set directly, and so is estimated as the known maximum transmission time minus the minimum estimated transmission time to get an uncertainty, $u = T_{max} - T_{min}$
+  \item The clock of $p_2$ is then set to $t + \frac{(T_{max} - T_{min})}{2}$, or $t + \frac{u}{2}$ such that the skew is at most $\frac{u}{2}$
+\end{itemize}
+
+\subsection*{Cristian's Method}
+
+The general process for synchronising clocks with Cristian's method is as follows;
+\begin{itemize}
+  \item A time server $S$ receives signals from an accurate UTC source, and sets it's clock accordingly
+  \item The round-trip time is used to estimate and account for the message latency inherent in the system
+  \item The server process $S$ then supplies the time to other processes accordingly
+\end{itemize}
+
+There are some issues with this method, as it does not account for what happens when the server fails, nor if the server itself becomes desynchronised for any reason.
+
+\subsection*{The Berkeley Algorithm}
+
+The general process for synchronising clocks using the Berkeley algorithm is as follows;
+\begin{itemize}
+  \item A master server polls other processes to collect their clock values
+  \item The master uses the round-trip times to estimate the true clock values
+  \item The master then calculates an average time within the network
+  \item Any required adjustments are then sent to the other processes
+\end{itemize}
+
+This allows internal synchronisation, while attempting to eliminate the effects of faulty clocks by taking an average, and if the master fails, a new master can be elected from the remaining processes to take over
+
+\subsection*{The Network Time Protocol}
+
+NTP is a standardised protocol used across the internet. It uses reference clocks as a so-called `baseline', which include: the clocks which make up UTC; atomic clocks run by various government agencies around the world; radio stations used broadcast by the National Institute of Standard Time (NIST). The time server then broadcasts a short reference pulse at the start of each UTC second, with a resolution of $\pm 10msec$.
+
+There are typically multiple layers in an NTP system, where the primary servers are directly synced to UTC, and all servers from there are synced to the primaries. Each layer is known as a `stratum', where the higher the stratum, the further away from the primary the server is, and the lower it's overall accuracy. There are 3 modes of synchronisation, being multicast messages, Procedure-calls (which uses Cristian's algorithm), and symmetric synchronisation between a pair of servers. All messages are sent using UDP.
+
+\section*{Logical Time}
+
+Since it is not possible to perfectly synchronise the clocks in a distributed system, we typically abandon the idea of `physical' or `real' time, and instead use logical or virtual time. This allows consistent event ordering within a system, without the need to strictly sync with any external time source.
+
+\subsection*{Events \& States}
+
+A refined process model can be used, in which
+\begin{itemize}
+  \item A distributed system is characterised as a collection $N$ of processes, where $P_i$ and $i = 0, 1, 2, \ldots, N-1$
+  \item Each process $P_i$ hsa a state $s_i$ including the values of all of it's variables
+  \item Processes communicate only via messages over a network
+  \item Each process can only follow one of three actions; send a message, receive a message or change it's own state
+  \item An event is then the occurrence of any single action
+\end{itemize}
+
+The events can then be ordered such that
+\begin{itemize}
+  \item Events of a single process $P_i$ can be placed in a total ordering denoted by $\rightarrow_i$ (happened before) between events, where $e \rightarrow_i e'$ if and only if $e$ occurs before $e'$ in $P_i$
+  \item A history of process $P_i$ is then a series of events ordered as by $\rightarrow_i$, e.g. History $(P_i) = h_i = < e_i^0, e_i^1, e_i^2, e_i^3, \ldots >$
+\end{itemize}
+
+Not all events are related bt $\rightarrow$, as they may occur in two different processes, without any chain of messages that can relate them. This means that they are not related, and are said to be concurrent, which is written as $e_i || e_j$
+
+\subsection*{Lamport's Logical Clocks}
+
+A logical clock is a monotonically increasing counter related to a process. Each process $P_i$ has a logical clock $L_i$ which can be used to apply logical timestamps to events. $L_i$ is incremented by $1$ before each event occurring on process $P_i$. When $P_i$ sends a message, it piggybacks the current logical time, so the sent message is $(m, t)$ where $t = L_i$. When $P_j$ receives $(m, t)$, it sets $L_i = \max(L_i, t)$ and applies $L_i$ before timestamping the receive event.
+
+$e \rightarrow e'$ implies that $L(e) < L(e')$, but $L(e) < L(e')$ does not imply that $e \rightarrow e'$, which means that there is no way to detect when events occurred concurrently.
