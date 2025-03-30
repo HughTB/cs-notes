@@ -63,4 +63,83 @@ DSM is an abstraction which allows multiple computers which do not share any phy
 
 \section*{Consistency Models}
 
-{\huge Insert table here}
+\begin{center}
+  \begin{tabular}{ p{0.1\textwidth} p{0.3\textwidth} p{0.2\textwidth} p{0.2\textwidth}}
+  Consistency Model & Guarantees & Pros & Cons\\
+  \hline
+  Strict & Always have the latest data & Strongest consistency & High overheads\\
+  Sequential & All process see events in the same order (in logical time) & Correct execution order & Expensive synchronisation\\
+  Casual & Related writes appear in order & Balances order and efficiency & Complex dependency tracking\\
+  Eventual & Will synchronise over time & Highly scalable & Temporary data inconsistency\\
+  Weak & Synchronisation occurs only at set points & High performance & Data frequently out of date\\
+  \end{tabular}
+\end{center}
+
+\subsection*{Strict Consistency}
+
+All processes see memory updates immediately, which gives the strongest consistency and ensures values are always correct, but comes with the high overheads inherent in real-time synchronisation.
+
+\subsection*{Sequential Consistency}
+
+All processes see operations occur in the same order in logical time, which is easier to implement as it does not rely on physical time, and guarantees a correct order of execution. It does come with the downsides of not relying on synchronisation, and not being ideal for performance sensitive applications.
+
+\subsection*{Casual Consistency}
+
+Related writes are always seen in order, but independent writes can appear in any order. If event $e_A$ occurs before event $e_B$, and they are related, all processes must see $e_A$ before $e_B$. This is good as it reduces the overhead from synchronising all writes, including ones that don't need to be, but does still require tracking relationships between related events, without guaranteeing a single order of operations.
+
+\subsection*{Eventual Consistency}
+
+If no updates occur, all processes will eventually converge on a single correct state. This is the best for highly scalable distributed systems, as it improves performance by greatly reducing the overhead of synchronisation, but will lead to temporary inconsistencies in the data.
+
+\subsection*{Weak Consistency}
+
+No consistency is guaranteed for individual writes, as it is only enforced at specific synchronisation points, such as when a process explicitly requests the latest data. This reduces synchronisation overhead even further, and works well when immediate accuracy is not required. This does require the overhead of handling out-of-date data, and needs a way to predict when data may not be correct.
+
+\section*{Synchronisation in DSM}
+
+To improve performance, DSM usually caches data locally on each node. This makes it more efficient to access the data, but results in problems keeping the cached data consistent with other nodes. It also causes issues if too large of a page size is used, as the entire page may need to be evicted from cache and replaced.
+
+\subsection*{Main Approaches}
+
+\begin{itemize}
+  \item Hardware-based (DASH \& KSR)--
+  \begin{itemize}
+    \item Some multi-processor systems rely on specialised hardware devices designed to load and store instructions with addresses automatically converted to those stored in DSM, and to communicate with remote memory as necessary
+  \end{itemize}
+  \item Page-based (IVY, MUNIN \& The Cloud)--
+  \begin{itemize}
+    \item DSM is implemented as a space in virtual memory, which occupies the same address range in the address space of every process which needs access
+  \end{itemize}
+  \item Library-based (Orca, Linda \& OpenMP)--
+  \begin{itemize}
+    \item Memory is not shared on the memory address level, and is instead handled by run-time communications between processes using library calls
+    \item The compiler inserts library calls in the place of memory calls when accessing items stored in DSM
+    \item The libraries access local data and communicate as needed to maintain consistency
+  \end{itemize}
+\end{itemize}
+
+\subsection*{DSM Approaches}
+
+There are several approaches that can be used when synchronising memory space in a DSM system. Some systems may synchronise only part of the address space, such as variables or data structures that may need to be accessed by more than one process at a time. Another method is to share the entire memory space, which can be useful if each process may need access to any data randomly. Alternatively, only encapsulated data types such as objects and data structures are shared, which may include methods in the case of remote process calls.
+
+\subsection*{Ring-Based Multi-Processors}
+
+In a system with ring-based multi-processing, there is no centralised global memory. The memory space of each processor is divided into private and shared data spaces, which are made up of 32-byte blocks. A token-ring is used to share blocks between processors, and each block of data has a `home' processor, usually the one it originates from.
+
+To read a word from shared memory, the address is passed to the controller, which checks the block table to see if the block is present. If it is, the request is already complete and the data can be read. If not, the controller waits for it's turn on the ring, where it then puts a request packet out. As the packet is passed around, each controller checks if it has the block. If it has the block, it provides the block of memory and clears the request's exclusive bit. When the token returns to the requesting controller, it always has the requested block.
+
+To write a word to shared memory, if the block is present and is the only copy (the exclusive bit is set), it is written locally. If the block is present but not the only copy, an invalidation packet is sent around the ring to invalidate all other copes. When the packet returns, the exclusive bit is set and the data is written locally. If the block is not present, a packet is sent that combines a read request with an invalidation request. The first processor which has the block copies it onto the packet and discards it's own copy, any other processors just discard their copies.
+
+\subsection*{NUMA Multi-Processors}
+
+Because it is very difficult and expensive to perform hardware caching in multi-processor machines, there is an alternative method of accessing the memory of other processors. Non-Uniform Memory Access (NUMA) is a method for accessing memory of a processor other than the one requesting it. Access to remote memory is typically much slower than local memory, usually in the ratio of 10:1. This means that a processor can directly access the data of another processor, including executing code directly, but the performance will typically be much worse than if it was running from local memory.
+
+NUMA creates a single virtual address space across all processors, with no attempt to reduce the performance deficit via caching. However, it is possible to replicate or migrate a page of memory from remote to local to improve performance of frequent access. Replicated pages are read-only to ensure integrity, but migrated pages can also be written to. There is usually a page scanning daemon running, which watches how the pages are being used to make sure they are not replicated or migrated too often. If a page is migrated too frequently, it may be frozen in place such that it stops wasting bandwidth moving it back and forth, or if a page is read frequently from another processor, it may be invalidated so it is automatically moved.
+
+\subsection*{Page-Based DSM}
+
+The idea of page-based DSM is to emulate the systems used in a multi-processor system using the MMU (Memory Management Unit) and OS-level interrupts to handle page migration. It is possible to replicate read-only data or read-write data with consistency support.
+
+This introduces a new problem known as false sharing, in which pages are constantly replicated back and forth due to unrelated writes that happen to fall into the same page of memory. For example, if process 1 is accessing $A$ and process 2 is accessing $B$, which both happen to be in the same page, each time process 1 writes to $A$, the page is replicated to process 2, and any time process 2 writes to $B$, the page is replicated to process 1, even though process 1 never accesses $B$ and process 2 never accesses $A$. The larger the pages used, the more frequently false sharing will occur.
+
+If pages are not replicated, or are only replicated as read-only there are no issues. If there is only one writeable copy of any page at a time, there is no chance of inconsistent data. When there are replicated read-write pages, there is a high likelihood of data inconsistencies.
