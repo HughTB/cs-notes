@@ -1,3 +1,27 @@
 \lecture{Mobile and Ubiquitous Computing}{10:00}{03/03/25}{Amanda Peart}
 
-{\huge TODO}
+\section*{Ubiquitous Computing}
+
+Ubiquitous computing is the concept of integrating computing and computers into everyday objects and environments, making technology available anywhere and any time, often without requiring explicit user interaction.
+
+For example, a building system which uses RFID cards or infrared tags to identify and track users as they move around the building, adjusting rooms to suit their preferences, or automatically disabling lights when everyone leaves a room.
+
+\subsection*{Sensors and Actuators}
+
+Devices in a ubiquitous computing system typically fall into two categories; sensors and actuators. A sensor is a device which measures physical parameters, typically of the environment around it, this could be light level, temperature, humidity, etc. An actuator is a device which is controllable via the software system, this could be things like air conditioning units, lights, motors, locks, etc.
+
+\section*{Association and Discovery Services}
+
+Volatile components of a system need to interoperate, and access to the network is essential for devices to be able to communicate with one another and fulfil their purposes. The challenge with this is the vast number of devices which need to be associated, and that they're typically embedded devices with little-to-no controls.
+
+A discovery services is one which allows users, devices and other software to discover where services are located, and how they should be accessed.
+
+\subsection*{Discovery Services}
+
+There are several ways to discover services on a network, one of the simplest is to have a specialised server providing these services, which allow other services to register and de-register from it's directory, and allows clients and services to loop up other services available on the network. This works well in a network that already has dedicated servers, but in peer-to-peer networks, another solution is needed.
+
+In a peer-to-peer network, each device maintains it's own directory of services, and these services are advertised to new devices when they join the network. This does mean that there is no central directory, and that it would be possible for devices to spoof services maliciously.
+
+\subsection*{Discovery Challenges}
+
+There are two different models for advertising services, being the push and pull models. In the push model, the discovery service periodically broadcasts what services are available on the network. This means that clients always have the most up-to-date information, but network bandwidth is wasted, especially when there are no changes to the available services. In the pull model, clients request the service directory from the server. This is more efficient in terms of bandwidth, but means that clients may not have up-to-date information and more requests may be needed to gather all the information they need.

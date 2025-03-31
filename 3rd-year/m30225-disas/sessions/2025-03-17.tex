@@ -72,13 +72,41 @@ Fault tolerance is the ability of a system to continue operating in spite of any
 
 \section*{Consensus Algorithms}
 
+Consensus algorithms are needed when distributed nodes are required to agree on a single value, even with failures.
+
 \begin{itemize}
   \item Paxos Algorithm
+  \begin{itemize}
+    \item An algorithm designed to ensure consensus in unreliable networks where nodes crash or messages are lost
+    \item The algorithm works in 3 fazes; the prepare phase, accept phase and learn phase
+    \item During the prepare phase, a proposer sends a proposal with a unique numbered to all acceptors, if the acceptors haven't already accepted a proposal with a higher number, they respond with the last accepted value
+    \item During the accept phase, the proposer selects the most recently accepted value and sends an accept request, which the acceptors acknowledge if no proposal with a higher number exists
+    \item If a majority of acceptors accept a proposal, it becomes the agreed value and is then sent to learners, who apply the accepted value.
+    \item It is typically used where durability is most important for large datasets, such as a file or database
+  \end{itemize}
   \item Raft Algorithm
+  \begin{itemize}
+    \item In a Raft network, there is one Leader and multiple Follower servers. There may also be Candidate servers depending on the state of the network
+    \item The elected leader node is the only one which can interact with the client. All other nodes become followers and sync their value to that of the leader
+    \item The follower nodes sync their value to the leader at regular intervals. If the leader server stops working, one of the followers can contest an election and become the leader
+    \item At the time of contesting to become leader, followers become candidates and request votes from other nodes. The node with the most votes then becomes the leader. When the network first starts up, all nodes are candidates
+    \item When the client sends a request to the leader, it appends the request to it's log and sends the update to the followers. The followers then copy the entry and send an acknowledgement to the leader, which applies the entry to the system only when a majority of followers have acknowledged the change
+  \end{itemize}
   \item Byzantine Fault Tolerance
+  \begin{itemize}
+    \item BFT is typically used in networks where nodes may act maliciously or fail with invalid data
+    \item It uses cryptography, redundancy and a quorum system to ensure integrity in spite of faulty nodes
+    \item It will only operate reliably when the assumption that at most $\frac{(n - 1)}{3}$ nodes are faulty
+    \item This also means that at least $3f + 1$ nodes are required to tolerate $f$ failures, and at least $2f + 1$ `honest' nodes must reach a consensus to outvote any malicious nodes
+    \item To achieve fault tolerance, 3 steps are typically followed: nodes exchange messages to verify information from other nodes; consensus is required before a decision is finalised; verification ensures that faulty or malicious nodes cannot influence the system
+    \item There are 3 main types of BFT algorithms
+    \begin{itemize}
+      \item Practical BFT-- Uses a leader-based approach to reach consensus among nodes
+      \item Federated BFT-- Used in decentralised networks where each participant may wish to select specific nodes to trust
+      \item Proof of Work-- Used in several blockchains
+    \end{itemize}
+  \end{itemize}
 \end{itemize}
-
-(To be filled in after seminar)
 
 \section*{Fault Detection Mechanisms}
 
